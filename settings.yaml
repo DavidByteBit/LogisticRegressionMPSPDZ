@@ -1,6 +1,6 @@
 ---
- alice_data_path: "/home/david/Desktop/alice_data.csv"
- bob_data_path: "/home/david/Desktop/bob_data.csv"
+ alice_data_path: "/home/david/Desktop/lrMP/data/alice_data.csv"
+ bob_data_path: "/home/david/Desktop/lrMP/data/bob_data.csv"
  n_epochs: 13
  alice_private_input_path: "/home/david/Desktop/spdz/Player-Data/Input-P0-0"
  bob_private_input_path: "/home/david/Desktop/spdz/Player-Data/Input-P1-0"
