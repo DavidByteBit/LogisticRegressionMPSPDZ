@@ -1,5 +1,6 @@
 import yaml
 import subprocess
+import sys
 
 def transpose(list):
     return [[row[i] for row in list] for i in range(len(list[0]))]
@@ -97,5 +98,7 @@ with open(settings_map['bob_private_input_path'], 'w') as stream:
 
 
 # Step 3: Compile .mpc program
+print(sys.argv[0])
+
 subprocess.call("compile.sh")
 
