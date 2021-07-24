@@ -1,0 +1,31 @@
+from Compiler import ml
+
+# No traditional command line arguments? Solution is to re-write the script
+# using another python script which can also act as the entry point
+# @args
+alice_examples = 831
+bob_examples = 882
+n_features = 1875
+n_epochs = 13
+# end@args
+
+n_examples = alice_examples + bob_examples
+
+
+
+sgd = ml.SGD([ml.Dense(n_examples, n_features, 1),
+              ml.Output(n_examples, approx=True)], n_epochs,
+             report_loss=True)
+
+
+# original code uses
+# sgd.layers[0].X.input_from(0)
+# sgd.layers[1].Y.input_from(1)
+# But how will this work? It seems like it only take a single example. Maybe it's more intelligent than that,
+# but I am not sure yet
+
+
+sgd.layers[0].X.input_from(0)
+sgd.layers[1].Y.input_from(1)
+sgd.reset()
+sgd.run()

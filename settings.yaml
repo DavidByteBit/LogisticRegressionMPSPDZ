@@ -1,0 +1,7 @@
+---
+ alice_data_path: "F:/Downloads/party_1.csv"
+ bob_data_path: "F:/Downloads/party_2.csv"
+ n_epochs: 13
+ alice_private_input_path: "/home/david/Desktop/spdz/Player-Data/Input-P0-0"
+ bob_private_input_path: "/home/david/Desktop/spdz/Player-Data/Input-P1-0"
+ path_to_top_of_mpspdz: "/home/david/Desktop/spdz"
