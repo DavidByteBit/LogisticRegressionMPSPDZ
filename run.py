@@ -98,7 +98,5 @@ with open(settings_map['bob_private_input_path'], 'w') as stream:
 
 
 # Step 3: Compile .mpc program
-print(sys.argv[0])
-
-subprocess.call("compile.sh")
+subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/compile.sh")
 
