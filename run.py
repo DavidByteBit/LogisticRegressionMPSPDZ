@@ -88,6 +88,8 @@ with open(settings_map['alice_private_input_path'], 'w') as stream:
     for label in alice_labels:
         stream.write(" ".join(row))
 
+print("Alice has {n} many private values".format(n=len(alice_data) * len(alice_data[0]) + len(alice_labels)))
+
 with open(settings_map['bob_private_input_path'], 'w') as stream:
 
     for row in bob_data:
@@ -96,6 +98,7 @@ with open(settings_map['bob_private_input_path'], 'w') as stream:
     for label in bob_labels:
         stream.write(" ".join(row))
 
+print("Bob has {n} many private values".format(n=len(bob_data) * len(bob_data[0]) + len(bob_labels)))
 
 # Step 3: Compile .mpc program
 subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/compile.sh")
