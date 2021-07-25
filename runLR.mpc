@@ -10,7 +10,7 @@ BOB = 1
 
 # PURELY FOR TESTING PURPOSES - reduces the amount of data going in by a factor of n to test compilers
 # ability to work with different loads
-reduce_set = 100
+reduce_set = 50
 
 # No traditional command line arguments? Solution is to re-write the script
 # using another python script which can also act as the entry point
