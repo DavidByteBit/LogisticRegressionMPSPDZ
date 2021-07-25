@@ -129,7 +129,7 @@ with open(settings_map['alice_private_input_path'], 'w') as stream:
     for row in alice_data:
         str += " ".join(row) + " "
 
-    str += " ".join(alice_labels) + " "
+    str += " ".join(alice_labels)
 
     stream.write(str)
 
@@ -141,11 +141,18 @@ print("Alice has {n} many private values".format(n=len(alice_data) * len(alice_d
 
 with open(settings_map['bob_private_input_path'], 'w') as stream:
 
-    for row in bob_data:
-        stream.write(" ".join(row) + " ")
+    str = ""
 
-    for label in bob_labels:
-        stream.write(" ".join(label) + " ")
+    for row in alice_data:
+        str += " ".join(row) + " "
+
+    str += " ".join(alice_labels)
+
+    stream.write(str)
+
+    if "  " in str:
+        raise Exception("Double space")
+
 
 print("Bob has {n} many private values".format(n=len(bob_data) * len(bob_data[0]) + len(bob_labels)))
 
