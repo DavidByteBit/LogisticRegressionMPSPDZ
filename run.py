@@ -73,7 +73,7 @@ file[start_of_delim + 4] = "n_epochs = {n}\n".format(n=n_epochs)
 # file as a string
 file = ''.join([s for s in file])
 
-print(file)
+# print(file)
 
 with open(mpc_file_path, 'w') as stream:
     stream.write(file)
