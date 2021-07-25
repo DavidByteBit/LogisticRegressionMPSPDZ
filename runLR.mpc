@@ -25,7 +25,7 @@ n_examples = alice_examples + bob_examples
 
 
 sgd = ml.SGD([ml.Dense(n_examples, n_features, 1),
-              ml.Output(n_examples//reduce_set, approx=True)], n_epochs,
+              ml.Output(n_examples, approx=True)], n_epochs,
              report_loss=True)
 
 
@@ -68,6 +68,7 @@ def _(i):
 
 print("\n\n Bobs labels is loaded \n\n")
 
+print(len(sgd.layers[0].X))
 
 # sgd.layers[0].X.input_from(0)
 # sgd.layers[1].Y.input_from(1)
