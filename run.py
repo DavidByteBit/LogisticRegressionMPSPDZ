@@ -38,10 +38,26 @@ bob_data = bob_data[1:]
 # make labels/feature data disjoint
 alice_data = transpose(alice_data)
 alice_labels = alice_data[0]
+
+for i in range(len(alice_labels)):
+    label = alice_labels[i]
+    if label == "Wild Type":
+        alice_labels[i] = "1"
+    else:
+        alice_labels[i] = "0"
+
 alice_data = transpose(alice_data[1:])
 
 bob_data = transpose(bob_data)
 bob_labels = bob_data[0]
+
+for i in range(len(bob_labels)):
+    label = bob_labels[i]
+    if label == "Wild Type":
+        bob_labels[i] = "1"
+    else:
+        bob_labels[i] = "0"
+
 bob_data = transpose(bob_data[1:])
 
 # 'command line arguments' for our .mpc file
