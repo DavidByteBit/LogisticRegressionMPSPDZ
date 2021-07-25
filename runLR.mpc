@@ -33,24 +33,28 @@ sgd = ml.SGD([ml.Dense(1, n_features, 1),
 
 # Load data from Alice first, then Bob
 
-# Reference: self.X = MultiArray([N, d, d_in], sfix)
-@for_range_opt(alice_examples)
-def _(i):
-    @for_range_opt(n_features)
-    def _(j):
-        # data[i][j] = sint.get_input_from(ALICE)
-        sgd.layers[0].X.input_from(ALICE)
+# # Reference: self.X = MultiArray([N, d, d_in], sfix)
+# @for_range_opt(alice_examples)
+# def _(i):
+#     @for_range_opt(n_features)
+#     def _(j):
+#         # data[i][j] = sint.get_input_from(ALICE)
+#         sgd.layers[0].X.input_from(ALICE)
+
+sgd.layers[0].X.input_from(ALICE)
 
 
 print("\n\n Alice's data is loaded \n\n")
 
 
-@for_range_opt(bob_examples)
-def _(i):
-    @for_range_opt(n_features)
-    def _(j):
-        # data[i][j] = sint.get_input_from(BOB)
-        sgd.layers[0].X.input_from(BOB)
+# @for_range_opt(bob_examples)
+# def _(i):
+#     @for_range_opt(n_features)
+#     def _(j):
+#         # data[i][j] = sint.get_input_from(BOB)
+#         sgd.layers[0].X.input_from(BOB)
+
+sgd.layers[0].X.input_from(BOB)
 
 
 print("\n\n Bobs data is loaded \n\n")
@@ -59,19 +63,21 @@ print("\n\n Bobs data is loaded \n\n")
 # labels = Array(n_examples, sint)
 
 # Load labels from alice first to ensure that the labels remain parallel to the dataset
-@for_range_opt(alice_examples)
-def _(i):
-    # labels[i] = sint.get_input_from(ALICE)
-    sgd.layers[1].Y.input_from(ALICE)
-
+# @for_range_opt(alice_examples)
+# def _(i):
+#     # labels[i] = sint.get_input_from(ALICE)
+#     sgd.layers[1].Y.input_from(ALICE)
+sgd.layers[1].Y.input_from(ALICE)
 
 print("\n\n Alice's labels is loaded \n\n")
 
 
-@for_range_opt(bob_examples)
-def _(i):
-    # labels[i] = sint.get_input_from(BOB)
-    sgd.layers[1].Y.input_from(BOB)
+# @for_range_opt(bob_examples)
+# def _(i):
+#     # labels[i] = sint.get_input_from(BOB)
+#     sgd.layers[1].Y.input_from(BOB)
+
+sgd.layers[1].Y.input_from(BOB)
 
 
 print("\n\n Bobs labels is loaded \n\n")
