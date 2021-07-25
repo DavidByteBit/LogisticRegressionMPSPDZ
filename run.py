@@ -124,11 +124,24 @@ with open(mpc_file_path, 'w') as stream:
 # Step 2: write to Alice's and Bobs private input files
 with open(settings_map['alice_private_input_path'], 'w') as stream:
 
-    for row in alice_data:
-        stream.write(" ".join(row) + " ")
+    str = ""
 
-    for label in alice_labels:
-        stream.write(" ".join(label) + " ")
+    for row in alice_data:
+        str.append(" ".join(row) + " ")
+
+    str.append(" ".join(alice_labels) + " ")
+
+    stream.write(str)
+
+    if "  " in str:
+        raise Exception("Double space")
+
+    if "0 " in str:
+        raise Exception("0 ")
+
+    if " 0" in str:
+        raise Exception(" 0")
+
 
 print("Alice has {n} many private values".format(n=len(alice_data) * len(alice_data[0]) + len(alice_labels)))
 
