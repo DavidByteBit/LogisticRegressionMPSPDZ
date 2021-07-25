@@ -1,5 +1,13 @@
 from Compiler import ml
 
+# NOTE: This script should not be run alone. The entry point to run the program is in run.py.
+#       run.py must be run first for the sake of some book-keeping; for example, run.py will
+#       have Alice and Bob populate their private input files which allows for us to combine
+#       their horizontally partitioned data into one dataset.
+
+ALICE = 0
+BOB = 1
+
 # No traditional command line arguments? Solution is to re-write the script
 # using another python script which can also act as the entry point
 # @args
@@ -24,8 +32,40 @@ sgd = ml.SGD([ml.Dense(n_examples, n_features, 1),
 # But how will this work? It seems like it only take a single example. Maybe it's more intelligent than that,
 # but I am not sure yet
 
+# # sint because inputs are binary
+# data = Matrix(n_examples, n_features, sint)
 
-sgd.layers[0].X.input_from(0)
-sgd.layers[1].Y.input_from(1)
+# Load data from Alice first, then Bob
+@for_range_opt(alice_examples)
+def _(i):
+    @for_range_opt(n_features)
+    def _(j):
+        # data[i][j] = sint.get_input_from(ALICE)
+        sgd.layers[0].X.input_from(ALICE)
+
+@for_range_opt(bob_examples)
+def _(i):
+    @for_range_opt(n_features)
+    def _(j):
+        # data[i][j] = sint.get_input_from(BOB)
+        sgd.layers[0].X.input_from(BOB)
+
+
+labels = Array(n_examples, sint)
+
+# Load labels from alice first to ensure that the labels remain parallel to the dataset
+@for_range_opt(alice_examples)
+def _(i):
+    # labels[i] = sint.get_input_from(ALICE)
+    sgd.layers[1].Y.input_from(ALICE)
+
+@for_range_opt(bob_examples)
+def _(i):
+    # labels[i] = sint.get_input_from(BOB)
+    sgd.layers[1].Y.input_from(BOB)
+
+
+# sgd.layers[0].X.input_from(0)
+# sgd.layers[1].Y.input_from(1)
 sgd.reset()
 sgd.run()
