@@ -125,6 +125,8 @@ with open(mpc_file_path, 'w') as stream:
 with open(settings_map['alice_private_input_path'], 'w') as stream:
 
     for row in alice_data:
+        if "00" in " ".join(row):
+            raise Exception("Oh shoot we had a 00 somehow")
         stream.write(" ".join(row))
 
     for label in alice_labels:
