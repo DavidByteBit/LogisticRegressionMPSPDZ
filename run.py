@@ -127,9 +127,9 @@ with open(settings_map['alice_private_input_path'], 'w') as stream:
     str = ""
 
     for row in alice_data:
-        str.append(" ".join(row) + " ")
+        str += " ".join(row) + " "
 
-    str.append(" ".join(alice_labels) + " ")
+    str += " ".join(alice_labels) + " "
 
     stream.write(str)
 
