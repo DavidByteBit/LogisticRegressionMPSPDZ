@@ -54,7 +54,7 @@ for i in range(len(alice_data)):
     row = alice_data[i]
 
     for j in range(len(row)):
-        val = row[j]
+        val = row[j].replace("\n", '')
 
         if val == "1":
             alice_data[i][j] = "1.0"
@@ -79,7 +79,7 @@ for i in range(len(bob_data)):
     row = bob_data[i]
 
     for j in range(len(row)):
-        val = row[j]
+        val = row[j].replace("\n", '')
 
         if val == "1":
             bob_data[i][j] = "1.0"
@@ -125,8 +125,6 @@ with open(mpc_file_path, 'w') as stream:
 with open(settings_map['alice_private_input_path'], 'w') as stream:
 
     for row in alice_data:
-        if "00" in " ".join(row):
-            raise Exception("Oh shoot we had a 00 somehow")
         stream.write(" ".join(row))
 
     for label in alice_labels:
