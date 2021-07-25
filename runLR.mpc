@@ -43,6 +43,8 @@ def _(i):
         # data[i][j] = sint.get_input_from(ALICE)
         sgd.layers[0].X.input_from(ALICE)
 
+print("\n\n Alice's data is loaded \n\n")
+
 @for_range_opt(bob_examples)
 def _(i):
     @for_range_opt(n_features)
@@ -50,6 +52,7 @@ def _(i):
         # data[i][j] = sint.get_input_from(BOB)
         sgd.layers[0].X.input_from(BOB)
 
+print("\n\n Bobs data is loaded \n\n")
 
 labels = Array(n_examples, sint)
 
@@ -59,10 +62,14 @@ def _(i):
     # labels[i] = sint.get_input_from(ALICE)
     sgd.layers[1].Y.input_from(ALICE)
 
+print("\n\n Alice's labels is loaded \n\n")
+
 @for_range_opt(bob_examples)
 def _(i):
     # labels[i] = sint.get_input_from(BOB)
     sgd.layers[1].Y.input_from(BOB)
+
+print("\n\n Bobs labels is loaded \n\n")
 
 
 # sgd.layers[0].X.input_from(0)
