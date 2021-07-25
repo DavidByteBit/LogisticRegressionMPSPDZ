@@ -86,7 +86,7 @@ with open(settings_map['alice_private_input_path'], 'w') as stream:
         stream.write(" ".join(row))
 
     for label in alice_labels:
-        stream.write(" ".join(row))
+        stream.write(" ".join(label))
 
 print("Alice has {n} many private values".format(n=len(alice_data) * len(alice_data[0]) + len(alice_labels)))
 
@@ -96,7 +96,7 @@ with open(settings_map['bob_private_input_path'], 'w') as stream:
         stream.write(" ".join(row))
 
     for label in bob_labels:
-        stream.write(" ".join(row))
+        stream.write(" ".join(label))
 
 print("Bob has {n} many private values".format(n=len(bob_data) * len(bob_data[0]) + len(bob_labels)))
 
