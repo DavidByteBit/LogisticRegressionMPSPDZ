@@ -10,7 +10,7 @@ BOB = 1
 
 # PURELY FOR TESTING PURPOSES - reduces the amount of data going in by a factor of n to test compilers
 # ability to work with different loads
-reduce_set = 49
+reduce_set = 1 # Anything lower than 49 does not work...
 
 # No traditional command line arguments? Solution is to re-write the script
 # using another python script which can also act as the entry point
@@ -58,7 +58,7 @@ def _(i):
 
 print("\n\n Bobs data is loaded \n\n")
 
-labels = Array(n_examples, sint)
+# labels = Array(n_examples, sint)
 
 # Load labels from alice first to ensure that the labels remain parallel to the dataset
 @for_range_opt(alice_examples//reduce_set)
@@ -78,5 +78,5 @@ print("\n\n Bobs labels is loaded \n\n")
 
 # sgd.layers[0].X.input_from(0)
 # sgd.layers[1].Y.input_from(1)
-sgd.reset() # <--- Causes register overflow?
+# sgd.reset() # <--- Causes register overflow?
 sgd.run()
