@@ -39,26 +39,52 @@ bob_data = bob_data[1:]
 alice_data = transpose(alice_data)
 alice_labels = alice_data[0]
 
+# binarize label (as float)
 for i in range(len(alice_labels)):
     label = alice_labels[i]
     if label == "Wild Type":
-        alice_labels[i] = "1"
+        alice_labels[i] = "1.0"
     else:
-        alice_labels[i] = "0"
+        alice_labels[i] = "0.0"
 
 alice_data = transpose(alice_data[1:])
+
+# binarize data (as float)
+for i in range(len(alice_data)):
+    row = alice_data[i]
+
+    for j in range(len(row)):
+        val = row[j]
+
+        if val == "1":
+            alice_data[i][j] = "1.0"
+        else:
+            alice_data[i][j] = "0.0"
 
 bob_data = transpose(bob_data)
 bob_labels = bob_data[0]
 
+# binarize label (as float)
 for i in range(len(bob_labels)):
     label = bob_labels[i]
     if label == "Wild Type":
-        bob_labels[i] = "1"
+        bob_labels[i] = "1.0"
     else:
-        bob_labels[i] = "0"
+        bob_labels[i] = "0.0"
 
 bob_data = transpose(bob_data[1:])
+
+# binarize data (as float)
+for i in range(len(bob_data)):
+    row = bob_data[i]
+
+    for j in range(len(row)):
+        val = row[j]
+
+        if val == "1":
+            bob_data[i][j] = "1.0"
+        else:
+            bob_data[i][j] = "0.0"
 
 # 'command line arguments' for our .mpc file
 alice_examples = len(alice_data)
