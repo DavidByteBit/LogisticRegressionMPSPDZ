@@ -10,7 +10,7 @@ BOB = 1
 
 # PURELY FOR TESTING PURPOSES - reduces the amount of data going in by a factor of n to test compilers
 # ability to work with different loads
-reduce_set = 1 # Anything lower than 49 does not work...
+reduce_set = 2 # Anything lower than 49 does not work...
 
 # No traditional command line arguments? Solution is to re-write the script
 # using another python script which can also act as the entry point
@@ -24,17 +24,10 @@ n_epochs = 13
 n_examples = alice_examples + bob_examples
 
 
-
 sgd = ml.SGD([ml.Dense(n_examples, n_features, 1),
-              ml.Output(n_examples, approx=True)], n_epochs,
+              ml.Output(n_examples//reduce_set, approx=True)], n_epochs,
              report_loss=True)
 
-
-# original code uses
-# sgd.layers[0].X.input_from(0)
-# sgd.layers[1].Y.input_from(1)
-# But how will this work? It seems like it only take a single example. Maybe it's more intelligent than that,
-# but I am not sure yet
 
 # # sint because inputs are binary
 # data = Matrix(n_examples, n_features, sint)
