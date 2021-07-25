@@ -10,7 +10,7 @@ def transpose(list):
 mpc_file_path = "runLR.mpc"
 settings_map = None
 
-with open("settings.yaml", 'r') as stream:
+with open(sys.argv[1], 'r') as stream:
     try:
         settings_map = yaml.safe_load(stream)
     except yaml.YAMLError as exc:
