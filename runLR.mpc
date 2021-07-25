@@ -25,7 +25,7 @@ n_examples = alice_examples + bob_examples
 
 
 
-sgd = ml.SGD([ml.Dense(n_examples//reduce_set, n_features//reduce_set, 1),
+sgd = ml.SGD([ml.Dense(None, n_features//reduce_set, 1),
               ml.Output(n_examples//reduce_set, approx=True)], n_epochs,
              report_loss=True)
 
