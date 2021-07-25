@@ -68,7 +68,7 @@ def _(i):
 
 print("\n\n Bobs labels is loaded \n\n")
 
-print(len(sgd.layers[0].X))
+print(len(sgd.layers[0].X[0]))
 
 # sgd.layers[0].X.input_from(0)
 # sgd.layers[1].Y.input_from(1)
