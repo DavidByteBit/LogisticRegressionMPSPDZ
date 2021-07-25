@@ -136,12 +136,6 @@ with open(settings_map['alice_private_input_path'], 'w') as stream:
     if "  " in str:
         raise Exception("Double space")
 
-    if "0 " in str:
-        raise Exception("0 ")
-
-    if " 0" in str:
-        raise Exception(" 0")
-
 
 print("Alice has {n} many private values".format(n=len(alice_data) * len(alice_data[0]) + len(alice_labels)))
 
