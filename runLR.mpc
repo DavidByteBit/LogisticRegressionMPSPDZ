@@ -24,7 +24,7 @@ n_epochs = 13
 n_examples = alice_examples + bob_examples
 
 
-sgd = ml.SGD([ml.Dense(n_examples, n_features, 1),
+sgd = ml.SGD([ml.Dense(1, n_features, 1),
               ml.Output(n_examples, approx=True)], n_epochs,
              report_loss=True)
 
@@ -33,6 +33,8 @@ sgd = ml.SGD([ml.Dense(n_examples, n_features, 1),
 # data = Matrix(n_examples, n_features, sint)
 
 # Load data from Alice first, then Bob
+
+# Reference: self.X = MultiArray([N, d, d_in], sfix)
 @for_range_opt(alice_examples)
 def _(i):
     @for_range_opt(n_features)
@@ -68,7 +70,7 @@ def _(i):
 
 print("\n\n Bobs labels is loaded \n\n")
 
-print(sgd.layers[0].X)
+print(sgd.layers[1].Y)
 
 # sgd.layers[0].X.input_from(0)
 # sgd.layers[1].Y.input_from(1)
