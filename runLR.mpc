@@ -44,6 +44,8 @@ def _(i):
         # data[i][j] = sint.get_input_from(ALICE)
         sgd.layers[0].X.input_from(ALICE)
         total_inputs_used_alice += 1
+        if total_inputs_used_alice % 1000 == 0:
+            print_ln('%s has transferred %s inputs', "Alice", str(total_inputs_used_alice))
 
 print("\n\n Alice's data is loaded \n\n")
 
@@ -54,6 +56,8 @@ def _(i):
         # data[i][j] = sint.get_input_from(BOB)
         sgd.layers[0].X.input_from(BOB)
         total_inputs_used_bob += 1
+        if total_inputs_used_alice % 1000 == 0:
+            print_ln('%s has transferred %s inputs', "Bob", str(total_inputs_used_bob))
 
 print("\n\n Bobs data is loaded \n\n")
 
@@ -65,6 +69,8 @@ def _(i):
     # labels[i] = sint.get_input_from(ALICE)
     sgd.layers[1].Y.input_from(ALICE)
     total_inputs_used_alice += 1
+    if total_inputs_used_alice % 1000 == 0:
+        print_ln('%s has transferred %s inputs', "Alice", str(total_inputs_used_alice))
 
 print("\n\n Alice's labels is loaded \n\n")
 
@@ -73,6 +79,8 @@ def _(i):
     # labels[i] = sint.get_input_from(BOB)
     sgd.layers[1].Y.input_from(BOB)
     total_inputs_used_bob += 1
+    if total_inputs_used_alice % 1000 == 0:
+        print_ln('%s has transferred %s inputs', "Bob", str(total_inputs_used_bob))
 
 print("\n\n Bobs labels is loaded \n\n")
 
