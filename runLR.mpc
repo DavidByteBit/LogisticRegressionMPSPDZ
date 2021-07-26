@@ -48,7 +48,7 @@ def _(i):
     @for_range_opt(n_features)
     def _(j):
         data[alice_examples + i][j] = sfix.get_input_from(BOB)
-        print_ln("i: %s, j: %s", i, j)
+        # print_ln("i: %s, j: %s", i, j)
         #sgd.layers[0].X.input_from(BOB)
 
 
@@ -70,7 +70,7 @@ print_ln("%s", "\n\n Alice's labels is loaded \n\n")
 @for_range_opt(bob_examples)
 def _(i):
     labels[alice_examples + i] = sfix.get_input_from(BOB)
-    print_ln("i: %s", i)
+    # print_ln("i: %s", i)
     #sgd.layers[1].Y.input_from(BOB)
 
 
