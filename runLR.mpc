@@ -93,6 +93,8 @@ total_iterations = n_examples // max_batch + 1 - testing_set
 #           comments in each for-loop, everything runs just fine roughly. When I take out @for_range_opt and
 #           replace it with @for_range, or take out the comments, I get a segmentation fault
 
+print(sgd.layers[1].Y)
+
 @for_range_opt(total_iterations)
 def _(k):
     print_ln("iteration: %s", k)
