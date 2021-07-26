@@ -43,7 +43,7 @@ sgd = ml.SGD([ml.Dense(1, n_features, 1),
 
 sgd.layers[0].X.input_from(ALICE)
 
-print_ln("%s", sgd.layers[0].X)
+print_ln("%s", sgd.layers[0].X[0].reveal())
 
 print("\n\n Alice's data is loaded \n\n")
 
@@ -57,7 +57,7 @@ print("\n\n Alice's data is loaded \n\n")
 
 sgd.layers[0].X.input_from(BOB)
 
-print_ln("%s", sgd.layers[0].X)
+print_ln("%s", sgd.layers[0].X[0].reveal())
 
 print("\n\n Bobs data is loaded \n\n")
 
