@@ -48,7 +48,7 @@ def _(i):
     @for_range_opt(n_features)
     def _(j):
         data[alice_examples + i][j] = sfix.get_input_from(BOB)
-        print_ln("%s", "%s", str(i), str(j))
+        print_ln("i: %s, j: %s", str(i), str(j))
         #sgd.layers[0].X.input_from(BOB)
 
 
