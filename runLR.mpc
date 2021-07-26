@@ -92,13 +92,13 @@ total_iterations = 1
 
 # WARNING - multithreading with @for_range_opt seems to have caused segmentation fault.
 # just use @for_range for now
-@for_range(total_iterations)
+@for_range_opt(total_iterations)
 def _(k):
     print_ln("iteration: %s", k)
-    @for_range(max_batch)
+    @for_range_opt(max_batch)
     def _(i):
         print_ln("iteration: %s", i)
-        @for_range(n_features)
+        @for_range_opt(n_features)
         def _(j):
             print_ln("iteration: %s", j)
             sgd.layers[0].X[i][j] = data[k * max_batch + i][j]
