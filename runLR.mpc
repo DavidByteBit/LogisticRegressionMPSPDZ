@@ -70,6 +70,7 @@ print_ln("%s", "\n\n Alice's labels is loaded \n\n")
 @for_range_opt(bob_examples)
 def _(i):
     labels[alice_examples + i] = sint.get_input_from(BOB)
+    print_ln("i: %s", i)
     #sgd.layers[1].Y.input_from(BOB)
 
 
