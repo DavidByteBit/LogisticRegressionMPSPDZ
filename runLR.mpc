@@ -12,6 +12,10 @@ BOB = 1
 # ability to work with different loads
 reduce_set = 2  # Anything lower than 49 does not work...
 
+# It appears that batching is maxed out at 128
+max_batch = 128
+
+
 # No traditional command line arguments? Solution is to re-write the script
 # using another python script which can also act as the entry point
 # @args
@@ -23,68 +27,71 @@ n_epochs = 13
 
 n_examples = alice_examples + bob_examples
 
-sgd = ml.SGD([ml.Dense(1, n_features, 1),
-              ml.Output(n_examples, approx=True)], n_epochs,
-             report_loss=True)
-
-
-# # sint because inputs are binary
-# data = Matrix(n_examples, n_features, sint)
+data = Matrix(n_examples, n_features, sfix)
 
 # Load data from Alice first, then Bob
 
-# # Reference: self.X = MultiArray([N, d, d_in], sfix)
-# @for_range_opt(alice_examples)
-# def _(i):
-#     @for_range_opt(n_features)
-#     def _(j):
-#         # data[i][j] = sint.get_input_from(ALICE)
-#         sgd.layers[0].X.input_from(ALICE)
+# Reference: self.X = MultiArray([N, d, d_in], sfix)
+@for_range_opt(alice_examples)
+def _(i):
+    @for_range_opt(n_features)
+    def _(j):
+        data[i][j] = sfix.get_input_from(ALICE)
+        # sgd.layers[0].X.input_from(ALICE)
 
-sgd.layers[0].X.input_from(ALICE)
-
-print_ln("%s", sgd.layers[0].X[0][0].reveal())
 
 print("\n\n Alice's data is loaded \n\n")
 
 
-# @for_range_opt(bob_examples)
-# def _(i):
-#     @for_range_opt(n_features)
-#     def _(j):
-#         # data[i][j] = sint.get_input_from(BOB)
-#         sgd.layers[0].X.input_from(BOB)
+@for_range_opt(bob_examples)
+def _(i):
+    @for_range_opt(n_features)
+    def _(j):
+        data[alice_examples + i][j] = sfix.get_input_from(BOB)
+        #sgd.layers[0].X.input_from(BOB)
 
-sgd.layers[0].X.input_from(BOB)
-
-print_ln("%s", sgd.layers[0].X[0][1].reveal())
 
 print("\n\n Bobs data is loaded \n\n")
 
 
-# labels = Array(n_examples, sint)
+labels = Array(n_examples, sfix)
 
 # Load labels from alice first to ensure that the labels remain parallel to the dataset
-# @for_range_opt(alice_examples)
-# def _(i):
-#     # labels[i] = sint.get_input_from(ALICE)
-#     sgd.layers[1].Y.input_from(ALICE)
-sgd.layers[1].Y.input_from(ALICE)
+@for_range_opt(alice_examples)
+def _(i):
+    labels[i] = sfix.get_input_from(ALICE)
+    #sgd.layers[1].Y.input_from(ALICE)
+
 
 print("\n\n Alice's labels is loaded \n\n")
 
 
-# @for_range_opt(bob_examples)
-# def _(i):
-#     # labels[i] = sint.get_input_from(BOB)
-#     sgd.layers[1].Y.input_from(BOB)
-
-sgd.layers[1].Y.input_from(BOB)
+@for_range_opt(bob_examples)
+def _(i):
+    labels[alice_examples + i] = sint.get_input_from(BOB)
+    #sgd.layers[1].Y.input_from(BOB)
 
 
 print("\n\n Bobs labels is loaded \n\n")
 
-print(sgd.layers[0].X)
+# Define logistic regression model
+sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
+              ml.Output(n_examples, approx=True)], n_epochs,
+             report_loss=True)
+
+total_iterations = n_examples // max_batch + 1
+total_iterations = 1 # For testing purposes
+
+@for_range_opt(total_iterations)
+def _(k):
+    @for_range_opt(max_batch)
+    def _(i):
+        @for_range_opt(n_features)
+        def _(j):
+            sgd.layers[0].X[i][j] = data[k * max_batch + i][j]
+        sgd.layers[1].Y[i] = labels[k * max_batch + i]
+
+print(sgd.layers[0].W)
 
 # sgd.layers[0].X.input_from(0)
 # sgd.layers[1].Y.input_from(1)
