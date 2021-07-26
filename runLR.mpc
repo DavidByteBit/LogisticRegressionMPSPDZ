@@ -98,7 +98,7 @@ def _(k):
             sgd.layers[0].X[i][j] = data[k * max_batch + i][j]
         sgd.layers[1].Y[i] = labels[k * max_batch + i]
         sgd.run()
-        print_ln("%s", sgd.layers[0].W.reveal())
+        print_ln("%s", sgd.layers[0].W)
 
 # sgd.layers[0].X.input_from(0)
 # sgd.layers[1].Y.input_from(1)
