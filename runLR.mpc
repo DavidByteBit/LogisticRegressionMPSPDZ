@@ -87,27 +87,28 @@ print_ln("%s", "\n\n model initialized \n\n")
 
 testing_set = 2
 total_iterations = n_examples // max_batch + 1 - testing_set
-total_iterations = 1
+total_iterations = 1 # For testing purposes
 
 
-# WARNING - multithreading with @for_range_opt seems to have caused segmentation fault.
-# just use @for_range for now
+# WARNING - I appear to be experiencing un-defined behavior. When I multithread and add comments in each for-loop,
+#           everything runs just fine roughly 50% of the time. The other 50% I get a segmentation fault. When I
+#           omit multithreading and or comments, I experience segmentation faults in a much higher frequency.
+
 @for_range_opt(total_iterations)
 def _(k):
     print_ln("iteration: %s", k)
     @for_range_opt(max_batch)
     def _(i):
-        print_ln("iteration: %s", i)
+        # print_ln("iteration: %s", i)
         @for_range_opt(n_features)
         def _(j):
-            print_ln("iteration: %s", j)
+            # print_ln("iteration: %s", j)
             sgd.layers[0].X[i][j] = data[k * max_batch + i][j]
-
         sgd.layers[1].Y[i] = labels[k * max_batch + i]
+    sgd.run()
+    print_ln("%s", sgd.layers[0].W)
 
-
-sgd.run()
-print_ln("%s", sgd.layers[0].W)
+weights = sgd.layers[0].W
 
 # sgd.layers[0].X.input_from(0)
 # sgd.layers[1].Y.input_from(1)
