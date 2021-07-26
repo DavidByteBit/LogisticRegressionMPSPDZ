@@ -40,7 +40,7 @@ def _(i):
         # sgd.layers[0].X.input_from(ALICE)
 
 
-print("\n\n Alice's data is loaded \n\n")
+print_ln("%s", "\n\n Alice's data is loaded \n\n")
 
 
 @for_range_opt(bob_examples)
@@ -51,7 +51,7 @@ def _(i):
         #sgd.layers[0].X.input_from(BOB)
 
 
-print("\n\n Bobs data is loaded \n\n")
+print_ln("%s", "\n\n Bobs data is loaded \n\n")
 
 
 labels = Array(n_examples, sfix)
@@ -63,7 +63,7 @@ def _(i):
     #sgd.layers[1].Y.input_from(ALICE)
 
 
-print("\n\n Alice's labels is loaded \n\n")
+print_ln("%s", "\n\n Alice's labels is loaded \n\n")
 
 
 @for_range_opt(bob_examples)
@@ -72,7 +72,7 @@ def _(i):
     #sgd.layers[1].Y.input_from(BOB)
 
 
-print("\n\n Bobs labels is loaded \n\n")
+print_ln("%s", "\n\n Bobs labels is loaded \n\n")
 
 # Define logistic regression model
 sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
