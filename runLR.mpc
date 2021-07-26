@@ -87,7 +87,6 @@ print_ln("%s", "\n\n model initialized \n\n")
 
 testing_set = 2
 total_iterations = n_examples // max_batch + 1 - testing_set
-total_iterations = 1 # For testing purposes
 
 
 # WARNING - I appear to be experiencing un-defined behavior. When I multithread (using @for_range_opt) and add
