@@ -94,8 +94,10 @@ def _(k):
     print_ln("iteration: %s", k)
     @for_range_opt(max_batch)
     def _(i):
+        print_ln("iteration: %s", i)
         @for_range_opt(n_features)
         def _(j):
+            print_ln("iteration: %s", j)
             sgd.layers[0].X[i][j] = data[k * max_batch + i][j]
         sgd.layers[1].Y[i] = labels[k * max_batch + i]
 sgd.run()
