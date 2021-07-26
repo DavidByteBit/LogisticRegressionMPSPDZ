@@ -15,7 +15,6 @@ reduce_set = 2  # Anything lower than 49 does not work...
 # It appears that batching is maxed out at 128
 max_batch = 128
 
-
 # No traditional command line arguments? Solution is to re-write the script
 # using another python script which can also act as the entry point
 # @args
@@ -28,6 +27,7 @@ n_epochs = 13
 n_examples = alice_examples + bob_examples
 
 data = Matrix(n_examples, n_features, sfix)
+
 
 # Load data from Alice first, then Bob
 
@@ -49,19 +49,19 @@ def _(i):
     def _(j):
         data[alice_examples + i][j] = sfix.get_input_from(BOB)
         # print_ln("i: %s, j: %s", i, j)
-        #sgd.layers[0].X.input_from(BOB)
+        # sgd.layers[0].X.input_from(BOB)
 
 
 print_ln("%s", "\n\n Bobs data is loaded \n\n")
 
-
 labels = Array(n_examples, sfix)
+
 
 # Load labels from alice first to ensure that the labels remain parallel to the dataset
 @for_range_opt(alice_examples)
 def _(i):
     labels[i] = sfix.get_input_from(ALICE)
-    #sgd.layers[1].Y.input_from(ALICE)
+    # sgd.layers[1].Y.input_from(ALICE)
 
 
 print_ln("%s", "\n\n Alice's labels is loaded \n\n")
@@ -71,7 +71,7 @@ print_ln("%s", "\n\n Alice's labels is loaded \n\n")
 def _(i):
     labels[alice_examples + i] = sfix.get_input_from(BOB)
     # print_ln("i: %s", i)
-    #sgd.layers[1].Y.input_from(BOB)
+    # sgd.layers[1].Y.input_from(BOB)
 
 
 print_ln("%s", "\n\n Bobs labels is loaded \n\n")
@@ -89,17 +89,23 @@ testing_set = 2
 total_iterations = n_examples // max_batch + 1 - testing_set
 total_iterations = 1
 
+
+# WARNING - multithreading with @for_range_opt seems to have caused segmentation fault.
+# just use @for_range for now
 @for_range(total_iterations)
 def _(k):
     print_ln("iteration: %s", k)
     @for_range(max_batch)
     def _(i):
-        # print_ln("iteration: %s", i)
+        print_ln("iteration: %s", i)
         @for_range(n_features)
         def _(j):
-            # print_ln("iteration: %s", j)
+            print_ln("iteration: %s", j)
             sgd.layers[0].X[i][j] = data[k * max_batch + i][j]
+
         sgd.layers[1].Y[i] = labels[k * max_batch + i]
+
+
 sgd.run()
 print_ln("%s", sgd.layers[0].W)
 
