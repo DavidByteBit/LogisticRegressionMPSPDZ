@@ -81,10 +81,12 @@ sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
               ml.Output(n_examples, approx=True)], n_epochs,
              report_loss=True)
 
+sgd.reset()  # <--- Causes register overflow?
+
 print_ln("%s", "\n\n model initialized \n\n")
 
-total_iterations = n_examples // max_batch + 1
-total_iterations = 1 # For testing purposes
+testing_set = 2
+total_iterations = n_examples // max_batch + 1 - testing_set
 
 @for_range_opt(total_iterations)
 def _(k):
@@ -93,14 +95,10 @@ def _(k):
     def _(i):
         @for_range_opt(n_features)
         def _(j):
-            print_ln("%s", "yes")
             sgd.layers[0].X[i][j] = data[k * max_batch + i][j]
-            print_ln("%s", "no")
         sgd.layers[1].Y[i] = labels[k * max_batch + i]
-
-print(sgd.layers[0].W)
+        sgd.run()
+        print_ln("%s", sgd.layers[0].W.reveal())
 
 # sgd.layers[0].X.input_from(0)
 # sgd.layers[1].Y.input_from(1)
-sgd.reset()  # <--- Causes register overflow?
-sgd.run()
