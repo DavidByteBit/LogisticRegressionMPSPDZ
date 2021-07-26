@@ -87,6 +87,7 @@ print_ln("%s", "\n\n model initialized \n\n")
 
 testing_set = 2
 total_iterations = n_examples // max_batch + 1 - testing_set
+total_iterations = 1
 
 @for_range_opt(total_iterations)
 def _(k):
