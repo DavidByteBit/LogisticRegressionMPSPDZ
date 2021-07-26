@@ -2,4 +2,4 @@
 
 rm ../spdz/Programs/Source/runLR.mpc
 cp runLR.mpc ../spdz/Programs/Source/runLR.mpc
-./../spdz/compile.py -R 72 runLR
+./../spdz/compile.py -Z 2 runLR
