@@ -146,7 +146,7 @@ with open(settings_map['bob_private_input_path'], 'w') as stream:
     for row in bob_data:
         str += " ".join(row) + " "
 
-    str += " ".join(alice_labels)
+    str += " ".join(bob_labels)
 
     stream.write(str)
 
