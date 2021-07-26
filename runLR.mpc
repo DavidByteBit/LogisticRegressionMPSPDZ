@@ -90,9 +90,9 @@ total_iterations = n_examples // max_batch + 1 - testing_set
 total_iterations = 1 # For testing purposes
 
 
-# WARNING - I appear to be experiencing un-defined behavior. When I multithread and add comments in each for-loop,
-#           everything runs just fine roughly 50% of the time. The other 50% I get a segmentation fault. When I
-#           omit multithreading and or comments, I experience segmentation faults in a much higher frequency.
+# WARNING - I appear to be experiencing un-defined behavior. When I multithread (using @for_range_opt) and add
+#           comments in each for-loop, everything runs just fine roughly. When I take out @for_range_opt and
+#           replace it with @for_range, or take out the comments, I get a segmentation fault
 
 @for_range_opt(total_iterations)
 def _(k):
@@ -103,7 +103,7 @@ def _(k):
         @for_range_opt(n_features)
         def _(j):
             # print_ln("iteration: %s", j)
-            sgd.layers[0].X[i][j] = data[k * max_batch + i][j]
+            sgd.layers[0].X[i][0][j] = data[k * max_batch + i][j]
         sgd.layers[1].Y[i] = labels[k * max_batch + i]
     sgd.run()
     print_ln("%s", sgd.layers[0].W)
