@@ -51,6 +51,9 @@ test_ratio = 1 / folds
 train_size = int(n_examples * (1 - test_ratio))
 test_size = int(n_examples * test_ratio)
 
+print_ln("%s", train_size)
+print_ln("%s", test_size)
+
 # Load data from Alice first, then Bob
 
 # Reference: self.X = MultiArray([N, d, d_in], sfix)
