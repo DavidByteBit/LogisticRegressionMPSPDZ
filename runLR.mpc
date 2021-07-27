@@ -45,8 +45,8 @@ data = Matrix(n_examples, n_features, sfix)
 test_ratio = 1 / folds
 
 # TODO: train_size should use ceil
-train_size = cint(n_examples * (1 - test_ratio))
-test_size = cint(n_examples * test_ratio)
+train_size = cint(int(n_examples * (1 - test_ratio)))
+test_size = cint(int(n_examples * test_ratio))
 
 # Load data from Alice first, then Bob
 
