@@ -22,12 +22,18 @@ alice_examples = 831
 bob_examples = 882
 n_features = 1875
 n_epochs = 13
+folds = 5
 # end@args
 
 n_examples = alice_examples + bob_examples
 
 data = Matrix(n_examples, n_features, sfix)
 
+test_ratio = 1 / folds
+
+# TODO: train_size should use ceil
+train_size = int(n_examples * (1 - test_ratio))
+test_size = int(n_examples * test_ratio)
 
 # Load data from Alice first, then Bob
 
@@ -76,40 +82,100 @@ def _(i):
 
 print_ln("%s", "\n\n Bobs labels is loaded \n\n")
 
-# Define logistic regression model
-sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
-              ml.Output(n_examples, approx=True)], n_epochs,
-             report_loss=True)
+@for_range(folds)
+def _(f):
 
-sgd.reset()  # <--- Causes register overflow?
+    train_data = Matrix(train_size, n_features, sfix)
+    train_label = Array(train_size, sfix)
 
-print_ln("%s", "\n\n model initialized \n\n")
+    test_data = Matrix(test_size, n_features, sfix)
+    test_label = Array(test_size, sfix)
 
-testing_set = 2
-total_iterations = n_examples // max_batch + 1 - testing_set
+    @for_range_opt(train_size + test_size)
+    def _(i):
+        if f * test_size >= i > (f + 1) * test_size:
+            test_data[i] = data[i]
+            test_label[i] = labels[i]
+        else:
+            train_data[i] = data[i]
+            train_label[i] = labels[i]
 
+    # Define logistic regression model
+    sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
+                  ml.Output(n_examples, approx=True)], n_epochs,
+                 report_loss=True)
 
-# WARNING - I appear to be experiencing un-defined behavior. When I multithread (using @for_range_opt) and add
-#           comments in each for-loop, everything runs just fine roughly. When I take out @for_range_opt and
-#           replace it with @for_range, or take out the comments, I get a segmentation fault
+    sgd.reset()  # <--- Can cause register overflow?
 
-print(sgd.layers[1].Y)
+    print_ln("%s for fold %s", "\n\n model initialized \n\n", f)
 
-@for_range_opt(total_iterations)
-def _(k):
-    print_ln("iteration: %s", k)
-    @for_range_opt(max_batch)
+    data_left_to_train = train_size
+    batch_size = max_batch
+
+    if data_left_to_train < max_batch:
+        batch_size = data_left_to_train
+
+    # write training params
+    @for_range_opt(batch_size)
     def _(i):
         # print_ln("iteration: %s", i)
         @for_range_opt(n_features)
         def _(j):
             # print_ln("iteration: %s", j)
-            sgd.layers[0].X[i][0][j] = data[k * max_batch + i][j]
-        sgd.layers[1].Y[i] = labels[k * max_batch + i]
+            sgd.layers[0].X[i][0][j] = train_data[i][j]
+        sgd.layers[1].Y[i] = train_label[i]
+
+    print_ln("\t performing training for batch %s", 0)
+
     sgd.run()
-    print_ln("%s", sgd.layers[0].W)
 
-weights = sgd.layers[0].W
+    data_left_to_train -= max_batch
 
-# sgd.layers[0].X.input_from(0)
-# sgd.layers[1].Y.input_from(1)
+    current_batch = 1
+
+    while data_left_to_train > 0:
+        batch_size = max_batch
+
+        if data_left_to_train < max_batch:
+            batch_size = data_left_to_train
+
+        # write training params
+        @for_range_opt(batch_size)
+        def _(i):
+            # print_ln("iteration: %s", i)
+            @for_range_opt(n_features)
+            def _(j):
+                # print_ln("iteration: %s", j)
+                sgd.layers[0].X[i][0][j] = train_data[i + current_batch * max_batch][j]
+            sgd.layers[1].Y[i] = train_label[i]
+
+        print_ln("\t performing training for batch %s", current_batch)
+        print_ln("\t performing training for batch %s", current_batch)
+        sgd.run()
+
+        data_left_to_train -= max_batch
+        current_batch += 1
+
+
+
+
+    # @for_range_opt(max_batch)
+    # def _(i):
+    #     # print_ln("iteration: %s", i)
+    #     @for_range_opt(n_features)
+    #     def _(j):
+    #         # print_ln("iteration: %s", j)
+    #         sgd.layers[0].X[i][0][j] = data[i][j]
+    #     sgd.layers[1].Y[i] = labels[i]
+    #
+    # sgd.run()
+    # print_ln("%s", sgd.layers[0].W)
+
+    weights = sgd.layers[0].W
+
+    # Get test data
+
+    # perform classificaiton
+
+    # sgd.layers[0].X.input_from(0)
+    # sgd.layers[1].Y.input_from(1)
