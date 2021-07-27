@@ -1,5 +1,9 @@
 from Compiler import ml
-from Compiler.types import _secret
+
+e = 2.7182
+
+def sigmoid(x):
+    return 1 / (1 + e**(-x))
 
 def dot_product(a, b):
     assert (len(a) == len(b))
@@ -188,14 +192,35 @@ def _(f):
     # print_ln("%s", sgd.layers[0].W)
 
     weights = sgd.layers[0].W
+    bias = sgd.layers[1].b
 
     #print(weights)
 
     print_ln("%s", weights)
 
+    predictions = Array(test_size, sfix)
+    threshold = sfix(0.5)
+
     @for_range_opt(test_size)
     def _(i):
-        print_ln("%s", dot_product(test_data[i], weights).reveal())
+        predictions[i] = sigmoid(dot_product(test_data[i], weights) + bias)
+        predictions[i] = predictions[i] >= threshold
+
+    correct = 0
+    incorrect = 0
+
+    for i in range(test_size):
+        res = predictions[i] == test_label[i]
+
+        correct += res
+        incorrect += 1 - res
+
+    correct = correct.reveal()
+    incorrect = incorrect.reveal()
+
+    ratio = correct / (correct + incorrect)
+
+    print_ln("ratio: %s, correct: %s, incorrect: %s", ratio, correct, incorrect)
 
     # Get test data
 
