@@ -103,6 +103,9 @@ print_ln("%s", "\n\n Bobs labels is loaded \n\n")
 
 @for_range(folds)
 def _(f):
+
+    global train_size
+
     print_ln("train size: %s", train_size)
     train_data = Matrix(train_size, n_features, sfix)
     train_label = Array(train_size, sfix)
