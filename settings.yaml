@@ -2,8 +2,8 @@
  alice_data_path: "/home/david/Desktop/lrMP/data/alice_data.csv"
  bob_data_path: "/home/david/Desktop/lrMP/data/bob_data.csv"
  path_to_this_repo: "/home/david/Desktop/lrMP"
- n_epochs: 1
- folds: 5
+ n_epochs: 13
+ folds: 1
  classify: "False"
  alice_private_input_path: "/home/david/Desktop/spdz/Player-Data/Input-P0-0"
  bob_private_input_path: "/home/david/Desktop/spdz/Player-Data/Input-P1-0"
