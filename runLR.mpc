@@ -195,7 +195,7 @@ def _(f):
 
     @for_range_opt(test_size)
     def _(i):
-        print_ln("%s", dot_product(test_data[i], weights))
+        print_ln("%s", dot_product(test_data[i], weights).reveal())
 
     # Get test data
 
