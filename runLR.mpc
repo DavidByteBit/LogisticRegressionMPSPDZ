@@ -148,6 +148,9 @@ def _(f):
     print_ln("batch size: %s", batch_size)
     print_ln("feature size: %s", n_features)
 
+    print_ln("Shape of input: %s", sgd.layers[0].X)
+    print_ln("Shape of output: %s", sgd.layers[1].Y)
+
     # write training params
     @for_range_opt(batch_size)
     def _(i):
