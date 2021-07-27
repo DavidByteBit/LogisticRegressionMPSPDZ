@@ -81,6 +81,8 @@ print_ln("%s", "\n\n Bobs data is loaded \n\n")
 
 labels = Array(n_examples, sfix)
 
+print_ln("%s examples", n_examples)
+
 
 # Load labels from alice first to ensure that the labels remain parallel to the dataset
 @for_range_opt(alice_examples)
@@ -132,6 +134,9 @@ def _(f):
                   ml.Output(n_examples, approx=True)], n_epochs,
                  report_loss=True)
 
+    print_ln("max_batch: %s", max_batch)
+    print_ln("features: %s", n_features)
+
     sgd.reset()  # <--- Can cause register overflow?
 
     print_ln("%s for fold %s", "\n\n model initialized \n\n", f)
@@ -147,9 +152,6 @@ def _(f):
 
     print_ln("batch size: %s", batch_size)
     print_ln("feature size: %s", n_features)
-
-    print_ln("Shape of input: %s", sgd.layers[0].X.reveal())
-    print_ln("Shape of output: %s", sgd.layers[1].Y.reveal())
 
     # write training params
     @for_range_opt(batch_size)
