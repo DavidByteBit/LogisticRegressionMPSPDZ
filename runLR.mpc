@@ -145,6 +145,9 @@ def _(f):
     # value of the expression "data_left_to_train < max_batch". TODO: Make this cleaner for clear values
     batch_size = data_left_to_train * (l_lt_r) + max_batch * (1 - l_lt_r)
 
+    print_ln("batch size: %s", batch_size)
+    print_ln("feature size: %s", n_features)
+
     # write training params
     @for_range_opt(batch_size)
     def _(i):
