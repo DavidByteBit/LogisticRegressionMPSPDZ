@@ -48,7 +48,7 @@ data = Matrix(n_examples, n_features, sfix)
 test_ratio = 1 / folds
 
 # TODO: train_size should use ceil
-train_size = int(n_examples * (1 - test_ratio))
+train_size = 500 # int(n_examples * (1 - test_ratio))
 test_size = int(n_examples * test_ratio)
 
 print_ln("%s", train_size)
