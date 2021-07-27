@@ -128,6 +128,8 @@ def _(f):
 
     data_left_to_train = train_size
 
+    print_ln("train size: %s", train_size)
+
     l_lt_r = data_left_to_train < max_batch
     # Although these are all public values, the compiler complained about not being able to determine the truth
     # value of the expression "data_left_to_train < max_batch". TODO: Make this cleaner for clear values
@@ -148,6 +150,8 @@ def _(f):
     sgd.run()
 
     data_left_to_train -= max_batch
+
+    print_ln("\t data left in batch: %s", data_left_to_train)
 
     current_batch = 1
 
