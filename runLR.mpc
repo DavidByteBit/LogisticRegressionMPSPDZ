@@ -82,9 +82,8 @@ def _(i):
 
 print_ln("%s", "\n\n Bobs labels is loaded \n\n")
 
-# @for_range(folds)
-# def _(f):
-for f in range(folds):
+@for_range(folds)
+def _(f):
 
     train_data = Matrix(train_size, n_features, sfix)
     train_label = Array(train_size, sfix)
@@ -92,15 +91,18 @@ for f in range(folds):
     test_data = Matrix(test_size, n_features, sfix)
     test_label = Array(test_size, sfix)
 
-    # @for_range_opt(train_size + test_size)
-    # def _(i):
-    for i in range(train_size + test_size):
-        if f * test_size >= i > (f + 1) * test_size:
-            test_data[i] = data[i]
-            test_label[i] = labels[i]
-        else:
-            train_data[i] = data[i]
-            train_label[i] = labels[i]
+    # This does not change the folds at all, which is clearly not ideal; however, we can't use if statements in
+    # the runtime-ready code, making this whole process somewhat difficult. This is in its current state just for
+    # testing, will have to fix later TODO: actually partition dataset for corss-fold validation
+    @for_range_opt(test_size)
+    def _(i):
+        test_data[i] = data[i]
+        test_label[i] = labels[i]
+
+    @for_range_opt(train_size)
+    def _(i):
+        train_data[i] = data[i + test_size]
+        train_label[i] = labels[i + test_size]
 
     # Define logistic regression model
     sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
