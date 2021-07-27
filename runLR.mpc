@@ -218,7 +218,7 @@ def _(f):
 
     # ratio = correct / (correct + incorrect)
 
-    print_ln("ratio: %s, correct: %s, incorrect: %s", correct, incorrect)
+    print_ln("ratio: %s, correct: %s, incorrect: %s", 0, correct, incorrect)
 
     # Get test data
 
