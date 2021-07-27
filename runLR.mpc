@@ -182,7 +182,11 @@ def _(f):
 
     #print(weights)
 
-    print_ln("%s", weights.)
+    print_ln("%s", weights)
+
+    @for_range_opt(test_size)
+    def _(i):
+        print_ln("%s", _secret.dot_product(weights, test_data[i]))
 
     # Get test data
 
