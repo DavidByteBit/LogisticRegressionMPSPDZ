@@ -1,16 +1,5 @@
 from Compiler import ml
 
-e = sfix(2.7182)
-
-def sigmoid(x):
-
-    exp = e ** x
-    inv_exp = 1 / exp
-    dem = inv_exp + 1
-    res = 1 / dem
-
-    return res
-
 def dot_product(a, b):
     assert (len(a) == len(b))
 
@@ -209,7 +198,7 @@ def _(f):
 
     @for_range_opt(test_size)
     def _(i):
-        predictions[i] = sigmoid(dot_product(test_data[i], weights) + bias)
+        predictions[i] = ml.sigmoid(dot_product(test_data[i], weights) + bias)
         predictions[i] = predictions[i] >= threshold
 
     correct = 0
