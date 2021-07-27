@@ -92,6 +92,7 @@ bob_examples = len(bob_data)
 n_features = len(alice_data[0])
 n_epochs = settings_map['n_epochs']
 folds = settings_map['folds']
+classify = settings_map['classify']
 
 file = []
 found_delim = False
@@ -113,6 +114,7 @@ file[start_of_delim + 2] = "bob_examples = {n}\n".format(n=bob_examples)
 file[start_of_delim + 3] = "n_features = {n}\n".format(n=n_features)
 file[start_of_delim + 4] = "n_epochs = {n}\n".format(n=n_epochs)
 file[start_of_delim + 5] = "folds = {n}\n".format(n=folds)
+file[start_of_delim + 6] = "Classify = {n}\n".format(n=folds)
 
 # file as a string
 file = ''.join([s for s in file])

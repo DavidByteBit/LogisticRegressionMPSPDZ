@@ -35,6 +35,7 @@ bob_examples = 882
 n_features = 1875
 n_epochs = 13
 folds = 5
+classify = True
 # end@args
 
 n_examples = alice_examples + bob_examples
@@ -196,33 +197,32 @@ def _(f):
 
     print_ln("%s", weights)
 
-    predictions = Array(test_size, sfix)
-    threshold = sfix(0.5)
+    if classify:
 
-    @for_range_opt(test_size)
-    def _(i):
-        predictions[i] = sigmoid(dot_product(test_data[i], weights) + bias)
-        predictions[i] = predictions[i] >= threshold
+        predictions = Array(test_size, sfix)
+        threshold = sfix(0.5)
 
-    correct = sint(0)
-    incorrect = sint(0)
+        @for_range_opt(test_size)
+        def _(i):
+            predictions[i] = sigmoid(dot_product(test_data[i], weights) + bias)
+            predictions[i] = predictions[i] >= threshold
 
-    for i in range(test_size):
-        res = predictions[i] == test_label[i]
+        correct = sint(0)
+        incorrect = sint(0)
 
-        correct += res
-        incorrect += 1 - res
+        @for_range_opt(test_size)
+        def _(i):
+            res = predictions[i] == test_label[i]
 
-    correct = correct.reveal()
-    incorrect = incorrect.reveal()
+            correct += res
+            incorrect += 1 - res
 
-    # ratio = correct / (correct + incorrect)
+        correct = correct.reveal()
+        incorrect = incorrect.reveal()
 
-    print_ln("ratio: %s, correct: %s, incorrect: %s", 0, correct, incorrect)
+        # ratio = correct / (correct + incorrect)
 
-    # Get test data
+        print_ln("ratio: %s, correct: %s, incorrect: %s", 0, correct, incorrect)
 
-    # perform classificaiton
-
-    # sgd.layers[0].X.input_from(0)
-    # sgd.layers[1].Y.input_from(1)
+        # sgd.layers[0].X.input_from(0)
+        # sgd.layers[1].Y.input_from(1)

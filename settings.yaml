@@ -4,6 +4,7 @@
  path_to_this_repo: "/home/david/Desktop/lrMP"
  n_epochs: 1
  folds: 5
+ classify: "False"
  alice_private_input_path: "/home/david/Desktop/spdz/Player-Data/Input-P0-0"
  bob_private_input_path: "/home/david/Desktop/spdz/Player-Data/Input-P1-0"
  path_to_top_of_mpspdz: "/home/david/Desktop/spdz"
