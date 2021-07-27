@@ -93,7 +93,7 @@ def _(f):
 
     # This does not change the folds at all, which is clearly not ideal; however, we can't use if statements in
     # the runtime-ready code, making this whole process somewhat difficult. This is in its current state just for
-    # testing, will have to fix later TODO: actually partition dataset for corss-fold validation
+    # testing, will have to fix later TODO: actually partition dataset for corssfold validation
     @for_range_opt(test_size)
     def _(i):
         test_data[i] = data[i]
@@ -178,6 +178,10 @@ def _(f):
     # print_ln("%s", sgd.layers[0].W)
 
     weights = sgd.layers[0].W
+
+    print(weights)
+
+    print_ln("%s", weights)
 
     # Get test data
 
