@@ -1,7 +1,7 @@
 from Compiler import ml
 
 def sigmoid(x):
-    return 1/2 + x/4 - x**3/48 + x**5/480 - 17 * x**7/80640
+    return x #  1/2 + x/4 - x**3/48 + x**5/480 - 17 * x**7/80640
 
 def dot_product(a, b):
     assert (len(a) == len(b))
