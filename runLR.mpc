@@ -192,7 +192,7 @@ def _(f):
     # print_ln("%s", sgd.layers[0].W)
 
     weights = sgd.layers[0].W
-    bias = sgd.layers[1].b
+    bias = 0  # Compiler says this does not exist despite it being in the documentation... sgd.layers[1].b
 
     #print(weights)
 
