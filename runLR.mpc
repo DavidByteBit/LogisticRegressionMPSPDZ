@@ -197,32 +197,32 @@ def _(f):
 
     print_ln("%s", weights)
 
-    if classify:
-
-        predictions = Array(test_size, sfix)
-        threshold = sfix(0.5)
-
-        @for_range_opt(test_size)
-        def _(i):
-            predictions[i] = sigmoid(dot_product(test_data[i], weights) + bias)
-            predictions[i] = predictions[i] >= threshold
-
-        correct = sint(0)
-        incorrect = sint(0)
-
-        @for_range_opt(test_size)
-        def _(i):
-            res = predictions[i] == test_label[i]
-
-            correct += res
-            incorrect += 1 - res
-
-        correct = correct.reveal()
-        incorrect = incorrect.reveal()
-
-        # ratio = correct / (correct + incorrect)
-
-        print_ln("ratio: %s, correct: %s, incorrect: %s", 0, correct, incorrect)
+    # if classify:
+    #
+    #     predictions = Array(test_size, sfix)
+    #     threshold = sfix(0.5)
+    #
+    #     @for_range_opt(test_size)
+    #     def _(i):
+    #         predictions[i] = sigmoid(dot_product(test_data[i], weights) + bias)
+    #         predictions[i] = predictions[i] >= threshold
+    #
+    #     correct = sint(0)
+    #     incorrect = sint(0)
+    #
+    #     @for_range_opt(test_size)
+    #     def _(i):
+    #         res = predictions[i] == test_label[i]
+    #
+    #         correct += res
+    #         incorrect += 1 - res
+    #
+    #     correct = correct.reveal()
+    #     incorrect = incorrect.reveal()
+    #
+    #     # ratio = correct / (correct + incorrect)
+    #
+    #     print_ln("ratio: %s, correct: %s, incorrect: %s", 0, correct, incorrect)
 
         # sgd.layers[0].X.input_from(0)
         # sgd.layers[1].Y.input_from(1)
