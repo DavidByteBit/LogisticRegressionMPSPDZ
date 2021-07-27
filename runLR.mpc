@@ -204,8 +204,8 @@ def _(f):
         predictions[i] = sigmoid(dot_product(test_data[i], weights) + bias)
         predictions[i] = predictions[i] >= threshold
 
-    correct = 0
-    incorrect = 0
+    correct = sint(0)
+    incorrect = sint(0)
 
     for i in range(test_size):
         res = predictions[i] == test_label[i]
@@ -216,9 +216,9 @@ def _(f):
     correct = correct.reveal()
     incorrect = incorrect.reveal()
 
-    ratio = correct / (correct + incorrect)
+    # ratio = correct / (correct + incorrect)
 
-    print_ln("ratio: %s, correct: %s, incorrect: %s", ratio, correct, incorrect)
+    print_ln("ratio: %s, correct: %s, incorrect: %s", correct, incorrect)
 
     # Get test data
 
