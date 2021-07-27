@@ -82,8 +82,9 @@ def _(i):
 
 print_ln("%s", "\n\n Bobs labels is loaded \n\n")
 
-@for_range(folds)
-def _(f):
+# @for_range(folds)
+# def _(f):
+for f in range(folds):
 
     train_data = Matrix(train_size, n_features, sfix)
     train_label = Array(train_size, sfix)
@@ -91,8 +92,9 @@ def _(f):
     test_data = Matrix(test_size, n_features, sfix)
     test_label = Array(test_size, sfix)
 
-    @for_range_opt(train_size + test_size)
-    def _(i):
+    # @for_range_opt(train_size + test_size)
+    # def _(i):
+    for i in range(train_size + test_size):
         if f * test_size >= i > (f + 1) * test_size:
             test_data[i] = data[i]
             test_label[i] = labels[i]
