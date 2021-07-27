@@ -1,5 +1,5 @@
 from Compiler import ml
-from Compiler import types._secret
+from Compiler.types import _secret
 
 # NOTE: This script should not be run alone. The entry point to run the program is in run.py.
 #       run.py must be run first for the sake of some book-keeping; for example, run.py will
