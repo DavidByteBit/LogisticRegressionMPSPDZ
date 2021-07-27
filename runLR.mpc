@@ -179,9 +179,9 @@ def _(f):
 
     weights = sgd.layers[0].W
 
-    print(weights)
+    #print(weights)
 
-    print_ln("%s", weights)
+    print_ln("%s", weights[0])
 
     # Get test data
 
