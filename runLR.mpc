@@ -3,7 +3,13 @@ from Compiler import ml
 e = sfix(2.7182)
 
 def sigmoid(x):
-    return 1 / (1 + e**(-x))
+
+    exp = e ** x
+    inv_exp = 1 / exp
+    dem = inv_exp + 1
+    res = 1 / dem
+
+    return res
 
 def dot_product(a, b):
     assert (len(a) == len(b))
