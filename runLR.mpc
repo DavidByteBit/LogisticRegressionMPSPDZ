@@ -110,10 +110,11 @@ def _(f):
     print_ln("%s for fold %s", "\n\n model initialized \n\n", f)
 
     data_left_to_train = train_size
-    batch_size = max_batch
 
-    if data_left_to_train < max_batch:
-        batch_size = data_left_to_train
+    l_lt_r = data_left_to_train < max_batch
+    # Although these are all public values, the compiler complained about not being able to determine the truth
+    # value of the expression "data_left_to_train < max_batch". TODO: Make this cleaner for clear values
+    batch_size = data_left_to_train * (l_lt_r) + max_batch * (1 - l_lt_r)
 
     # write training params
     @for_range_opt(batch_size)
@@ -134,10 +135,11 @@ def _(f):
     current_batch = 1
 
     while data_left_to_train > 0:
-        batch_size = max_batch
 
-        if data_left_to_train < max_batch:
-            batch_size = data_left_to_train
+        l_lt_r = data_left_to_train < max_batch
+        # Although these are all public values, the compiler complained about not being able to determine the truth
+        # value of the expression "data_left_to_train < max_batch". TODO: Make this cleaner for clear values
+        batch_size = data_left_to_train * (l_lt_r) + max_batch * (1 - l_lt_r)
 
         # write training params
         @for_range_opt(batch_size)
