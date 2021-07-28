@@ -35,7 +35,6 @@ bob_examples = 882
 n_features = 1875
 n_epochs = 13
 folds = 5
-classify = True
 # end@args
 
 n_examples = alice_examples + bob_examples
@@ -48,7 +47,7 @@ data = Matrix(n_examples, n_features, sfix)
 test_ratio = 1 / folds
 
 # TODO: train_size should use ceil
-train_size = 500 # int(n_examples * (1 - test_ratio))
+train_size = int(n_examples * (1 - test_ratio))
 test_size = int(n_examples * test_ratio)
 
 print_ln("%s", train_size)
@@ -59,6 +58,8 @@ print_ln("%s", test_size)
 # Reference: self.X = MultiArray([N, d, d_in], sfix)
 @for_range_opt(alice_examples)
 def _(i):
+    print_ln("%s", train_size)
+    print(train_size)
     @for_range_opt(n_features)
     def _(j):
         data[i][j] = sfix.get_input_from(ALICE)
