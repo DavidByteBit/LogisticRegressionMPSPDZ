@@ -92,7 +92,6 @@ bob_examples = len(bob_data)
 n_features = len(alice_data[0])
 n_epochs = settings_map['n_epochs']
 folds = settings_map['folds']
-classify = settings_map['classify']
 
 file = []
 found_delim = False
