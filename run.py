@@ -21,7 +21,7 @@ folds = settings_map["folds"]
 create_data = bool(settings_map["create_data"])
 
 if create_data:
-    subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/create_data.sh", folds)
+    subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/create_data.sh %s" % folds, shell=True)
 
 alice_data = []
 bob_data = []
