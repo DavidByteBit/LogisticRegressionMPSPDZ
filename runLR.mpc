@@ -1,8 +1,5 @@
 from Compiler import ml
 
-def sigmoid(x):
-    return x #  1/2 + x/4 - x**3/48 + x**5/480 - 17 * x**7/80640
-
 def dot_product(a, b):
     assert (len(a) == len(b))
 
@@ -58,8 +55,6 @@ test_size = int(n_examples * (1 - test_ratio))
 # Reference: self.X = MultiArray([N, d, d_in], sfix)
 @for_range_opt(alice_examples)
 def _(i):
-    print_ln("%s", train_size)
-    print(train_size)
     @for_range_opt(n_features)
     def _(j):
         data[i][j] = sfix.get_input_from(ALICE)
@@ -107,12 +102,9 @@ print_ln("%s", "\n\n Bobs labels is loaded \n\n")
 @for_range(folds)
 def _(f):
 
-    global train_size
-
     print_ln("train size: %s", train_size)
     train_data = Matrix(train_size, n_features, sfix)
     train_label = Array(train_size, sfix)
-    print_ln("train size: %s", train_size)
 
     test_data = Matrix(test_size, n_features, sfix)
     test_label = Array(test_size, sfix)
@@ -219,33 +211,3 @@ def _(f):
     #print(weights)
 
     print_ln("%s", weights)
-
-    # if classify:
-    #
-    #     predictions = Array(test_size, sfix)
-    #     threshold = sfix(0.5)
-    #
-    #     @for_range_opt(test_size)
-    #     def _(i):
-    #         predictions[i] = sigmoid(dot_product(test_data[i], weights) + bias)
-    #         predictions[i] = predictions[i] >= threshold
-    #
-    #     correct = sint(0)
-    #     incorrect = sint(0)
-    #
-    #     @for_range_opt(test_size)
-    #     def _(i):
-    #         res = predictions[i] == test_label[i]
-    #
-    #         correct += res
-    #         incorrect += 1 - res
-    #
-    #     correct = correct.reveal()
-    #     incorrect = incorrect.reveal()
-    #
-    #     # ratio = correct / (correct + incorrect)
-    #
-    #     print_ln("ratio: %s, correct: %s, incorrect: %s", 0, correct, incorrect)
-
-        # sgd.layers[0].X.input_from(0)
-        # sgd.layers[1].Y.input_from(1)
