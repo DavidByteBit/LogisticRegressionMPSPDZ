@@ -32,8 +32,6 @@ n_epochs = 13
 folds = 5
 # end@args
 
-folds = 1
-
 n_examples = alice_examples + bob_examples
 
 # print_ln("%s", folds)
@@ -57,66 +55,64 @@ if folds == 1:
 # print_ln("%s", train_size)
 # print_ln("%s", test_size)
 
-data_train = MultiArray([n_examples, n_features, folds], sfix)
-data_test = MultiArray([n_examples, n_features, folds], sfix)
+data_train = Matrix(train_size, n_features, sfix)
+data_test = Matrix(test_size, n_features, sfix)
 
-label_train = MultiArray([n_examples, folds], sfix)
-label_test = MultiArray([n_examples, folds], sfix)
+label_train = Array(train_size, sfix)
+label_test = Array(test_size, sfix)
 
 # Reference: self.X = MultiArray([N, d, d_in], sfix)
-@for_range_opt(folds)
-def _(f):
 
-    # First: training features
-    @for_range_opt(train_size_alice)
-    def _(i):
-        @for_range_opt(n_features)
-        def _(j):
-            data_train[i][j][f] = sfix.get_input_from(ALICE)
+# First: training features
+@for_range_opt(train_size_alice)
+def _(i):
+    @for_range_opt(n_features)
+    def _(j):
+        data_train[i][j] = sfix.get_input_from(ALICE)
 
-    @for_range_opt(train_size_bob)
-    def _(i):
-        @for_range_opt(n_features)
-        def _(j):
-            data_train[train_size_alice + i][j][f] = sfix.get_input_from(BOB)
+@for_range_opt(train_size_bob)
+def _(i):
+    @for_range_opt(n_features)
+    def _(j):
+        data_train[train_size_alice + i][j] = sfix.get_input_from(BOB)
 
 
-    # Second: Training labels
-    @for_range_opt(train_size_alice)
-    def _(i):
-        label_train[i][f] = sfix.get_input_from(ALICE)
+# Second: Training labels
+@for_range_opt(train_size_alice)
+def _(i):
+    label_train[i] = sfix.get_input_from(ALICE)
 
-    @for_range_opt(train_size_bob)
-    def _(i):
-        label_train[train_size_alice + i][f] = sfix.get_input_from(BOB)
-
-
-    # Third: testing data
-    @for_range_opt(test_size_alice)
-    def _(i):
-        @for_range_opt(n_features)
-        def _(j):
-            data_test[i][j][f] = sfix.get_input_from(ALICE)
-
-    @for_range_opt(test_size_bob)
-    def _(i):
-        @for_range_opt(n_features)
-        def _(j):
-            data_test[test_size_alice + i][j][f] = sfix.get_input_from(BOB)
+@for_range_opt(train_size_bob)
+def _(i):
+    label_train[train_size_alice + i] = sfix.get_input_from(BOB)
 
 
-    # Fourth: testing labels
-    @for_range_opt(test_size_alice)
-    def _(i):
-        @for_range_opt(n_features)
-        def _(j):
-            data_test[i][j][f] = sfix.get_input_from(ALICE)
+# Third: testing data
+@for_range_opt(test_size_alice)
+def _(i):
+    @for_range_opt(n_features)
+    def _(j):
+        data_test[i][j] = sfix.get_input_from(ALICE)
 
-    @for_range_opt(test_size_bob)
-    def _(i):
-        @for_range_opt(n_features)
-        def _(j):
-            data_test[test_size_alice + i][j][f] = sfix.get_input_from(BOB)
+@for_range_opt(test_size_bob)
+def _(i):
+    @for_range_opt(n_features)
+    def _(j):
+        data_test[test_size_alice + i][j] = sfix.get_input_from(BOB)
+
+
+# Fourth: testing labels
+@for_range_opt(test_size_alice)
+def _(i):
+    @for_range_opt(n_features)
+    def _(j):
+        data_test[i][j] = sfix.get_input_from(ALICE)
+
+@for_range_opt(test_size_bob)
+def _(i):
+    @for_range_opt(n_features)
+    def _(j):
+        data_test[test_size_alice + i][j] = sfix.get_input_from(BOB)
 
 
 print("\tData storage compiled")
@@ -124,82 +120,82 @@ print_ln("%s", "\n\n Data loaded \n\n")
 
 # TODO: Shuffle data
 
-@for_range(folds)
-def _(f):
 
-    batch_list_order = Array(train_size + test_size, cint)
-    batch_list_order_train = Array(train_size, cint)
-    batch_list_order_test = Array(test_size, cint)
 
-    # Step 1: First, create a list of indices
-    @for_range_opt(train_size + test_size)
+batch_list_order_train = Array(train_size, cint)
+
+# Step 1: First, create a list of indices
+@for_range_opt(train_size)
+def _(i):
+    batch_list_order_train[i] = cint(i)
+
+
+@for_range_opt(n_epochs)
+def _(e):
+
+    # Not actually shuffling, perhaps I need to pass in a param to the compiler?
+    # Step 2: Shuffle indices
+    batch_list_order_train.shuffle()
+
+    print_ln("train size: %s", train_size)
+    data = Matrix(train_size, n_features, sfix)
+    label = Array(train_size, sfix)
+
+    print_ln("test size: %s", test_size)
+
+    @for_range_opt(train_size)
     def _(i):
-        batch_list_order[i] = cint(i)
+        data[i] = data_train[batch_list_order_train[i]]
+        label[i] = label_train[batch_list_order_train[i]]
 
-    @for_range_opt(n_epochs)
-    def _(e):
+    # Define logistic regression model
+    sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
+                  ml.Output(n_examples, approx=True)], 1,
+                 report_loss=True)
 
-        # Not actually shuffling, perhaps I need to pass in a param to the compiler?
-        # Step 2: Shuffle indices
-        batch_list_order.shuffle()
+    print_ln("max_batch: %s", max_batch)
+    print_ln("features: %s", n_features)
 
-        # Does this split the data correctly? Or is test/train size 1 value too small/large?
-        # Step 3: Create test and
-        @for_range(train_size)
-        def _(i):
-            batch_list_order_train[i] = batch_list_order[i]
+    sgd.reset()  # <--- Can cause register overflow?
 
-        @for_range(test_size)
-        def _(i):
-            batch_list_order_test[i] = batch_list_order[train_size + i]
+    data_left_to_train = train_size
 
-        print_ln("type: %s", batch_list_order)
-        print_ln("first element: %s", batch_list_order[0])
+    print_ln("data left to train %s", data_left_to_train)
 
-        print_ln("train size: %s", train_size)
-        train_data = Matrix(train_size, n_features, sfix)
-        train_label = Array(train_size, sfix)
+    l_lt_r = data_left_to_train < max_batch
+    # Although these are all public values, the compiler complained about not being able to determine the truth
+    # value of the expression "data_left_to_train < max_batch". TODO: Make this cleaner for clear values
+    batch_size = data_left_to_train * (l_lt_r) + max_batch * (1 - l_lt_r)
 
-        test_data = Matrix(test_size, n_features, sfix)
-        test_label = Array(test_size, sfix)
-        print_ln("test size: %s", test_size)
+    # print_ln("batch size: %s", batch_size)
+    # print_ln("feature size: %s", n_features)
 
-        # This does not change the folds at all, which is clearly not ideal; however, we can't use if statements in
-        # the runtime-ready code, making this whole process somewhat difficult. This is in its current state just for
-        # testing, will have to fix later TODO: actually partition dataset for crossfold validation
-        @for_range_opt(test_size)
-        def _(i):
-            test_data[i] = data[i]
-            test_label[i] = labels[i]
+    # write training params
+    @for_range_opt(batch_size)
+    def _(i):
+        # print_ln("iteration: %s", i)
+        @for_range_opt(n_features)
+        def _(j):
+            # print_ln("iteration: %s", j)
+            sgd.layers[0].X[i][0][j] = data[i][j]
+        sgd.layers[1].Y[i] = label[i]
 
-        @for_range_opt(train_size)
-        def _(i):
-            train_data[i] = data[i + test_size]
-            train_label[i] = labels[i + test_size]
+    print_ln("\t performing training for batch %s", 0)
 
-        # Define logistic regression model
-        sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
-                      ml.Output(n_examples, approx=True)], 1,
-                     report_loss=True)
+    sgd.run()
 
-        print_ln("max_batch: %s", max_batch)
-        print_ln("features: %s", n_features)
+    data_left_to_train -= max_batch
 
-        sgd.reset()  # <--- Can cause register overflow?
+    print_ln("\t data left in batch: %s", data_left_to_train)
 
-        print_ln("%s for fold %s", "\n\n model initialized \n\n", f)
+    current_batch = 1
 
-        data_left_to_train = train_size
-
-        print_ln("data left to train %s", data_left_to_train)
+    while data_left_to_train > 0:
 
         l_lt_r = data_left_to_train < max_batch
         # Although these are all public values, the compiler complained about not being able to determine the truth
         # value of the expression "data_left_to_train < max_batch". TODO: Make this cleaner for clear values
         batch_size = data_left_to_train * (l_lt_r) + max_batch * (1 - l_lt_r)
-
-        # print_ln("batch size: %s", batch_size)
-        # print_ln("feature size: %s", n_features)
 
         # write training params
         @for_range_opt(batch_size)
@@ -208,61 +204,34 @@ def _(f):
             @for_range_opt(n_features)
             def _(j):
                 # print_ln("iteration: %s", j)
-                sgd.layers[0].X[i][0][j] = train_data[i][j]
+                sgd.layers[0].X[i][0][j] = train_data[i + current_batch * max_batch][j]
             sgd.layers[1].Y[i] = train_label[i]
 
-        print_ln("\t performing training for batch %s", 0)
-
+        print_ln("\t performing training for batch %s", current_batch)
+        print_ln("\t data left in batch: %s", data_left_to_train)
         sgd.run()
 
         data_left_to_train -= max_batch
-
-        print_ln("\t data left in batch: %s", data_left_to_train)
-
-        current_batch = 1
-
-        while data_left_to_train > 0:
-
-            l_lt_r = data_left_to_train < max_batch
-            # Although these are all public values, the compiler complained about not being able to determine the truth
-            # value of the expression "data_left_to_train < max_batch". TODO: Make this cleaner for clear values
-            batch_size = data_left_to_train * (l_lt_r) + max_batch * (1 - l_lt_r)
-
-            # write training params
-            @for_range_opt(batch_size)
-            def _(i):
-                # print_ln("iteration: %s", i)
-                @for_range_opt(n_features)
-                def _(j):
-                    # print_ln("iteration: %s", j)
-                    sgd.layers[0].X[i][0][j] = train_data[i + current_batch * max_batch][j]
-                sgd.layers[1].Y[i] = train_label[i]
-
-            print_ln("\t performing training for batch %s", current_batch)
-            print_ln("\t data left in batch: %s", data_left_to_train)
-            sgd.run()
-
-            data_left_to_train -= max_batch
-            current_batch += 1
+        current_batch += 1
 
 
 
 
-        # @for_range_opt(max_batch)
-        # def _(i):
-        #     # print_ln("iteration: %s", i)
-        #     @for_range_opt(n_features)
-        #     def _(j):
-        #         # print_ln("iteration: %s", j)
-        #         sgd.layers[0].X[i][0][j] = data[i][j]
-        #     sgd.layers[1].Y[i] = labels[i]
-        #
-        # sgd.run()
-        # print_ln("%s", sgd.layers[0].W)
+    # @for_range_opt(max_batch)
+    # def _(i):
+    #     # print_ln("iteration: %s", i)
+    #     @for_range_opt(n_features)
+    #     def _(j):
+    #         # print_ln("iteration: %s", j)
+    #         sgd.layers[0].X[i][0][j] = data[i][j]
+    #     sgd.layers[1].Y[i] = labels[i]
+    #
+    # sgd.run()
+    # print_ln("%s", sgd.layers[0].W)
 
-        weights = sgd.layers[0].W
-        bias = 0  # Compiler says this does not exist despite it being in the documentation... sgd.layers[1].b
+    weights = sgd.layers[0].W
+    bias = 0  # Compiler says this does not exist despite it being in the documentation... sgd.layers[1].b
 
-        #print(weights)
+    #print(weights)
 
-        print_ln("%s", weights)
+    print_ln("%s", weights)
