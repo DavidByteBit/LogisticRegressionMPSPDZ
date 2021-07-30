@@ -1,6 +1,6 @@
 ---
- alice_data_folder: "/home/david/Desktop/lrMP/data/Alice.csv"
- bob_data_folder: "/home/david/Desktop/lrMP/data/Bob.csv"
+ alice_data_folder: "/home/david/Desktop/lrMP/data/Alice"
+ bob_data_folder: "/home/david/Desktop/lrMP/data/Bob"
  path_to_this_repo: "/home/david/Desktop/lrMP"
  n_epochs: 5
  folds: 5
