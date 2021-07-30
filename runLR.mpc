@@ -57,11 +57,11 @@ if folds == 1:
 # print_ln("%s", train_size)
 # print_ln("%s", test_size)
 
-data_train = MultiArray([n_examples, n_features, folds])
-data_test = MultiArray([n_examples, n_features, folds])
+data_train = MultiArray([n_examples, n_features, folds], sfix)
+data_test = MultiArray([n_examples, n_features, folds], sfix)
 
-label_train = MultiArray([n_examples, folds])
-label_test = MultiArray([n_examples, folds])
+label_train = MultiArray([n_examples, folds], sfix)
+label_test = MultiArray([n_examples, folds], sfix)
 
 # Reference: self.X = MultiArray([N, d, d_in], sfix)
 @for_range_opt(folds)
