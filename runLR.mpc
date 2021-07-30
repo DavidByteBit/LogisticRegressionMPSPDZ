@@ -114,7 +114,7 @@ def _(f):
     def _(i):
         batch_list_order[i] = cint(i)
 
-    batch_list_order.shuffle()
+    batch_list_order = batch_list_order.shuffle()
 
     # Does this split the data correctly? Or is test/train size 1 value too small/large?
     @for_range(train_size)
