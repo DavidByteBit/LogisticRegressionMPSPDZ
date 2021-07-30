@@ -2,8 +2,9 @@ import yaml
 import subprocess
 import sys
 
-def transpose(list):
-    return [[row[i] for row in list] for i in range(len(list[0]))]
+
+def transpose(l):
+    return [[row[i] for row in l] for i in range(len(l[0]))]
 
 
 # Step 0,1: Setting everything up and re-writing the .mpc file
@@ -26,37 +27,33 @@ if create_data:
 alice_data = []
 bob_data = []
 
-for f in range(folds):
+path = settings_map['alice_data_folder']
 
-    path = settings_map['alice_data_folder']
+x_train = path + "/test_X_fold{n}.csv".format(n=0)
+y_train = path + "/test_X_fold{n}.csv".format(n=0)
+x_test = path + "/test_X_fold{n}.csv".format(n=0)
+y_test = path + "/test_X_fold{n}.csv".format(n=0)
 
-    x_train = path + "/test_X_fold{n}.csv".format(n=f)
-    y_train = path + "/test_X_fold{n}.csv".format(n=f)
-    x_test = path + "/test_X_fold{n}.csv".format(n=f)
-    y_test = path + "/test_X_fold{n}.csv".format(n=f)
+paths = [x_train, y_train, x_test, y_test]
 
-    paths = [x_train, y_train, x_test, y_test]
+for p in paths:
+    with open(p, 'r') as stream:
+        for line in stream:
+            alice_data.extend(line.split(","))
 
-    for p in paths:
-        with open(p, 'r') as stream:
-            for line in stream:
-                alice_data.extend(line.split(","))
+path = settings_map['bob_data_folder']
 
-for f in range(folds):
+x_train = path + "/test_X_fold{n}.csv".format(n=0)
+y_train = path + "/test_X_fold{n}.csv".format(n=0)
+x_test = path + "/test_X_fold{n}.csv".format(n=0)
+y_test = path + "/test_X_fold{n}.csv".format(n=0)
 
-    path = settings_map['bob_data_folder']
+paths = [x_train, y_train, x_test, y_test]
 
-    x_train = path + "/test_X_fold{n}.csv".format(n=f)
-    y_train = path + "/test_X_fold{n}.csv".format(n=f)
-    x_test = path + "/test_X_fold{n}.csv".format(n=f)
-    y_test = path + "/test_X_fold{n}.csv".format(n=f)
-
-    paths = [x_train, y_train, x_test, y_test]
-
-    for p in paths:
-        with open(p, 'r') as stream:
-            for line in stream:
-                bob_data.extend(line.split(","))
+for p in paths:
+    with open(p, 'r') as stream:
+        for line in stream:
+            bob_data.extend(line.split(","))
 
 # 'command line arguments' for our .mpc file
 alice_examples = len(alice_data)
@@ -98,20 +95,20 @@ with open(mpc_file_path, 'w') as stream:
 # Step 2: write to Alice's and Bobs private input files
 with open(settings_map['alice_private_input_path'], 'w') as stream:
 
-    str = ""
+    s = ""
 
     # Should just be one row I think, so I may clean this up a bit
     for row in alice_data:
-        str += " ".join(row)
+        s += " ".join(row)
 
-    stream.write(str)
+    stream.write(s)
 
 
 print("Alice has {n} many private values".format(n=len(alice_data)))
 
 with open(settings_map['bob_private_input_path'], 'w') as stream:
 
-    str = ""
+    s = ""
 
     # Should just be one row I think, so I may clean this up a bit
     for row in bob_data:
@@ -124,4 +121,66 @@ print("Bob has {n} many private values".format(n=len(bob_data)))
 
 # Step 3: Compile .mpc program
 subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/compile.sh")
+
+input("Press enter to populate Alice's and Bobs data with the next fold")
+
+for f in range(folds - 1):
+
+    path = settings_map['alice_data_folder']
+
+    x_train = path + "/test_X_fold{n}.csv".format(n=f+1)
+    y_train = path + "/test_X_fold{n}.csv".format(n=f+1)
+    x_test = path + "/test_X_fold{n}.csv".format(n=f+1)
+    y_test = path + "/test_X_fold{n}.csv".format(n=f+1)
+
+    paths = [x_train, y_train, x_test, y_test]
+
+    for p in paths:
+        with open(p, 'r') as stream:
+            for line in stream:
+                alice_data.extend(line.split(","))
+
+for f in range(folds):
+
+    path = settings_map['bob_data_folder']
+
+    x_train = path + "/test_X_fold{n}.csv".format(n=f+1)
+    y_train = path + "/test_X_fold{n}.csv".format(n=f+1)
+    x_test = path + "/test_X_fold{n}.csv".format(n=f+1)
+    y_test = path + "/test_X_fold{n}.csv".format(n=f+1)
+
+    paths = [x_train, y_train, x_test, y_test]
+
+    for p in paths:
+        with open(p, 'r') as stream:
+            for line in stream:
+                bob_data.extend(line.split(","))
+
+    with open(settings_map['alice_private_input_path'], 'w') as stream:
+
+        s = ""
+
+        # Should just be one row I think, so I may clean this up a bit
+        for row in alice_data:
+            s += " ".join(row)
+
+        stream.write(s)
+
+    print("Alice has {n} many private values".format(n=len(alice_data)))
+
+    with open(settings_map['bob_private_input_path'], 'w') as stream:
+
+        s = ""
+
+        # Should just be one row I think, so I may clean this up a bit
+        for row in bob_data:
+            s += " ".join(row)
+
+        stream.write(s)
+
+    print("Bob has {n} many private values".format(n=len(bob_data)))
+
+    if f != folds - 1:
+        input("Press enter to populate Alice's and Bobs data with the next fold")
+
 
