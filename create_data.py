@@ -14,7 +14,7 @@ from sklearn import preprocessing
 from numpy import savetxt
 import sys
 
-num_of_folds = sys.argv[1]
+num_of_folds = int(sys.argv[1])
 
 
 
