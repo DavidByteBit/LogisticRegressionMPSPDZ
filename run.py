@@ -30,10 +30,10 @@ for f in range(folds):
 
     path = settings_map['alice_data_folder']
 
-    x_train = path + "/test_X_fold{n}".format(n=f)
-    y_train = path + "/test_X_fold{n}".format(n=f)
-    x_test = path + "/test_X_fold{n}".format(n=f)
-    y_test = path + "/test_X_fold{n}".format(n=f)
+    x_train = path + "/test_X_fold{n}.csv".format(n=f)
+    y_train = path + "/test_X_fold{n}.csv".format(n=f)
+    x_test = path + "/test_X_fold{n}.csv".format(n=f)
+    y_test = path + "/test_X_fold{n}.csv".format(n=f)
 
     paths = [x_train, y_train, x_test, y_test]
 
@@ -46,10 +46,10 @@ for f in range(folds):
 
     path = settings_map['bob_data_folder']
 
-    x_train = path + "/test_X_fold{n}".format(n=f)
-    y_train = path + "/test_X_fold{n}".format(n=f)
-    x_test = path + "/test_X_fold{n}".format(n=f)
-    y_test = path + "/test_X_fold{n}".format(n=f)
+    x_train = path + "/test_X_fold{n}.csv".format(n=f)
+    y_train = path + "/test_X_fold{n}.csv".format(n=f)
+    x_test = path + "/test_X_fold{n}.csv".format(n=f)
+    y_test = path + "/test_X_fold{n}.csv".format(n=f)
 
     paths = [x_train, y_train, x_test, y_test]
 
