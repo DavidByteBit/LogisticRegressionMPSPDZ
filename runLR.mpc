@@ -44,8 +44,12 @@ data = Matrix(n_examples, n_features, sfix)
 test_ratio = 1 / folds
 
 # TODO: train_size should use ceil
-train_size = int(n_examples * test_ratio)
-test_size = int(n_examples * (1 - test_ratio))
+train_size = int(n_examples * (1 - test_ratio))
+test_size = int(n_examples * test_ratio)
+
+if folds == 1:
+    train_size = n_examples
+    test_size = 0
 
 # print_ln("%s", train_size)
 # print_ln("%s", test_size)
@@ -108,6 +112,7 @@ def _(f):
 
     test_data = Matrix(test_size, n_features, sfix)
     test_label = Array(test_size, sfix)
+    print_ln("test size: %s", test_size)
 
     # This does not change the folds at all, which is clearly not ideal; however, we can't use if statements in
     # the runtime-ready code, making this whole process somewhat difficult. This is in its current state just for
@@ -136,15 +141,15 @@ def _(f):
 
     data_left_to_train = train_size
 
-    print_ln("train size: %s", train_size)
+    print_ln("data left to train %s", data_left_to_train)
 
     l_lt_r = data_left_to_train < max_batch
     # Although these are all public values, the compiler complained about not being able to determine the truth
     # value of the expression "data_left_to_train < max_batch". TODO: Make this cleaner for clear values
     batch_size = data_left_to_train * (l_lt_r) + max_batch * (1 - l_lt_r)
 
-    print_ln("batch size: %s", batch_size)
-    print_ln("feature size: %s", n_features)
+    # print_ln("batch size: %s", batch_size)
+    # print_ln("feature size: %s", n_features)
 
     # write training params
     @for_range_opt(batch_size)
@@ -184,7 +189,7 @@ def _(f):
             sgd.layers[1].Y[i] = train_label[i]
 
         print_ln("\t performing training for batch %s", current_batch)
-        print_ln("\t performing training for batch %s", current_batch)
+        print_ln("\t data left in batch: %s", data_left_to_train)
         sgd.run()
 
         data_left_to_train -= max_batch
