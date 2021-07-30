@@ -32,6 +32,8 @@ n_epochs = 13
 folds = 5
 # end@args
 
+folds = 1
+
 n_examples = alice_examples + bob_examples
 
 # print_ln("%s", folds)
@@ -164,7 +166,7 @@ def _(f):
 
         # This does not change the folds at all, which is clearly not ideal; however, we can't use if statements in
         # the runtime-ready code, making this whole process somewhat difficult. This is in its current state just for
-        # testing, will have to fix later TODO: actually partition dataset for corssfold validation
+        # testing, will have to fix later TODO: actually partition dataset for crossfold validation
         @for_range_opt(test_size)
         def _(i):
             test_data[i] = data[i]
