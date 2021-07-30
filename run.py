@@ -56,7 +56,7 @@ for f in range(folds):
     for p in paths:
         with open(p, 'r') as stream:
             for line in stream:
-                alice_data.extend(line.split(","))
+                bob_data.extend(line.split(","))
 
 # 'command line arguments' for our .mpc file
 alice_examples = len(alice_data)
@@ -120,7 +120,7 @@ with open(settings_map['bob_private_input_path'], 'w') as stream:
     stream.write(str)
 
 
-print("Alice has {n} many private values".format(n=len(bob_data)))
+print("Bob has {n} many private values".format(n=len(bob_data)))
 
 # Step 3: Compile .mpc program
 subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/compile.sh")

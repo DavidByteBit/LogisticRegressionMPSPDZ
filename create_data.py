@@ -79,6 +79,8 @@ for (train1_indices, test1_indices), (train2_indices, test2_indices) in zip(kf1.
     Boby_train = [str(f'{i:.10f}') for i in Boby_train]
     Boby_test = [str(f'{i:.10f}') for i in Boby_test]
 
+    print(BobX_test)
+
     savetxt('data/Alice/train_X_fold{n}.csv'.format(n=fold), AliceX_train, delimiter=',', fmt='%s')
     savetxt('data/Alice/train_y_fold{n}.csv'.format(n=fold), Alicey_train, delimiter=',', fmt='%s')
     savetxt('data/Alice/test_X_fold{n}.csv'.format(n=fold), AliceX_test, delimiter=',', fmt='%s')
