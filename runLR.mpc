@@ -107,6 +107,8 @@ print_ln("%s", "\n\n Bobs labels is loaded \n\n")
 def _(f):
 
     batch_list_order = Array(train_size + test_size, cint)
+    batch_list_order_train = Array(train_size, cint)
+    batch_list_order_test = Array(test_size, cint)
 
     @for_range_opt(train_size + test_size)
     def _(i):
@@ -115,10 +117,16 @@ def _(f):
     batch_list_order.shuffle()
 
     # Does this split the data correctly? Or is test/train size 1 value too small/large?
-    batch_list_order_train = batch_list_order[:train_size]
-    batch_list_order_test = batch_list_order[train_size:test_size]
+    @for_range(train_size)
+    def _(i):
+        batch_list_order_train[i] = batch_list_order[i]
 
-    print("type: %s", batch_list_order_train)
+    @for_range(test_size)
+    def _(i):
+        batch_list_order_test[i] = batch_list_order[train_size + i]
+
+    print_ln("type: %s", batch_list_order_train)
+    print_ln("first element: %s", batch_list_order[0])
 
     print_ln("train size: %s", train_size)
     train_data = Matrix(train_size, n_features, sfix)
