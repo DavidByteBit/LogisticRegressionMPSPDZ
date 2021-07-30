@@ -16,75 +16,47 @@ with open(sys.argv[1], 'r') as stream:
     except yaml.YAMLError as exc:
         print(exc)
 
+folds = settings_map["folds"]
+
+create_data = bool(settings_map["create_data"])
+
+if create_data:
+    subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/create_data.sh", folds)
+
 alice_data = []
 bob_data = []
 
-with open(settings_map['alice_data_path'], 'r') as stream:
-    for line in stream:
-        # [1:] ignores id
-        alice_data.append(line.split(",")[1:])
+for f in range(folds):
 
-# remove headers
-alice_data = alice_data[1:]
+    path = settings_map['alice_data_folder']
 
-with open(settings_map['bob_data_path'], 'r') as stream:
-    for line in stream:
-        # [1:] ignores id
-        bob_data.append(line.split(",")[1:])
+    x_train = path + "test_X_fold{n}".format(n=f)
+    y_train = path + "test_X_fold{n}".format(n=f)
+    x_test = path + "test_X_fold{n}".format(n=f)
+    y_test = path + "test_X_fold{n}".format(n=f)
 
-# remove headers
-bob_data = bob_data[1:]
+    paths = [x_train, y_train, x_test, y_test]
 
-# make labels/feature data disjoint
-alice_data = transpose(alice_data)
-alice_labels = alice_data[0]
+    for p in paths:
+        with open(p, 'r') as stream:
+            for line in stream:
+                alice_data.extend(line.split(","))
 
-# binarize label (as float)
-for i in range(len(alice_labels)):
-    label = alice_labels[i]
-    if label == "Wild Type":
-        alice_labels[i] = "1.0"
-    else:
-        alice_labels[i] = "0.0"
+for f in range(folds):
 
-alice_data = transpose(alice_data[1:])
+    path = settings_map['bob_data_folder']
 
-# binarize data (as float)
-for i in range(len(alice_data)):
-    row = alice_data[i]
+    x_train = path + "test_X_fold{n}".format(n=f)
+    y_train = path + "test_X_fold{n}".format(n=f)
+    x_test = path + "test_X_fold{n}".format(n=f)
+    y_test = path + "test_X_fold{n}".format(n=f)
 
-    for j in range(len(row)):
-        val = row[j].replace("\n", '')
+    paths = [x_train, y_train, x_test, y_test]
 
-        if val == "1":
-            alice_data[i][j] = "1.0"
-        else:
-            alice_data[i][j] = "0.0"
-
-bob_data = transpose(bob_data)
-bob_labels = bob_data[0]
-
-# binarize label (as float)
-for i in range(len(bob_labels)):
-    label = bob_labels[i]
-    if label == "Wild Type":
-        bob_labels[i] = "1.0"
-    else:
-        bob_labels[i] = "0.0"
-
-bob_data = transpose(bob_data[1:])
-
-# binarize data (as float)
-for i in range(len(bob_data)):
-    row = bob_data[i]
-
-    for j in range(len(row)):
-        val = row[j].replace("\n", '')
-
-        if val == "1":
-            bob_data[i][j] = "1.0"
-        else:
-            bob_data[i][j] = "0.0"
+    for p in paths:
+        with open(p, 'r') as stream:
+            for line in stream:
+                alice_data.extend(line.split(","))
 
 # 'command line arguments' for our .mpc file
 alice_examples = len(alice_data)
@@ -128,35 +100,27 @@ with open(settings_map['alice_private_input_path'], 'w') as stream:
 
     str = ""
 
+    # Should just be one row I think, so I may clean this up a bit
     for row in alice_data:
-        str += " ".join(row) + " "
-
-    str += " ".join(alice_labels)
+        str += " ".join(row)
 
     stream.write(str)
 
-    if "  " in str:
-        raise Exception("Double space")
 
-
-print("Alice has {n} many private values".format(n=len(alice_data) * len(alice_data[0]) + len(alice_labels)))
+print("Alice has {n} many private values".format(n=len(alice_data)))
 
 with open(settings_map['bob_private_input_path'], 'w') as stream:
 
     str = ""
 
+    # Should just be one row I think, so I may clean this up a bit
     for row in bob_data:
-        str += " ".join(row) + " "
-
-    str += " ".join(bob_labels)
+        str += " ".join(row)
 
     stream.write(str)
 
-    if "  " in str:
-        raise Exception("Double space")
 
-
-print("Bob has {n} many private values".format(n=len(bob_data) * len(bob_data[0]) + len(bob_labels)))
+print("Alice has {n} many private values".format(n=len(bob_data)))
 
 # Step 3: Compile .mpc program
 subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/compile.sh")
