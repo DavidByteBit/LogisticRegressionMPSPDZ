@@ -1,4 +1,5 @@
 from Compiler import ml
+import math
 
 def dot_product(a, b):
     assert (len(a) == len(b))
@@ -13,6 +14,7 @@ def dot_product(a, b):
 #       run.py must be run first for the sake of some book-keeping; for example, run.py will
 #       have Alice and Bob populate their private input files which allows for us to combine
 #       their horizontally partitioned data into one dataset.
+
 
 ALICE = 0
 BOB = 1
@@ -34,14 +36,17 @@ n_examples = alice_examples + bob_examples
 
 # print_ln("%s", folds)
 # print_ln("%s", n_examples)
-
-data = Matrix(n_examples, n_features, sfix)
-
 test_ratio = 1 / folds
 
 # TODO: train_size should use ceil
-train_size = int(n_examples * (1 - test_ratio))
+train_size = int(math.ceil(n_examples * (1 - test_ratio)))
 test_size = int(n_examples * test_ratio)
+
+train_size_alice = int(math.ceil(alice_examples * (1 - test_ratio)))
+test_size_alice = int(alice_examples * test_ratio)
+
+train_size_bob = int(math.ceil(bob_examples * (1 - test_ratio)))
+test_size_bob = int(bob_examples * test_ratio)
 
 if folds == 1:
     train_size = n_examples
@@ -50,54 +55,72 @@ if folds == 1:
 # print_ln("%s", train_size)
 # print_ln("%s", test_size)
 
-# Load data from Alice first, then Bob
+data_train = MultiArray([n_examples, n_features, folds])
+data_test = MultiArray([n_examples, n_features, folds])
+
+label_train = MultiArray([n_examples, folds])
+label_test = MultiArray([n_examples, folds])
 
 # Reference: self.X = MultiArray([N, d, d_in], sfix)
-@for_range_opt(alice_examples)
-def _(i):
-    @for_range_opt(n_features)
-    def _(j):
-        data[i][j] = sfix.get_input_from(ALICE)
-        # sgd.layers[0].X.input_from(ALICE)
+@for_range_opt(folds)
+def _(f):
+
+    # First: training features
+    @for_range_opt(train_size_alice)
+    def _(i):
+        @for_range_opt(n_features)
+        def _(j):
+            data_train[i][j][f] = sfix.get_input_from(ALICE)
+
+    @for_range_opt(train_size_bob)
+    def _(i):
+        @for_range_opt(n_features)
+        def _(j):
+            data_train[train_size_alice + i][j][f] = sfix.get_input_from(BOB)
 
 
-print_ln("%s", "\n\n Alice's data is loaded \n\n")
+    # Second: Training labels
+    @for_range_opt(train_size_alice)
+    def _(i):
+        label_train[i][f] = sfix.get_input_from(ALICE)
+
+    @for_range_opt(train_size_bob)
+    def _(i):
+        label_train[train_size_alice + i][f] = sfix.get_input_from(BOB)
 
 
-@for_range_opt(bob_examples)
-def _(i):
-    @for_range_opt(n_features)
-    def _(j):
-        data[alice_examples + i][j] = sfix.get_input_from(BOB)
-        # print_ln("i: %s, j: %s", i, j)
-        # sgd.layers[0].X.input_from(BOB)
+    # Third: testing data
+    @for_range_opt(test_size_alice)
+    def _(i):
+        @for_range_opt(n_features)
+        def _(j):
+            data_test[i][j][f] = sfix.get_input_from(ALICE)
+
+    @for_range_opt(test_size_bob)
+    def _(i):
+        @for_range_opt(n_features)
+        def _(j):
+            data_test[test_size_alice + i][j][f] = sfix.get_input_from(BOB)
 
 
-print_ln("%s", "\n\n Bobs data is loaded \n\n")
+    # Fourth: testing labels
+    @for_range_opt(test_size_alice)
+    def _(i):
+        @for_range_opt(n_features)
+        def _(j):
+            data_test[i][j][f] = sfix.get_input_from(ALICE)
 
-labels = Array(n_examples, sfix)
-
-print_ln("%s examples", n_examples)
-
-
-# Load labels from alice first to ensure that the labels remain parallel to the dataset
-@for_range_opt(alice_examples)
-def _(i):
-    labels[i] = sfix.get_input_from(ALICE)
-    # sgd.layers[1].Y.input_from(ALICE)
-
-
-print_ln("%s", "\n\n Alice's labels is loaded \n\n")
+    @for_range_opt(test_size_bob)
+    def _(i):
+        @for_range_opt(n_features)
+        def _(j):
+            data_test[test_size_alice + i][j][f] = sfix.get_input_from(BOB)
 
 
-@for_range_opt(bob_examples)
-def _(i):
-    labels[alice_examples + i] = sfix.get_input_from(BOB)
-    # print_ln("i: %s", i)
-    # sgd.layers[1].Y.input_from(BOB)
+print("\tData storage compiled")
+print_ln("%s", "\n\n Data loaded \n\n")
 
-
-print_ln("%s", "\n\n Bobs labels is loaded \n\n")
+# TODO: Shuffle data
 
 @for_range(folds)
 def _(f):
@@ -119,7 +142,7 @@ def _(f):
         batch_list_order.shuffle()
 
         # Does this split the data correctly? Or is test/train size 1 value too small/large?
-        # Step 3: Create test and 
+        # Step 3: Create test and
         @for_range(train_size)
         def _(i):
             batch_list_order_train[i] = batch_list_order[i]
