@@ -112,9 +112,9 @@ with open(settings_map['bob_private_input_path'], 'w') as stream:
 
     # Should just be one row I think, so I may clean this up a bit
     for row in bob_data:
-        str += " ".join(row)
+        s += " ".join(row)
 
-    stream.write(str)
+    stream.write(s)
 
 
 print("Bob has {n} many private values".format(n=len(bob_data)))
