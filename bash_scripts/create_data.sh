@@ -2,4 +2,4 @@
 
 folds=$1
 
-python3 create_data.py "$folds"
+python3 create_data.py $folds
