@@ -64,53 +64,53 @@ label_test = Array(test_size, sfix)
 # Reference: self.X = MultiArray([N, d, d_in], sfix)
 
 # First: training features
-@for_range_opt(train_size_alice)
+@for_range(train_size_alice)
 def _(i):
-    @for_range_opt(n_features)
+    @for_range(n_features)
     def _(j):
         data_train[i][j] = sfix.get_input_from(ALICE)
 
-@for_range_opt(train_size_bob)
+@for_range(train_size_bob)
 def _(i):
-    @for_range_opt(n_features)
+    @for_range(n_features)
     def _(j):
         data_train[train_size_alice + i][j] = sfix.get_input_from(BOB)
 
 
 # Second: Training labels
-@for_range_opt(train_size_alice)
+@for_range(train_size_alice)
 def _(i):
     label_train[i] = sfix.get_input_from(ALICE)
 
-@for_range_opt(train_size_bob)
+@for_range(train_size_bob)
 def _(i):
     label_train[train_size_alice + i] = sfix.get_input_from(BOB)
 
 
 # Third: testing data
-@for_range_opt(test_size_alice)
+@for_range(test_size_alice)
 def _(i):
-    @for_range_opt(n_features)
+    @for_range(n_features)
     def _(j):
         data_test[i][j] = sfix.get_input_from(ALICE)
 
-@for_range_opt(test_size_bob)
+@for_range(test_size_bob)
 def _(i):
-    @for_range_opt(n_features)
+    @for_range(n_features)
     def _(j):
         data_test[test_size_alice + i][j] = sfix.get_input_from(BOB)
 
 
 # Fourth: testing labels
-@for_range_opt(test_size_alice)
+@for_range(test_size_alice)
 def _(i):
-    @for_range_opt(n_features)
+    @for_range(n_features)
     def _(j):
         data_test[i][j] = sfix.get_input_from(ALICE)
 
-@for_range_opt(test_size_bob)
+@for_range(test_size_bob)
 def _(i):
-    @for_range_opt(n_features)
+    @for_range(n_features)
     def _(j):
         data_test[test_size_alice + i][j] = sfix.get_input_from(BOB)
 
@@ -125,12 +125,12 @@ print_ln("%s", "\n\n Data loaded \n\n")
 batch_list_order_train = Array(train_size, cint)
 
 # Step 1: First, create a list of indices
-@for_range_opt(train_size)
+@for_range(train_size)
 def _(i):
     batch_list_order_train[i] = cint(i)
 
 
-@for_range_opt(n_epochs)
+@for_range(n_epochs)
 def _(e):
 
     # Not actually shuffling, perhaps I need to pass in a param to the compiler?
@@ -143,7 +143,7 @@ def _(e):
 
     print_ln("test size: %s", test_size)
 
-    @for_range_opt(train_size)
+    @for_range(train_size)
     def _(i):
         data[i] = data_train[batch_list_order_train[i]]
         label[i] = label_train[batch_list_order_train[i]]
@@ -171,10 +171,10 @@ def _(e):
     # print_ln("feature size: %s", n_features)
 
     # write training params
-    @for_range_opt(batch_size)
+    @for_range(batch_size)
     def _(i):
         # print_ln("iteration: %s", i)
-        @for_range_opt(n_features)
+        @for_range(n_features)
         def _(j):
             # print_ln("iteration: %s", j)
             sgd.layers[0].X[i][0][j] = data[i][j]
@@ -198,10 +198,10 @@ def _(e):
         batch_size = data_left_to_train * (l_lt_r) + max_batch * (1 - l_lt_r)
 
         # write training params
-        @for_range_opt(batch_size)
+        @for_range(batch_size)
         def _(i):
             # print_ln("iteration: %s", i)
-            @for_range_opt(n_features)
+            @for_range(n_features)
             def _(j):
                 # print_ln("iteration: %s", j)
                 sgd.layers[0].X[i][0][j] = data[i + current_batch * max_batch][j]
