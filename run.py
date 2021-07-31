@@ -49,7 +49,7 @@ for p in paths:
     with open(p, 'r') as stream:
         row = 0
         for line in stream:
-            if feature_length_not_found and p == "train_X_fold":
+            if feature_length_not_found and "train_X_fold" in p:
                 feature_length_not_found = False
                 print(n_features)
                 input("")
@@ -57,7 +57,7 @@ for p in paths:
             row += 1
             alice_data.extend(line.replace("\n", "").split(","))
 
-        if p == "train_X_fold":
+        if "train_X_fold" in p:
             alice_examples = row
 
 
@@ -77,7 +77,7 @@ for p in paths:
             row += 1
             bob_data.extend(line.replace("\n", "").split(","))
 
-        if p == "train_X_fold":
+        if "train_X_fold" in p:
             bob_examples = row
 
 
