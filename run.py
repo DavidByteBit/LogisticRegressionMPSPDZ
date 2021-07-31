@@ -43,17 +43,20 @@ y_test = path + "/test_y_fold{n}.csv".format(n=0)
 
 paths = [x_train, y_train, x_test, y_test]
 
+feature_length_not_found = True
+
 for p in paths:
     with open(p, 'r') as stream:
         row = 0
         for line in stream:
-            if row == 0:
-                n_features = line.replace("\n", "").split(",")
+            if feature_length_not_found and p == "train_X_fold":
+                feature_length_not_found = False
+                n_features = len(line.replace("\n", "").split(","))
             row += 1
             alice_data.extend(line.replace("\n", "").split(","))
 
-        alice_examples = row
-
+        if p == "train_X_fold":
+            alice_examples = row
 
 
 path = settings_map['bob_data_folder']
@@ -72,7 +75,8 @@ for p in paths:
             row += 1
             bob_data.extend(line.replace("\n", "").split(","))
 
-        bob_examples = row
+        if p == "train_X_fold":
+            bob_examples = row
 
 
 file = []
