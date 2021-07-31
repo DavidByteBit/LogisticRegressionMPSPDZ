@@ -114,6 +114,10 @@ with open(settings_map['bob_private_input_path'], 'w') as stream:
     for row in bob_data:
         s += " ".join(row)
 
+    print(s[:20])
+
+    input("\n\n \n\n")
+
     stream.write(s)
 
 
