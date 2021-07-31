@@ -110,6 +110,8 @@ with open(settings_map['bob_private_input_path'], 'w') as stream:
 
     s = ""
 
+    print(bob_data[0])
+
     # Should just be one row I think, so I may clean this up a bit
     for row in bob_data:
         s += " ".join(row)
