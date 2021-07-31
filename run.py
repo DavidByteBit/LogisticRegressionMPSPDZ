@@ -39,7 +39,7 @@ paths = [x_train, y_train, x_test, y_test]
 for p in paths:
     with open(p, 'r') as stream:
         for line in stream:
-            alice_data.extend(line.split(","))
+            alice_data.append(line.split(","))
 
 path = settings_map['bob_data_folder']
 
@@ -53,7 +53,7 @@ paths = [x_train, y_train, x_test, y_test]
 for p in paths:
     with open(p, 'r') as stream:
         for line in stream:
-            bob_data.extend(line.split(","))
+            bob_data.append(line.split(","))
 
 # 'command line arguments' for our .mpc file
 alice_examples = len(alice_data)
@@ -99,9 +99,9 @@ with open(settings_map['alice_private_input_path'], 'w') as stream:
 
     # Should just be one row I think, so I may clean this up a bit
     for row in alice_data:
-        s += " ".join(row)
+        s += " ".join(row) + " "
 
-    stream.write(s)
+    s = s[:-1]
 
 
 print("Alice has {n} many private values".format(n=len(alice_data)))
@@ -112,7 +112,9 @@ with open(settings_map['bob_private_input_path'], 'w') as stream:
 
     # Should just be one row I think, so I may clean this up a bit
     for row in bob_data:
-        s += " ".join(row)
+        s += " ".join(row) + " "
+
+    s = s[:-1]
 
     stream.write(s)
 
