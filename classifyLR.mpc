@@ -109,11 +109,11 @@ def _(i):
     dp = cfix(dot_product(weights, data[i]))
     pred = sigmoid(dp) >= 0.5
     # pred = dot_product(weights, data[i]) >= 0.5
-#     @if_e(pred == label[i])
-#     def _():
-#         correct += 1
-#     @else_
-#     def _():
-#         incorrect += 1
-#
-# print_ln("correct: %s \n incorrect: %s \n ratio: %s",correct, incorrect, correct/incorrect )
+    @if_e(pred == label[i])
+    def _():
+        correct += 1
+    @else_
+    def _():
+        incorrect += 1
+
+print_ln("correct: %s \n incorrect: %s \n ratio: %s",correct, incorrect, correct/incorrect )
