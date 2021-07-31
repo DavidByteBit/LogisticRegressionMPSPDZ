@@ -101,8 +101,8 @@ def _(i):
 
 print_ln("%s", "\n\n Testing labels collected \n\n")
 
-correct = 0
-incorrect = 0
+correct = cint(0)
+incorrect = cint(0)
 
 @for_range(test_examples)
 def _(i):
