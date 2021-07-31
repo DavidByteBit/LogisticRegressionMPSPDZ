@@ -214,29 +214,29 @@ def _(e):
 
     current_batch = 1
 
-    # while data_left_to_train > 0:
-    #
-    #     l_lt_r = data_left_to_train < max_batch
-    #     # Although these are all public values, the compiler complained about not being able to determine the truth
-    #     # value of the expression "data_left_to_train < max_batch". TODO: Make this cleaner for clear values
-    #     batch_size = data_left_to_train * (l_lt_r) + max_batch * (1 - l_lt_r)
-    #
-    #     # write training params
-    #     @for_range(batch_size)
-    #     def _(i):
-    #         # print_ln("iteration: %s", i)
-    #         @for_range(n_features)
-    #         def _(j):
-    #             # print_ln("iteration: %s", j)
-    #             sgd.layers[0].X[i][0][j] = data[i + current_batch * max_batch][j]
-    #         sgd.layers[1].Y[i] = label[i]
-    #
-    #     print_ln("\t performing training for batch %s", current_batch)
-    #     print_ln("\t data left in batch: %s", data_left_to_train)
-    #     sgd.run()
-    #
-    #     data_left_to_train -= max_batch
-    #     current_batch += 1
+    while data_left_to_train > 0:
+
+        l_lt_r = data_left_to_train < max_batch
+        # Although these are all public values, the compiler complained about not being able to determine the truth
+        # value of the expression "data_left_to_train < max_batch". TODO: Make this cleaner for clear values
+        batch_size = data_left_to_train * (l_lt_r) + max_batch * (1 - l_lt_r)
+
+        # write training params
+        @for_range(batch_size)
+        def _(i):
+            # print_ln("iteration: %s", i)
+            @for_range(n_features)
+            def _(j):
+                # print_ln("iteration: %s", j)
+                sgd.layers[0].X[i][0][j] = data[i + current_batch * max_batch][j]
+            sgd.layers[1].Y[i] = label[i]
+
+        print_ln("\t performing training for batch %s", current_batch)
+        print_ln("\t data left in batch: %s", data_left_to_train)
+        sgd.run()
+
+        data_left_to_train -= max_batch
+        current_batch += 1
 
     # @for_range_opt(max_batch)
     # def _(i):
