@@ -4,6 +4,7 @@ import sys
 
 # Step 0,1: Setting everything up and re-writing the .mpc file
 mpc_file_path = "runLR.mpc"
+mpc_classify_file_path = "classifyLR.mpc"
 settings_map = None
 
 with open(sys.argv[1], 'r') as stream:
@@ -96,12 +97,37 @@ file[start_of_delim + 3] = "n_features = {n}\n".format(n=n_features)
 file[start_of_delim + 4] = "n_epochs = {n}\n".format(n=n_epochs)
 file[start_of_delim + 5] = "folds = {n}\n".format(n=folds)
 
+################### Next one ######################
+
+file = []
+found_delim = False
+start_of_delim = 0
+
+i = 0
+with open(mpc_classify_file_path, 'r') as stream:
+    for line in stream:
+
+        if not found_delim and "@args" in line:
+            start_of_delim = i
+            found_delim = True
+        i += 1
+
+        file.append(line)
+
+test_ratio = 1 / folds
+alice_test_examples = alice_examples * test_ratio
+bob_test_examples = bob_examples * test_ratio
+
+file[start_of_delim + 1] = "alice_examples = {n}\n".format(n=n_features)
+file[start_of_delim + 2] = "bob_examples = {n}\n".format(n=alice_test_examples)
+file[start_of_delim + 3] = "n_features = {n}\n".format(n=bob_test_examples)
+
 # file as a string
 file = ''.join([s for s in file])
 
 # print(file)
 
-with open(mpc_file_path, 'w') as stream:
+with open(mpc_classify_file_path, 'w') as stream:
     stream.write(file)
 
 
@@ -126,13 +152,7 @@ print("Bob has {n} many private values".format(n=len(bob_data)))
 
 # Step 3: Compile .mpc program
 subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/compile.sh")
-
-test_ratio = 1 / folds
-alice_test_examples = alice_examples * test_ratio
-bob_test_examples = bob_examples * test_ratio
-
-subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/classify.sh {a} {b} {c}".
-                format(a=n_features, b=alice_test_examples, c=bob_test_examples), shell=True)
+subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/classify.sh")
 
 input("Press enter to populate Alice's and Bobs data with the next fold")
 

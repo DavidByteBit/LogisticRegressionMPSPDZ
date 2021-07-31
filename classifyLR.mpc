@@ -23,15 +23,19 @@ def sigmoid(a):
 ALICE = 0
 BOB = 1
 
+# No traditional command line arguments? Solution is to re-write the script
+# using another python script which can also act as the entry point
+# @args
+n_features = 0
+alice_examples = 0
+bob_examples = 0
+# end@args
+
 # program.use_trunc_pr = True
 # sfix.round_nearest = True
 #
 # sfix.set_precision(16, 31)
 # cfix.set_precision(16, 31)
-
-n_features = int(program.args[1])
-alice_examples = int(program.args[2])
-bob_examples = int(program.args[3])
 
 test_examples = alice_examples + bob_examples
 
