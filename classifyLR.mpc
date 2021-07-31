@@ -127,4 +127,4 @@ while i < test_examples:
 #     def _():
 #         incorrect += 1
 
-print_ln("correct: %s \n incorrect: %s \n ratio: %s",correct, incorrect, correct/incorrect )
+print_ln("correct: %s \n incorrect: %s \n ratio: %s", correct, incorrect, correct/incorrect )
