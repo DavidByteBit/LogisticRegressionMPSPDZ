@@ -27,6 +27,13 @@ if create_data.lower() == "true":
 alice_data = []
 bob_data = []
 
+# 'command line arguments' for our .mpc file
+n_epochs = settings_map['n_epochs']
+folds = settings_map['folds']
+alice_examples = 0
+bob_examples = 0
+n_features = 0
+
 path = settings_map['alice_data_folder']
 
 x_train = path + "/train_X_fold{n}.csv".format(n=0)
@@ -38,8 +45,16 @@ paths = [x_train, y_train, x_test, y_test]
 
 for p in paths:
     with open(p, 'r') as stream:
+        row = 0
         for line in stream:
+            if row == 0:
+                n_features = line.replace("\n", "").split(",")
+            row += 1
             alice_data.extend(line.replace("\n", "").split(","))
+
+        alice_examples = row
+
+
 
 path = settings_map['bob_data_folder']
 
@@ -52,15 +67,13 @@ paths = [x_train, y_train, x_test, y_test]
 
 for p in paths:
     with open(p, 'r') as stream:
+        row = 0
         for line in stream:
-            bob_data.extend(line.replace("\n", "").split(","))
+            row += 1
+            alice_data.extend(line.replace("\n", "").split(","))
 
-# 'command line arguments' for our .mpc file
-alice_examples = len(alice_data)
-bob_examples = len(bob_data)
-n_features = len(alice_data[0])
-n_epochs = settings_map['n_epochs']
-folds = settings_map['folds']
+        bob_examples = row
+
 
 file = []
 found_delim = False
