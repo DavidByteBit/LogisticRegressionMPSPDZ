@@ -17,7 +17,8 @@ def dot_product(a, b):
 
 
 def sigmoid(a):
-    x = 1 / (2.71 ** a)
+    e = cfix(2.71)
+    x = 1 / (e ** a)
     return 1 / (1 + x)
 
 
