@@ -70,7 +70,7 @@ for p in paths:
         row = 0
         for line in stream:
             row += 1
-            alice_data.extend(line.replace("\n", "").split(","))
+            bob_data.extend(line.replace("\n", "").split(","))
 
         bob_examples = row
 
