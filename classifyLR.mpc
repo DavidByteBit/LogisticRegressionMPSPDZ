@@ -7,10 +7,11 @@ def dot_product(a, b):
     assert (len(a) == len(b))
     res = 0
     r = len(a)
+    i = 0
 
-    @for_range(r)
-    def _(i):
+    while i < r:
         res += a[i] * b[i]
+        i += 1
 
     return res
 
