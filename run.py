@@ -19,9 +19,9 @@ with open(sys.argv[1], 'r') as stream:
 
 folds = settings_map["folds"]
 
-create_data = bool(settings_map["create_data"])
+create_data = settings_map["create_data"]
 
-if create_data:
+if create_data.lower() == "true":
     subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/create_data.sh %s" % folds, shell=True)
 
 alice_data = []
