@@ -107,8 +107,8 @@ incorrect = 0
 
 @for_range(test_examples)
 def _(i):
-    # pred = sigmoid(dot_product(weights, data[i])) >= 0.5
-    pred = dot_product(weights, data[i]) >= 0.5
+    pred = sigmoid(dot_product(weights, data[i])) >= 0.5
+    # pred = dot_product(weights, data[i]) >= 0.5
 #     @if_e(pred == label[i])
 #     def _():
 #         correct += 1
