@@ -1,6 +1,7 @@
 import yaml
 import subprocess
 import sys
+import math
 
 # Step 0,1: Setting everything up and re-writing the .mpc file
 mpc_file_path = "runLR.mpc"
@@ -123,8 +124,8 @@ with open(mpc_classify_file_path, 'r') as stream:
         file.append(line)
 
 test_ratio = 1 / folds
-alice_test_examples = alice_examples * test_ratio
-bob_test_examples = bob_examples * test_ratio
+alice_test_examples = int(math.ceil(alice_examples * test_ratio))
+bob_test_examples = int(bob_examples * test_ratio)
 
 file[start_of_delim + 1] = "alice_examples = {n}\n".format(n=n_features)
 file[start_of_delim + 2] = "bob_examples = {n}\n".format(n=alice_test_examples)
