@@ -13,7 +13,7 @@ def dot_product(a, b):
         res += a[i] * b[i]
         i += 1
 
-    return res
+    return res.reveal()
 
 
 def sigmoid(a):
@@ -65,49 +65,50 @@ weights = dense.W.get_vector()
 
 print_ln("%s", weights[0].reveal())
 
-# # Initialize matrix to hold testing data
-# data = Matrix(test_examples, n_features, cint)
-# label = Array(test_examples, cint)
-#
-#
-# # First: Testing features
-# @for_range(alice_examples)
-# def _(i):
-#     @for_range(n_features)
-#     def _(j):
-#         # TODO: It's sloppy to grab a sint then reveal it, should just be cint...
-#         data[i][j] = (sint.get_input_from(ALICE)).reveal()
-#
-#
-# @for_range(bob_examples)
-# def _(i):
-#     @for_range(n_features)
-#     def _(j):
-#         data[alice_examples + i][j] = (sint.get_input_from(BOB)).reveal()
-#
-#
-# print_ln("%s", "\n\n Testing features collected \n\n")
-#
-#
-# # Second: Testing labels
-# @for_range(alice_examples)
-# def _(i):
-#     label[i] = (sint.get_input_from(ALICE)).reveal()
-#
-#
-# @for_range(bob_examples)
-# def _(i):
-#     label[alice_examples + i] = (sint.get_input_from(BOB)).reveal()
-#
-#
-# print_ln("%s", "\n\n Testing labels collected \n\n")
-#
-# correct = 0
-# incorrect = 0
-#
-# @for_range(test_examples)
-# def _(i):
-#     pred = sigmoid(dot_product(weights, data[i])) >= 0.5
+# Initialize matrix to hold testing data
+data = Matrix(test_examples, n_features, sfix)
+label = Array(test_examples, sfix)
+
+
+# First: Testing features
+@for_range(alice_examples)
+def _(i):
+    @for_range(n_features)
+    def _(j):
+        # TODO: It's sloppy to grab a sint then reveal it, should just be cint...
+        data[i][j] = sint.get_input_from(ALICE)
+
+
+@for_range(bob_examples)
+def _(i):
+    @for_range(n_features)
+    def _(j):
+        data[alice_examples + i][j] = sint.get_input_from(BOB)
+
+
+print_ln("%s", "\n\n Testing features collected \n\n")
+
+
+# Second: Testing labels
+@for_range(alice_examples)
+def _(i):
+    label[i] = sint.get_input_from(ALICE)
+
+
+@for_range(bob_examples)
+def _(i):
+    label[alice_examples + i] = sint.get_input_from(BOB)
+
+
+print_ln("%s", "\n\n Testing labels collected \n\n")
+
+correct = 0
+incorrect = 0
+
+@for_range(test_examples)
+def _(i):
+    # pred = sigmoid(dot_product(weights, data[i])) >= 0.5
+    pred = dot_product(weights, data[i]) >= 0.5
 #     @if_e(pred == label[i])
 #     def _():
 #         correct += 1
