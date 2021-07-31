@@ -62,14 +62,15 @@ label = Array(test_examples, cint)
 def _(i):
     @for_range(n_features)
     def _(j):
-        data[i][j] = cint.get_input_from(ALICE)
+        # TODO: It's sloppy to grab a sint then reveal it, should just be cint...
+        data[i][j] = (sint.get_input_from(ALICE)).reveal()
 
 
 @for_range(bob_examples)
 def _(i):
     @for_range(n_features)
     def _(j):
-        data[alice_examples + i][j] = cint.get_input_from(BOB)
+        data[alice_examples + i][j] = (sint.get_input_from(BOB)).reveal()
 
 
 print_ln("%s", "\n\n Testing features collected \n\n")
@@ -78,12 +79,12 @@ print_ln("%s", "\n\n Testing features collected \n\n")
 # Second: Testing labels
 @for_range(alice_examples)
 def _(i):
-    label[i] = cint.get_input_from(ALICE)
+    label[i] = (sint.get_input_from(ALICE)).reveal()
 
 
 @for_range(bob_examples)
 def _(i):
-    label[alice_examples + i] = cint.get_input_from(BOB)
+    label[alice_examples + i] = (sint.get_input_from(BOB)).reveal()
 
 
 print_ln("%s", "\n\n Testing labels collected \n\n")
