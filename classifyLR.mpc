@@ -1,6 +1,6 @@
-import ml
-import random
-import re
+from Compiler import ml
+# import random
+# import re
 
 
 def dot_product(a, b):
