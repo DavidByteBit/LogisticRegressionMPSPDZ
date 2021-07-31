@@ -161,69 +161,69 @@ print("Bob has {n} many private values".format(n=len(bob_data)))
 
 # Step 3: Compile .mpc program
 subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/compile.sh")
-subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/classify.sh")
+#subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/classify.sh")
 
 input("Press enter to populate Alice's and Bobs data with the next fold")
 
-# Not working, need to change it like I did for fold 0
-for f in range(folds - 1):
-
-    path = settings_map['alice_data_folder']
-
-    x_train = path + "/test_X_fold{n}.csv".format(n=f+1)
-    y_train = path + "/test_X_fold{n}.csv".format(n=f+1)
-    x_test = path + "/test_X_fold{n}.csv".format(n=f+1)
-    y_test = path + "/test_X_fold{n}.csv".format(n=f+1)
-
-    paths = [x_train, y_train, x_test, y_test]
-
-    for p in paths:
-        with open(p, 'r') as stream:
-            for line in stream:
-                alice_data.extend(line.split(","))
-
-# Not working, need to change it like I did for fold 0
-for f in range(folds - 1):
-
-    path = settings_map['bob_data_folder']
-
-    x_train = path + "/train_X_fold{n}.csv".format(n=f+1)
-    y_train = path + "/train_y_fold{n}.csv".format(n=f+1)
-    x_test = path + "/test_X_fold{n}.csv".format(n=f+1)
-    y_test = path + "/test_y_fold{n}.csv".format(n=f+1)
-
-    paths = [x_train, y_train, x_test, y_test]
-
-    for p in paths:
-        with open(p, 'r') as stream:
-            for line in stream:
-                bob_data.extend(line.split(","))
-
-    with open(settings_map['alice_private_input_path'], 'w') as stream:
-
-        s = ""
-
-        # Should just be one row I think, so I may clean this up a bit
-        for row in alice_data:
-            s += " ".join(row)
-
-        stream.write(s)
-
-    print("Alice has {n} many private values".format(n=len(alice_data)))
-
-    with open(settings_map['bob_private_input_path'], 'w') as stream:
-
-        s = ""
-
-        # Should just be one row I think, so I may clean this up a bit
-        for row in bob_data:
-            s += " ".join(row)
-
-        stream.write(s)
-
-    print("Bob has {n} many private values".format(n=len(bob_data)))
-
-    if f != folds - 1:
-        input("Press enter to populate Alice's and Bobs data with the next fold")
+# # Not working, need to change it like I did for fold 0
+# for f in range(folds - 1):
+#
+#     path = settings_map['alice_data_folder']
+#
+#     x_train = path + "/test_X_fold{n}.csv".format(n=f+1)
+#     y_train = path + "/test_X_fold{n}.csv".format(n=f+1)
+#     x_test = path + "/test_X_fold{n}.csv".format(n=f+1)
+#     y_test = path + "/test_X_fold{n}.csv".format(n=f+1)
+#
+#     paths = [x_train, y_train, x_test, y_test]
+#
+#     for p in paths:
+#         with open(p, 'r') as stream:
+#             for line in stream:
+#                 alice_data.extend(line.split(","))
+#
+# # Not working, need to change it like I did for fold 0
+# for f in range(folds - 1):
+#
+#     path = settings_map['bob_data_folder']
+#
+#     x_train = path + "/train_X_fold{n}.csv".format(n=f+1)
+#     y_train = path + "/train_y_fold{n}.csv".format(n=f+1)
+#     x_test = path + "/test_X_fold{n}.csv".format(n=f+1)
+#     y_test = path + "/test_y_fold{n}.csv".format(n=f+1)
+#
+#     paths = [x_train, y_train, x_test, y_test]
+#
+#     for p in paths:
+#         with open(p, 'r') as stream:
+#             for line in stream:
+#                 bob_data.extend(line.split(","))
+#
+#     with open(settings_map['alice_private_input_path'], 'w') as stream:
+#
+#         s = ""
+#
+#         # Should just be one row I think, so I may clean this up a bit
+#         for row in alice_data:
+#             s += " ".join(row)
+#
+#         stream.write(s)
+#
+#     print("Alice has {n} many private values".format(n=len(alice_data)))
+#
+#     with open(settings_map['bob_private_input_path'], 'w') as stream:
+#
+#         s = ""
+#
+#         # Should just be one row I think, so I may clean this up a bit
+#         for row in bob_data:
+#             s += " ".join(row)
+#
+#         stream.write(s)
+#
+#     print("Bob has {n} many private values".format(n=len(bob_data)))
+#
+#     if f != folds - 1:
+#         input("Press enter to populate Alice's and Bobs data with the next fold")
 
 
