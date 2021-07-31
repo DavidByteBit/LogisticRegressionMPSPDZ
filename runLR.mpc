@@ -153,6 +153,10 @@ batch_list_order_train = Array(train_size, cint)
 def _(i):
     batch_list_order_train[i] = cint(i)
 
+# Define logistic regression model
+sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
+              ml.Output(n_examples, approx=True)], 1,
+             report_loss=True)
 
 @for_range(n_epochs)
 def _(e):
@@ -171,10 +175,6 @@ def _(e):
         data[i] = data_train[batch_list_order_train[i]]
         label[i] = label_train[batch_list_order_train[i]]
 
-    # Define logistic regression model
-    sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
-                  ml.Output(n_examples, approx=True)], 1,
-                 report_loss=True)
 
     print_ln("max_batch: %s", max_batch)
     print_ln("features: %s", n_features)
