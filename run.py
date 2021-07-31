@@ -51,6 +51,8 @@ for p in paths:
         for line in stream:
             if feature_length_not_found and p == "train_X_fold":
                 feature_length_not_found = False
+                print(n_features)
+                input("")
                 n_features = len(line.replace("\n", "").split(","))
             row += 1
             alice_data.extend(line.replace("\n", "").split(","))
