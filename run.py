@@ -95,11 +95,7 @@ with open(mpc_file_path, 'w') as stream:
 # Step 2: write to Alice's and Bobs private input files
 with open(settings_map['alice_private_input_path'], 'w') as stream:
 
-    s = ""
-
-    # Should just be one row I think, so I may clean this up a bit
-    for row in alice_data:
-        s += " ".join(row)
+    s = " ".join(alice_data)
 
     stream.write(s)
 
@@ -108,17 +104,7 @@ print("Alice has {n} many private values".format(n=len(alice_data)))
 
 with open(settings_map['bob_private_input_path'], 'w') as stream:
 
-    s = ""
-
-    print(bob_data[0])
-
-    # Should just be one row I think, so I may clean this up a bit
-    for row in bob_data:
-        s += "".join(row)
-
-    print(s[:20])
-
-    input("\n\n \n\n")
+    s = " ".join(bob_data)
 
     stream.write(s)
 
