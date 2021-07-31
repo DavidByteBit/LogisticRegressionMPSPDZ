@@ -1,17 +1,6 @@
 from Compiler import ml
 import math
 
-
-def dot_product(a, b):
-    assert (len(a) == len(b))
-
-    res = sfix(0)
-    for i in range(len(a)):
-        res += a[i] * b[i]
-
-    return res
-
-
 # NOTE: This script should not be run alone. The entry point to run the program is in run.py.
 #       run.py must be run first for the sake of some book-keeping; for example, run.py will
 #       have Alice and Bob populate their private input files which allows for us to combine
@@ -53,6 +42,10 @@ test_size_bob = int(bob_examples * test_ratio)
 if folds == 1:
     train_size = n_examples
     test_size = 0
+    train_size_alice = alice_examples
+    test_size_alice = 0
+    train_size_bob = bob_examples
+    test_size_bob = 0
 
 # print_ln("%s", train_size)
 # print_ln("%s", test_size)
@@ -63,17 +56,17 @@ data_test = Matrix(test_size, n_features, sfix)
 label_train = Array(train_size, sfix)
 label_test = Array(test_size, sfix)
 
-print_ln("\n\n train size: %s \n\n", train_size)
-print_ln("\n\n test size: %s  \n\n", test_size)
-print_ln("\n\n train_size_alice: %s \n\n", train_size_alice)
-print_ln("\n\n test_size_alice: %s \n\n", test_size_alice)
-print_ln("\n\n train_size_bob: %s \n\n", train_size_bob)
-print_ln("\n\n test_size_bob: %s \n\n", test_size_bob)
+print_ln("\ttrain size: %s", train_size)
+print_ln("\ttest size: %s ", test_size)
+print_ln("\ttrain_size_alice: %s ", train_size_alice)
+print_ln("\ttest_size_alice: %s ", test_size_alice)
+print_ln("\ttrain_size_bob: %s ", train_size_bob)
+print_ln("\ttest_size_bob: %s ", test_size_bob)
 
 
 # Reference: self.X = MultiArray([N, d, d_in], sfix)
 
-# First: training features
+# First: Training features
 @for_range(train_size_alice)
 def _(i):
     @for_range(n_features)
@@ -105,7 +98,7 @@ def _(i):
 print_ln("%s", "\n\n Training labels collected \n\n")
 
 
-# Third: testing data
+# Third: Testing features
 @for_range(test_size_alice)
 def _(i):
     @for_range(n_features)
@@ -122,19 +115,15 @@ def _(i):
 print_ln("%s", "\n\n Testing features collected \n\n")
 
 
-# Fourth: testing labels
+# Fourth: Testing labels
 @for_range(test_size_alice)
 def _(i):
-    @for_range(n_features)
-    def _(j):
-        data_test[i][j] = sfix.get_input_from(ALICE)
+    label_test[i] = sfix.get_input_from(ALICE)
 
 
 @for_range(test_size_bob)
 def _(i):
-    @for_range(n_features)
-    def _(j):
-        data_test[test_size_alice + i][j] = sfix.get_input_from(BOB)
+    label_test[test_size_alice + i] = sfix.get_input_from(BOB)
 
 
 print_ln("%s", "\n\n Testing labels collected \n\n")
@@ -158,6 +147,8 @@ sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
               ml.Output(n_examples, approx=True)], 1,
              report_loss=True)
 
+sgd.reset() # <--- Can cause register overflow?
+
 @for_range(n_epochs)
 def _(e):
     # Not actually shuffling, perhaps I need to pass in a param to the compiler?
@@ -178,8 +169,6 @@ def _(e):
 
     print_ln("max_batch: %s", max_batch)
     print_ln("features: %s", n_features)
-
-    sgd.reset()  # <--- Can cause register overflow?
 
     data_left_to_train = train_size
 

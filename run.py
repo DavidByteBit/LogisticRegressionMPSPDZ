@@ -2,11 +2,6 @@ import yaml
 import subprocess
 import sys
 
-
-def transpose(l):
-    return [[row[i] for row in l] for i in range(len(l[0]))]
-
-
 # Step 0,1: Setting everything up and re-writing the .mpc file
 mpc_file_path = "runLR.mpc"
 settings_map = None
@@ -133,6 +128,7 @@ subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/compile.sh")
 
 input("Press enter to populate Alice's and Bobs data with the next fold")
 
+# Not working, need to change it like I did for fold 0
 for f in range(folds - 1):
 
     path = settings_map['alice_data_folder']
@@ -149,14 +145,15 @@ for f in range(folds - 1):
             for line in stream:
                 alice_data.extend(line.split(","))
 
-for f in range(folds):
+# Not working, need to change it like I did for fold 0
+for f in range(folds - 1):
 
     path = settings_map['bob_data_folder']
 
-    x_train = path + "/test_X_fold{n}.csv".format(n=f+1)
-    y_train = path + "/test_X_fold{n}.csv".format(n=f+1)
+    x_train = path + "/train_X_fold{n}.csv".format(n=f+1)
+    y_train = path + "/train_y_fold{n}.csv".format(n=f+1)
     x_test = path + "/test_X_fold{n}.csv".format(n=f+1)
-    y_test = path + "/test_X_fold{n}.csv".format(n=f+1)
+    y_test = path + "/test_y_fold{n}.csv".format(n=f+1)
 
     paths = [x_train, y_train, x_test, y_test]
 
