@@ -98,36 +98,6 @@ def _(i):
 print_ln("%s", "\n\n Training labels collected \n\n")
 
 
-# Third: Testing features
-@for_range(test_size_alice)
-def _(i):
-    @for_range(n_features)
-    def _(j):
-        data_test[i][j] = sfix.get_input_from(ALICE)
-
-@for_range(test_size_bob)
-def _(i):
-    @for_range(n_features)
-    def _(j):
-        data_test[test_size_alice + i][j] = sfix.get_input_from(BOB)
-
-
-print_ln("%s", "\n\n Testing features collected \n\n")
-
-
-# Fourth: Testing labels
-@for_range(test_size_alice)
-def _(i):
-    label_test[i] = sfix.get_input_from(ALICE)
-
-
-@for_range(test_size_bob)
-def _(i):
-    label_test[test_size_alice + i] = sfix.get_input_from(BOB)
-
-
-print_ln("%s", "\n\n Testing labels collected \n\n")
-
 print("\tData storage compiled")
 print_ln("%s", "\n\n Data loaded \n\n")
 
@@ -227,21 +197,7 @@ def _(e):
         data_left_to_train -= max_batch
         current_batch += 1
 
-    # @for_range_opt(max_batch)
-    # def _(i):
-    #     # print_ln("iteration: %s", i)
-    #     @for_range_opt(n_features)
-    #     def _(j):
-    #         # print_ln("iteration: %s", j)
-    #         sgd.layers[0].X[i][0][j] = data[i][j]
-    #     sgd.layers[1].Y[i] = labels[i]
-    #
-    # sgd.run()
-    # print_ln("%s", sgd.layers[0].W)
 
-    weights = sgd.layers[0].W
-    bias = 0  # Compiler says this does not exist despite it being in the documentation... sgd.layers[1].b
-
-    # print(weights)
-
-    print_ln("%s", weights)
+# This concludes training. Store in memory to persist to the next program run (classification)
+sgd.layers[0].b[0].store_in_mem(0)
+sgd.layers[0].W.get_vector().store_in_mem(1)

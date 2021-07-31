@@ -1,0 +1,100 @@
+import ml
+import random
+import re
+
+
+def dot_product(a, b):
+    assert (len(a) == len(b))
+    res = 0
+    r = len(a)
+
+    @for_range(r)
+    def _(i):
+        res += a[i] * b[i]
+
+    return res
+
+
+def sigmoid(a):
+    x = 1 / (2.71 ** a)
+    return 1 / (1 + x)
+
+
+ALICE = 0
+BOB = 1
+
+# program.use_trunc_pr = True
+# sfix.round_nearest = True
+#
+# sfix.set_precision(16, 31)
+# cfix.set_precision(16, 31)
+
+n_features = int(program.args[1])
+alice_examples = int(program.args[2])
+bob_examples = int(program.args[3])
+
+test_examples = alice_examples + bob_examples
+
+n_threads = None
+
+# for arg in program.args:
+#    m = re.match('n_threads=(.*)', arg)
+#    if m:
+#       n_threads = int(m.group(1))
+
+program.allocated_mem['s'] = 1 + n_features
+
+# load in weights and bias
+bias = sfix.load_mem(0).reveal()
+weights = sfix.load_mem(1, size=n_features).reveal()
+
+# Initialize matrix to hold testing data
+data = Matrix(test_examples, n_features, cint)
+label = Array(test_examples, cint)
+
+
+# First: Testing features
+@for_range(alice_examples)
+def _(i):
+    @for_range(n_features)
+    def _(j):
+        data[i][j] = cint.get_input_from(ALICE)
+
+
+@for_range(bob_examples)
+def _(i):
+    @for_range(n_features)
+    def _(j):
+        data[alice_examples + i][j] = cint.get_input_from(BOB)
+
+
+print_ln("%s", "\n\n Testing features collected \n\n")
+
+
+# Second: Testing labels
+@for_range(alice_examples)
+def _(i):
+    label[i] = cint.get_input_from(ALICE)
+
+
+@for_range(bob_examples)
+def _(i):
+    label[alice_examples + i] = cint.get_input_from(BOB)
+
+
+print_ln("%s", "\n\n Testing labels collected \n\n")
+
+correct = 0
+incorrect = 0
+
+@for_range(test_examples)
+def _(i):
+    pred = sigmoid(dot_product(weights, data[i])) >= 0.5
+    @if_e(pred == label[i])
+    def _():
+        correct += 1
+    @else_
+    def _():
+        incorrect += 1
+
+print_ln("correct: %s \n incorrect: %s \n ratio: %s",correct, incorrect, correct/incorrect )

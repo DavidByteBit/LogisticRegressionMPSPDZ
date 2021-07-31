@@ -28,6 +28,7 @@ folds = settings_map['folds']
 alice_examples = 0
 bob_examples = 0
 n_features = 0
+test_ratio = 0
 
 path = settings_map['alice_data_folder']
 
@@ -125,6 +126,13 @@ print("Bob has {n} many private values".format(n=len(bob_data)))
 
 # Step 3: Compile .mpc program
 subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/compile.sh")
+
+test_ratio = 1 / folds
+alice_test_examples = alice_examples * test_ratio
+bob_test_examples = bob_examples * test_ratio
+
+subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/classify.sh {a} {b} {c}".
+                format(a=n_features, b=alice_test_examples, c=bob_test_examples), shell=True)
 
 input("Press enter to populate Alice's and Bobs data with the next fold")
 
