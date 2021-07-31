@@ -39,7 +39,7 @@ paths = [x_train, y_train, x_test, y_test]
 for p in paths:
     with open(p, 'r') as stream:
         for line in stream:
-            alice_data.extend(line.split(","))
+            alice_data.extend(line.replace("\n", "").split(","))
 
 path = settings_map['bob_data_folder']
 
@@ -53,7 +53,7 @@ paths = [x_train, y_train, x_test, y_test]
 for p in paths:
     with open(p, 'r') as stream:
         for line in stream:
-            bob_data.extend(line.split(","))
+            bob_data.extend(line.replace("\n", "").split(","))
 
 # 'command line arguments' for our .mpc file
 alice_examples = len(alice_data)
