@@ -97,6 +97,14 @@ file[start_of_delim + 3] = "n_features = {n}\n".format(n=n_features)
 file[start_of_delim + 4] = "n_epochs = {n}\n".format(n=n_epochs)
 file[start_of_delim + 5] = "folds = {n}\n".format(n=folds)
 
+# file as a string
+file = ''.join([s for s in file])
+
+# print(file)
+
+with open(mpc_file_path, 'w') as stream:
+    stream.write(file)
+
 ################### Next one ######################
 
 file = []
@@ -114,13 +122,13 @@ with open(mpc_classify_file_path, 'r') as stream:
 
         file.append(line)
 
-# test_ratio = 1 / folds
-# alice_test_examples = alice_examples * test_ratio
-# bob_test_examples = bob_examples * test_ratio
-#
-# file[start_of_delim + 1] = "alice_examples = {n}\n".format(n=n_features)
-# file[start_of_delim + 2] = "bob_examples = {n}\n".format(n=alice_test_examples)
-# file[start_of_delim + 3] = "n_features = {n}\n".format(n=bob_test_examples)
+test_ratio = 1 / folds
+alice_test_examples = alice_examples * test_ratio
+bob_test_examples = bob_examples * test_ratio
+
+file[start_of_delim + 1] = "alice_examples = {n}\n".format(n=n_features)
+file[start_of_delim + 2] = "bob_examples = {n}\n".format(n=alice_test_examples)
+file[start_of_delim + 3] = "n_features = {n}\n".format(n=bob_test_examples)
 
 # file as a string
 file = ''.join([s for s in file])
