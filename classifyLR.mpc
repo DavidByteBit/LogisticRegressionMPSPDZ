@@ -101,19 +101,30 @@ def _(i):
 
 print_ln("%s", "\n\n Testing labels collected \n\n")
 
+
+i = 0
+
 correct = cint(0)
 incorrect = cint(0)
 
-@for_range(test_examples)
-def _(i):
+while i < test_examples:
     dp = cfix(dot_product(weights, data[i]))
     pred = sigmoid(dp) >= 0.5
-    # pred = dot_product(weights, data[i]) >= 0.5
-    @if_e(pred == label[i].reveal())
-    def _():
-        correct += 1
-    @else_
-    def _():
-        incorrect += 1
+    pred == label[i].reveal()
+
+    correct += pred
+    incorrect += 1 - pred
+
+# @for_range(test_examples)
+# def _(i):
+#     dp = cfix(dot_product(weights, data[i]))
+#     pred = sigmoid(dp) >= 0.5
+#     # pred = dot_product(weights, data[i]) >= 0.5
+#     @if_e(pred == label[i].reveal())
+#     def _():
+#         correct += 1
+#     @else_
+#     def _():
+#         incorrect += 1
 
 print_ln("correct: %s \n incorrect: %s \n ratio: %s",correct, incorrect, correct/incorrect )
