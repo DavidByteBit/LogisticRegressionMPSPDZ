@@ -63,6 +63,13 @@ data_test = Matrix(test_size, n_features, sfix)
 label_train = Array(train_size, sfix)
 label_test = Array(test_size, sfix)
 
+print_ln("\n\n train size: \n\n", train_size)
+print_ln("\n\n test size: \n\n", test_size)
+print_ln("\n\n train_size_alice: \n\n", train_size_alice)
+print_ln("\n\n test_size_alice: \n\n", test_size_alice)
+print_ln("\n\n train_size_bob: \n\n", train_size_bob)
+print_ln("\n\n test_size_bob: \n\n", test_size_bob)
+
 
 # Reference: self.X = MultiArray([N, d, d_in], sfix)
 
