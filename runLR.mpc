@@ -1,6 +1,7 @@
 from Compiler import ml
 import math
 
+
 def dot_product(a, b):
     assert (len(a) == len(b))
 
@@ -9,6 +10,7 @@ def dot_product(a, b):
         res += a[i] * b[i]
 
     return res
+
 
 # NOTE: This script should not be run alone. The entry point to run the program is in run.py.
 #       run.py must be run first for the sake of some book-keeping; for example, run.py will
@@ -61,6 +63,7 @@ data_test = Matrix(test_size, n_features, sfix)
 label_train = Array(train_size, sfix)
 label_test = Array(test_size, sfix)
 
+
 # Reference: self.X = MultiArray([N, d, d_in], sfix)
 
 # First: training features
@@ -70,6 +73,7 @@ def _(i):
     def _(j):
         data_train[i][j] = sfix.get_input_from(ALICE)
 
+
 @for_range(train_size_bob)
 def _(i):
     @for_range(n_features)
@@ -77,14 +81,21 @@ def _(i):
         data_train[train_size_alice + i][j] = sfix.get_input_from(BOB)
 
 
+print_ln("%s", "\n\n Training features collected \n\n")
+
+
 # Second: Training labels
 @for_range(train_size_alice)
 def _(i):
     label_train[i] = sfix.get_input_from(ALICE)
 
+
 @for_range(train_size_bob)
 def _(i):
     label_train[train_size_alice + i] = sfix.get_input_from(BOB)
+
+
+print_ln("%s", "\n\n Training labels collected \n\n")
 
 
 # Third: testing data
@@ -101,12 +112,16 @@ def _(i):
         data_test[test_size_alice + i][j] = sfix.get_input_from(BOB)
 
 
+print_ln("%s", "\n\n Testing features collected \n\n")
+
+
 # Fourth: testing labels
 @for_range(test_size_alice)
 def _(i):
     @for_range(n_features)
     def _(j):
         data_test[i][j] = sfix.get_input_from(ALICE)
+
 
 @for_range(test_size_bob)
 def _(i):
@@ -115,14 +130,16 @@ def _(i):
         data_test[test_size_alice + i][j] = sfix.get_input_from(BOB)
 
 
+print_ln("%s", "\n\n Testing labels collected \n\n")
+
 print("\tData storage compiled")
 print_ln("%s", "\n\n Data loaded \n\n")
 
 # TODO: Shuffle data
 
 
-
 batch_list_order_train = Array(train_size, cint)
+
 
 # Step 1: First, create a list of indices
 @for_range(train_size)
@@ -132,7 +149,6 @@ def _(i):
 
 @for_range(n_epochs)
 def _(e):
-
     # Not actually shuffling, perhaps I need to pass in a param to the compiler?
     # Step 2: Shuffle indices
     batch_list_order_train.shuffle()
@@ -178,6 +194,7 @@ def _(e):
         def _(j):
             # print_ln("iteration: %s", j)
             sgd.layers[0].X[i][0][j] = data[i][j]
+
         sgd.layers[1].Y[i] = label[i]
 
     print_ln("\t performing training for batch %s", 0)
@@ -214,9 +231,6 @@ def _(e):
     #     data_left_to_train -= max_batch
     #     current_batch += 1
 
-
-
-
     # @for_range_opt(max_batch)
     # def _(i):
     #     # print_ln("iteration: %s", i)
@@ -232,6 +246,6 @@ def _(e):
     weights = sgd.layers[0].W
     bias = 0  # Compiler says this does not exist despite it being in the documentation... sgd.layers[1].b
 
-    #print(weights)
+    # print(weights)
 
     print_ln("%s", weights)
