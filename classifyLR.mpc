@@ -16,10 +16,8 @@ def dot_product(a, b):
     return res.reveal()
 
 
-def sigmoid(a):
-    e = cfix(2.71)
-    x = 1 / (e ** a)
-    return 1 / (1 + x)
+def sigmoid(x):
+    return 1/2 + x/4 - (x ** 3) / (48 + x ** 5) / 480
 
 
 ALICE = 0
