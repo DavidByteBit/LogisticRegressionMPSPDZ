@@ -109,7 +109,7 @@ def _(i):
     dp = cfix(dot_product(weights, data[i]))
     pred = sigmoid(dp) >= 0.5
     # pred = dot_product(weights, data[i]) >= 0.5
-    @if_e(pred == label[i])
+    @if_e(pred == label[i].reveal())
     def _():
         correct += 1
     @else_
