@@ -50,8 +50,8 @@ n_threads = None
 program.allocated_mem['s'] = 1 + n_features
 
 # Load the values
-bias = sfix.load_mem(0).reveal()
-weights = sfix.load_mem(1, size=n_features).reveal()
+bias = sfix.load_mem(0)
+weights = sfix.load_mem(1, size=n_features)
 
 # Process the values
 dense = ml.Dense(test_examples, n_features, 1)
@@ -59,8 +59,8 @@ dense.b[0] = bias
 dense.W.assign_vector(weights)
 
 # read the values
-bias = dense.b[0]
-weights = dense.W.get_vector()
+bias = dense.b[0].reveal()
+weights = dense.W.get_vector().reveal()
 
 
 print_ln("%s", weights)
