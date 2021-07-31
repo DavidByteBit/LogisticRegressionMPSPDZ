@@ -60,10 +60,10 @@ dense.W.assign_vector(weights)
 
 # read the values
 bias = dense.b[0].reveal()
-weights = dense.W.get_vector().reveal()
+weights = dense.W.get_vector()
 
 
-print_ln("%s", weights[0])
+print_ln("%s", weights[0].reveal())
 
 # # Initialize matrix to hold testing data
 # data = Matrix(test_examples, n_features, cint)
