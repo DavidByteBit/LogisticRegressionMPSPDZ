@@ -75,6 +75,11 @@ def _(i):
     label_train[train_size_alice + i] = sfix.get_input_from(BOB)
 
 
+# Test to see if Alice or Bob are using ALL data allocated to them.
+# If this code is uncommented, we should crash at runtime
+test = sfix.get_input_from(ALICE)
+test = sfix.get_input_from(BOB)
+
 print_ln("%s", "\n\n Training labels collected \n\n")
 
 
@@ -176,3 +181,8 @@ def _(e):
 # This concludes training. Store in memory to persist to the next program run (classification)
 sgd.layers[0].b[0].reveal().store_in_mem(0)
 sgd.layers[0].W.get_vector().reveal().store_in_mem(1)
+
+# For testing
+print_ln("b = %s", sgd.layers[0].b[0].reveal())
+print_ln("W[0:20] = %s", sgd.layers[0].W.get_vector().reveal())
+
