@@ -185,7 +185,7 @@ def parse_settings():
 
 run()
 
-input("Press enter to populate Alice's and Bobs data with the next fold")
+# input("Press enter to populate Alice's and Bobs data with the next fold")
 
 # # Not working, need to change it like I did for fold 0
 # for f in range(folds - 1):
