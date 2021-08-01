@@ -98,6 +98,12 @@ def _(i):
 
 print_ln("%s", batch_list_order_train[0:5])
 
+# Not actually shuffling, perhaps I need to pass in a param to the compiler?
+    # Step 2: Shuffle indices
+batch_list_order_train.shuffle()
+
+print_ln("%s", batch_list_order_train[0:5])
+
 # Define logistic regression model
 sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
               ml.Output(n_examples, approx=True)], 1,
