@@ -3,14 +3,13 @@ import subprocess
 import sys
 import math
 
-
 # These files are apart of the repo and are assumed to remain in the relative path they were initially defined to be in
 mpc_file_path = "runLR.mpc"
 mpc_classify_file_path = "classifyLR.mpc"
 
+
 # Entry point to run the script
 def run():
-
     # Parse settings
     settings_map = parse_settings()
 
@@ -35,7 +34,6 @@ def run():
 
 
 def edit_source_code(settings_map, params):
-
     # 'command line arguments' for our .mpc file
     n_epochs = settings_map['n_epochs']
     folds = settings_map['folds']
@@ -172,6 +170,7 @@ def write_data(settings_map):
 
     return [alice_examples, bob_examples, n_features]
 
+
 def parse_settings():
     settings_map = None
 
@@ -248,5 +247,3 @@ run()
 #
 #     if f != folds - 1:
 #         input("Press enter to populate Alice's and Bobs data with the next fold")
-
-

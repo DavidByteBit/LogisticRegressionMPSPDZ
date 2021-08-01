@@ -25,43 +25,22 @@ folds = 5
 
 n_examples = alice_examples + bob_examples
 
-# print_ln("%s", folds)
-# print_ln("%s", n_examples)
-test_ratio = 1 / folds
+train_size = n_examples
 
-# TODO: train_size should use ceil
-train_size = int(math.ceil(n_examples * (1 - test_ratio)))
-test_size = int(n_examples * test_ratio)
+train_size_alice = alice_examples
 
-train_size_alice = int(math.ceil(alice_examples * (1 - test_ratio)))
-test_size_alice = int(alice_examples * test_ratio)
-
-train_size_bob = int(math.ceil(bob_examples * (1 - test_ratio)))
-test_size_bob = int(bob_examples * test_ratio)
-
-if folds == 1:
-    train_size = n_examples
-    test_size = 0
-    train_size_alice = alice_examples
-    test_size_alice = 0
-    train_size_bob = bob_examples
-    test_size_bob = 0
+train_size_bob = bob_examples
 
 # print_ln("%s", train_size)
 # print_ln("%s", test_size)
 
 data_train = Matrix(train_size, n_features, sfix)
-data_test = Matrix(test_size, n_features, sfix)
 
 label_train = Array(train_size, sfix)
-label_test = Array(test_size, sfix)
 
 print_ln("\ttrain size: %s", train_size)
-print_ln("\ttest size: %s ", test_size)
 print_ln("\ttrain_size_alice: %s ", train_size_alice)
-print_ln("\ttest_size_alice: %s ", test_size_alice)
 print_ln("\ttrain_size_bob: %s ", train_size_bob)
-print_ln("\ttest_size_bob: %s ", test_size_bob)
 
 
 # Reference: self.X = MultiArray([N, d, d_in], sfix)
@@ -155,12 +134,9 @@ def _(e):
     # write training params
     @for_range(batch_size)
     def _(i):
-        # print_ln("iteration: %s", i)
         @for_range(n_features)
         def _(j):
-            # print_ln("iteration: %s", j)
             sgd.layers[0].X[i][0][j] = data[i][j]
-
         sgd.layers[1].Y[i] = label[i]
 
     print_ln("\t performing training for batch %s", 0)
