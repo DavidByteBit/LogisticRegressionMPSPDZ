@@ -77,9 +77,9 @@ def _(i):
 
 # Test to see if Alice or Bob are using ALL data allocated to them.
 # If this code is uncommented, we should crash at runtime
-@for_range(train_size_alice)
-def _(i):
-    label_train[i] = sfix.get_input_from(ALICE)
+# @for_range(train_size_alice)
+# def _(i):
+#     label_train[i] = sfix.get_input_from(ALICE)
 test = sfix.get_input_from(ALICE)
 test = sfix.get_input_from(BOB)
 print_ln("%s", "\n\n WARNING DID NOT CRASH - Something may be wrong with the size of the private input files\n\n")
@@ -101,6 +101,8 @@ batch_list_order_train = Array(train_size, regint)
 @for_range_parallel(train_size, n_threads)
 def _(i):
     batch_list_order_train[i] = regint(i)
+
+print_ln("%s", batch_list_order_train[0:5])
 
 # Define logistic regression model
 sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
