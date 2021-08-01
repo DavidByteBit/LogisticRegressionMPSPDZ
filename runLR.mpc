@@ -199,5 +199,5 @@ def _(e):
 
 
 # This concludes training. Store in memory to persist to the next program run (classification)
-sgd.layers[0].b[0].store_in_mem(0)
-sgd.layers[0].W.get_vector().store_in_mem(1)
+sgd.layers[0].b[0].reveal().store_in_mem(0)
+sgd.layers[0].W.get_vector().reveal().store_in_mem(1)
