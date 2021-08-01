@@ -120,18 +120,20 @@ def write_data(settings_map):
     alice_data = []
     bob_data = []
 
+    data = []
+
     for p in paths:
         with open(p, 'r') as stream:
-            row = 0
             for line in stream:
-                if feature_length_not_found and "train_X_fold" in p:
-                    feature_length_not_found = False
-                    n_features = len(line.replace("\n", "").split(","))
-                row += 1
-                alice_data.extend(line.replace("\n", "").split(","))
+                data.append(line.replace("\n", "").split(","))
 
-            if "train_X_fold" in p:
-                alice_examples = row
+    alice_examples = len(data)
+    n_features = len(data[0])
+
+    for row in data:
+        alice_data.extend(row)
+
+    data = []
 
     path = settings_map['bob_data_folder']
 
@@ -144,13 +146,12 @@ def write_data(settings_map):
 
     for p in paths:
         with open(p, 'r') as stream:
-            row = 0
             for line in stream:
-                row += 1
-                bob_data.extend(line.replace("\n", "").split(","))
+                data.append(line.replace("\n", "").split(","))
 
-            if "train_X_fold" in p:
-                bob_examples = row
+    bob_examples = len(data)
+    for row in data:
+        bob_data.extend(row)
 
     with open(settings_map['alice_private_input_path'], 'w') as stream:
 
