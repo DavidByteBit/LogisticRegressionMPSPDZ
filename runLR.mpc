@@ -74,6 +74,7 @@ def _(i):
 def _(i):
     label_train[train_size_alice + i] = sfix.get_input_from(BOB)
 
+print_ln("%s", "\n\n Training labels collected \n\n")
 
 # Test to see if Alice or Bob are using ALL data allocated to them.
 # If this code is uncommented, we should crash at runtime
@@ -82,13 +83,7 @@ def _(i):
 #     label_train[i] = sfix.get_input_from(ALICE)
 test = sfix.get_input_from(ALICE)
 test = sfix.get_input_from(BOB)
-test = sfix.get_input_from(ALICE)
-test = sfix.get_input_from(BOB)
 print_ln("%s", "\n\n WARNING DID NOT CRASH - Something may be wrong with the size of the private input files\n\n")
-
-
-print_ln("%s", "\n\n Training labels collected \n\n")
-
 
 print("\tData storage compiled")
 print_ln("%s", "\n\n Data loaded \n\n")
