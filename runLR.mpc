@@ -32,7 +32,6 @@ train_size_alice = alice_examples
 train_size_bob = bob_examples
 
 # print_ln("%s", train_size)
-# print_ln("%s", test_size)
 
 data_train = Matrix(train_size, n_features, sfix)
 
@@ -107,8 +106,6 @@ def _(e):
     print_ln("train size: %s", train_size)
     data = Matrix(train_size, n_features, sfix)
     label = Array(train_size, sfix)
-
-    print_ln("test size: %s", test_size)
 
     @for_range(train_size)
     def _(i):
