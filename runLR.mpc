@@ -190,6 +190,6 @@ def _(e):
 # sgd.layers[0].W.get_vector().reveal().store_in_mem(1)
 
 # For testing
-print_ln("b = %s", sgd.layers[0].b[0].reveal())
-print_ln("W[0:20] = %s", sgd.layers[0].W.reveal()[0:20])
+# print_ln("b = %s", sgd.layers[0].b[0].reveal())
+# print_ln("W[0:20] = %s", sgd.layers[0].W.reveal()[0:20])
 
