@@ -155,7 +155,7 @@ def write_data(settings_map):
     for row in data:
         bob_data.extend(row)
 
-    with open(x_train, 'r') as stream:
+    with open(y_train, 'r') as stream:
         for line in stream:
             bob_data.extend(line.replace("\n", "").split(","))
 
