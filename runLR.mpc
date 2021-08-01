@@ -92,7 +92,7 @@ batch_list_order_train = Array(train_size, regint)
 
 
 # Step 1: First, create a list of indices
-@for_range_parallel(train_size, n_threads)
+@for_range(train_size)
 def _(i):
     batch_list_order_train[i] = regint(i)
 
