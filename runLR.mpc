@@ -181,10 +181,10 @@ def _(e):
 
 
 # This concludes training. Store in memory to persist to the next program run (classification)
-sgd.layers[0].b[0].reveal().store_in_mem(0)
-sgd.layers[0].W.get_vector().reveal().store_in_mem(1)
+# sgd.layers[0].b[0].reveal().store_in_mem(0)
+# sgd.layers[0].W.get_vector().reveal().store_in_mem(1)
 
 # For testing
 print_ln("b = %s", sgd.layers[0].b[0].reveal())
-print_ln("W[0:20] = %s", sgd.layers[0].W.get_vector().reveal())
+print_ln("W[0:20] = %s", sgd.layers[0].W.get_vector().reveal()[0:20])
 
