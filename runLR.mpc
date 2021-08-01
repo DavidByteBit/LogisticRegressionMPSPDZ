@@ -91,13 +91,13 @@ print_ln("%s", "\n\n Data loaded \n\n")
 # TODO: Shuffle data
 
 
-batch_list_order_train = Array(train_size, cint)
+batch_list_order_train = Array(train_size, regint)
 
 
 # Step 1: First, create a list of indices
 @for_range_parallel(train_size, n_threads)
 def _(i):
-    batch_list_order_train[i] = cint(i)
+    batch_list_order_train[i] = regint(i)
 
 # Define logistic regression model
 sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
@@ -108,9 +108,14 @@ sgd.reset() # <--- Can cause register overflow?
 
 @for_range(n_epochs)
 def _(e):
+
+    print_ln("\t\tProcessing epoch %s", e)
+
     # Not actually shuffling, perhaps I need to pass in a param to the compiler?
     # Step 2: Shuffle indices
     batch_list_order_train.shuffle()
+
+    print_ln("%s", batch_list_order_train[0:5])
 
     print_ln("train size: %s", train_size)
     data = Matrix(train_size, n_features, sfix)
