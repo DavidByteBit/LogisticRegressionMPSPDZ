@@ -24,24 +24,24 @@ def run():
         subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/create_data.sh %s" % folds, shell=True)
 
     # Upload Alice/Bob data to their respective private files
-    write_data(settings_map)
+    params = write_data(settings_map)
 
     # Edit .mpc source code for compilation
-    edit_source_code(settings_map)
+    edit_source_code(settings_map, params)
 
     # Compile .mpc program
     subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/compile.sh")
     # subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/classify.sh")
 
 
-def edit_source_code(settings_map):
+def edit_source_code(settings_map, params):
 
     # 'command line arguments' for our .mpc file
     n_epochs = settings_map['n_epochs']
     folds = settings_map['folds']
-    alice_examples = 0
-    bob_examples = 0
-    n_features = 0
+    alice_examples = params[0]
+    bob_examples = params[1]
+    n_features = params[2]
     # test_ratio = 0
 
     file = []
@@ -154,7 +154,6 @@ def write_data(settings_map):
             if "train_X_fold" in p:
                 bob_examples = row
 
-    # Step 2: write to Alice's and Bobs private input files
     with open(settings_map['alice_private_input_path'], 'w') as stream:
 
         s = " ".join(alice_data)
@@ -170,6 +169,8 @@ def write_data(settings_map):
         stream.write(s)
 
     print("Bob has {n} many private values".format(n=len(bob_data)))
+
+    return [alice_examples, bob_examples, n_features]
 
 def parse_settings():
     settings_map = None
