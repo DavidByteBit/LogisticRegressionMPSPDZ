@@ -122,11 +122,14 @@ def write_data(settings_map):
 
     data = []
 
+    counter = 0
     for p in paths:
         with open(p, 'r') as stream:
             for line in stream:
+                counter += 1
                 data.append(line.replace("\n", "").split(","))
 
+    print(counter)
     alice_examples = len(data)
     n_features = len(data[0])
 
