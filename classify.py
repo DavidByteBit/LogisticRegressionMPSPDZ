@@ -11,7 +11,6 @@ def parse_settings():
         except yaml.YAMLError as exc:
             print(exc)
 
-    print(settings_map)
     return settings_map
 
 
@@ -75,10 +74,10 @@ def load_test_data(directory, fold):
 
 settings_map = parse_settings()
 
-alice_data_path = settings_map[0]
-bob_data_path = settings_map[1]
-folds = settings_map[2]
-model_path = settings_map[3]
+alice_data_path = settings_map["alice_data_folder"]
+bob_data_path = settings_map["bob_data_folder"]
+folds = settings_map["folds"]
+model_path = settings_map["path_to_this_repo"]
 
 data = []
 labels = []
