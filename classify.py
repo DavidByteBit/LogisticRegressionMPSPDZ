@@ -88,13 +88,13 @@ labels = []
 
 d, la = load_test_data(alice_data_path, folds)
 
-data.append(d)
-labels.append(la)
+data.extend(d)
+labels.extend(la)
 
 d, la = load_test_data(bob_data_path, folds)
 
-data.append(d)
-labels.append(la)
+data.extend(d)
+labels.extend(la)
 
 b, W = load_model(model_path)
 
