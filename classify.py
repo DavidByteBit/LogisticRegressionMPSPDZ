@@ -53,8 +53,6 @@ def load_model(file_path):
 
     weights = weights_mid.split(",")
 
-    print(weights[0:20])
-
     weights = [float(x) for x in weights]
 
     return bias, weights
@@ -74,10 +72,6 @@ def load_test_data(directory, fold):
     with open(label_path, 'r') as f:
         for line in f:
             label.append(line.replace("\n", ""))
-
-    print(len(data))
-    print(len(data[0]))
-    print(len(data[1]))
 
     return data, label
 
