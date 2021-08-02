@@ -76,7 +76,7 @@ settings_map = parse_settings()
 
 alice_data_path = settings_map["alice_data_folder"]
 bob_data_path = settings_map["bob_data_folder"]
-folds = settings_map["folds"]
+folds = settings_map["fold"]
 model_path = settings_map["path_to_this_repo"]
 
 data = []
