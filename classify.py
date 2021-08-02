@@ -1,10 +1,24 @@
+import yaml
+import sys
+
+
+def parse_settings():
+    settings_map = None
+
+    with open(sys.argv[1], 'r') as stream:
+        try:
+            settings_map = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(exc)
+
+    return settings_map
 
 
 def sig(x):
     return 1 / (1 + 1 / (2.71 ** x))
 
-def dp(a, b):
 
+def dp(a, b):
     assert (len(a) == len(b))
 
     res = 0
@@ -14,8 +28,8 @@ def dp(a, b):
 
     return res
 
-def parse_file(file_path):
 
+def load_model(file_path):
     output = []
     delim = 0
 
@@ -28,18 +42,19 @@ def parse_file(file_path):
                 delim = i
             i += 1
 
-    bias = output[delim + 2].replace("\n", "")
+    bias = float(output[delim + 2].replace("\n", ""))
     weights_mid = output[delim + 3]
 
     weights_mid = weights_mid.replace("[", "").replace("]", "").replace("\n", "")
 
     weights = weights_mid.split(",")
 
+    weights = [[float(x) for x in r] for r in weights]
+
     return bias, weights
 
 
 def load_test_data(directory, fold):
-
     feature_path = directory + "test_X_fold{n}.csv".format(n=fold)
     label_path = directory + "test_y_fold{n}.csv".format(n=fold)
 
@@ -55,3 +70,54 @@ def load_test_data(directory, fold):
             label.append(line.replace("\n", ""))
 
     return data, label
+
+
+settings_map = parse_settings()
+
+alice_data_path = settings_map[0]
+bob_data_path = settings_map[1]
+folds = settings_map[2]
+model_path = settings_map[3]
+
+data = []
+labels = []
+
+d, la = load_test_data(alice_data_path, folds)
+
+data.append(d)
+labels.append(la)
+
+d, la = load_test_data(bob_data_path, folds)
+
+data.append(d)
+labels.append(la)
+
+b, W = load_model(model_path)
+
+# Start classifying
+
+correct = 0
+
+incorrect = 0
+
+threshold = 0.5
+
+for i in range(len(data)):
+    row = data[i]
+    classification_intermediate = sig(dp(W, row) + b)
+
+    label = 0
+
+    if classification_intermediate >= threshold:
+        label = 1
+
+    true_label = labels[i]
+
+    if true_label == label:
+        correct += 1
+    else:
+        incorrect += 1
+
+
+print("correct: {a}\n incorrect: {b}\n ratio: {c}".
+      format(a=correct, b=incorrect, c=(correct / (correct + incorrect)) * 100.0))
