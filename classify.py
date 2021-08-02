@@ -20,9 +20,6 @@ def sig(x):
 
 def dp(a, b):
 
-    print(len(a))
-    print(len(b))
-
     assert (len(a) == len(b))
 
     res = 0
@@ -76,8 +73,6 @@ def load_test_data(directory, fold):
     label = [float(x) for x in label]
     data = [[float(y) for y in x] for x in data]
 
-    print(data)
-
     return data, label
 
 
@@ -116,6 +111,8 @@ for i in range(len(data)):
     classification_intermediate = sig(dp(W, row) + b)
 
     label = 0
+
+    print("val: {n}".format(n=classification_intermediate))
 
     if classification_intermediate >= threshold:
         label = 1
