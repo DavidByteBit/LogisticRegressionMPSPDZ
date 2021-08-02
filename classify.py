@@ -55,8 +55,8 @@ def load_model(file_path):
 
 
 def load_test_data(directory, fold):
-    feature_path = directory + "test_X_fold{n}.csv".format(n=fold)
-    label_path = directory + "test_y_fold{n}.csv".format(n=fold)
+    feature_path = directory + "/test_X_fold{n}.csv".format(n=fold)
+    label_path = directory + "/test_y_fold{n}.csv".format(n=fold)
 
     data = []
     label = []
