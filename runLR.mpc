@@ -76,7 +76,7 @@ def _(i):
 
 print_ln("%s", "\n\n Training labels collected \n\n")
 
-print_ln("%s", label_train.reveal())
+print_ln("%s", data_train.reveal_nested())
 
 # Test to see if Alice or Bob are using ALL data allocated to them.
 # If this code is uncommented, we should crash at runtime
