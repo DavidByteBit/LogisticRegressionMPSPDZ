@@ -11,6 +11,7 @@ def parse_settings():
         except yaml.YAMLError as exc:
             print(exc)
 
+    print(settings_map)
     return settings_map
 
 
