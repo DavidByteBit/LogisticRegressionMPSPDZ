@@ -28,6 +28,8 @@ def dp(a, b):
     res = 0
 
     for i in range(len(a)):
+        print(type(b[i]))
+        print(type(a[i]))
         res += a[i] * b[i]
 
     return res
