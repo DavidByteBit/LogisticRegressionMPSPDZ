@@ -75,6 +75,8 @@ def load_test_data(directory, fold):
         for line in f:
             label.append(line.replace("\n", ""))
 
+    print(data)
+
     return data, label
 
 
