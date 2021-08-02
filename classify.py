@@ -28,8 +28,6 @@ def dp(a, b):
     res = 0
 
     for i in range(len(a)):
-        print(type(b[i]))
-        print(type(a[i]))
         res += a[i] * b[i]
 
     return res
@@ -74,6 +72,9 @@ def load_test_data(directory, fold):
     with open(label_path, 'r') as f:
         for line in f:
             label.append(line.replace("\n", ""))
+
+    label = [float(x) for x in label]
+    data = [[float(y) for y in x] for x in data]
 
     return data, label
 
