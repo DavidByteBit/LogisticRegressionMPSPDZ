@@ -14,8 +14,15 @@ def parse_settings():
     return settings_map
 
 
+# def true_sig(x):
+#     return 1 / (1 + 1 / (2.71 ** x))
+
 def sig(x):
-    return 1 / (1 + 1 / (2.71 ** x))
+    if x < -0.5:
+        return 0
+    if x > 0.5:
+        return 1
+    return x + 0.5
 
 
 def dp(a, b):
