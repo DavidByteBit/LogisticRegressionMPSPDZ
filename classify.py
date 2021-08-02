@@ -119,7 +119,7 @@ for i in range(len(data)):
 
     label = 0
 
-    # print("val: {n}".format(n=classification_intermediate))
+    print("val: {n}".format(n=classification_intermediate))
 
     if classification_intermediate >= threshold:
         print("val: {n}".format(n=classification_intermediate))
