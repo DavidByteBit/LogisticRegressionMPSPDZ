@@ -45,7 +45,7 @@ def load_model(file_path):
     bias = float(output[delim + 2].replace("\n", ""))
     weights_mid = output[delim + 3]
 
-    weights_mid = weights_mid.replace("[", "").replace("]", "").replace("\n", "")
+    weights_mid = weights_mid.replace("[", "").replace("]", "").replace(" ", "").replace("\n", "")
 
     weights = weights_mid.split(",")
 
