@@ -76,6 +76,8 @@ def load_test_data(directory, fold):
     label = [float(x) for x in label]
     data = [[float(y) for y in x] for x in data]
 
+    print(data)
+
     return data, label
 
 
