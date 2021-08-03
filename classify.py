@@ -14,8 +14,9 @@ def parse_settings():
     return settings_map
 
 
-# def true_sig(x):
-#     return 1 / (1 + 1 / (2.71 ** x))
+def true_sig(x):
+    return 1 / (1 + 1 / (2.71 ** x))
+
 
 def sig(x):
     if x < -0.5:
@@ -115,14 +116,14 @@ threshold = 0.5
 
 for i in range(len(data)):
     row = data[i]
-    classification_intermediate = sig(dp(W, row) + b)
+    classification_intermediate = dp(W, row) + b
 
     label = 0
 
     print("val: {n}".format(n=classification_intermediate))
 
-    if classification_intermediate >= threshold:
-        print("val: {n}".format(n=classification_intermediate))
+    if classification_intermediate >= 0:
+        # print("val: {n}".format(n=classification_intermediate))
         label = 1
 
     true_label = labels[i]
