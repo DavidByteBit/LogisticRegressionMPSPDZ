@@ -2,7 +2,7 @@
  alice_data_folder: "/home/david/Desktop/lrMP/data/Alice"
  bob_data_folder: "/home/david/Desktop/lrMP/data/Bob"
  path_to_this_repo: "/home/david/Desktop/lrMP"
- n_epochs: 1
+ n_epochs: 100
  folds: 5
  alice_private_input_path: "/home/david/Desktop/spdz/Player-Data/Input-P0-0"
  bob_private_input_path: "/home/david/Desktop/spdz/Player-Data/Input-P1-0"

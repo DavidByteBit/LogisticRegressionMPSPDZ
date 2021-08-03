@@ -134,5 +134,5 @@ for i in range(len(data)):
         incorrect += 1
 
 
-print("correct: {a}\n incorrect: {b}\n ratio: {c}".
+print("correct: {a}\n incorrect: {b}\n ratio: {c}%".
       format(a=correct, b=incorrect, c=(correct / (correct + incorrect)) * 100.0))
