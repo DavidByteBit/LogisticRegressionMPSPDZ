@@ -105,98 +105,99 @@ print_ln("%s", batch_list_order_train[0:5])
 
 # Define logistic regression model
 sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
-              ml.Output(n_examples, approx=True)], n_epochs,
+              ml.Output(n_examples, approx=True)], 1,
              report_loss=True)
 
 sgd.reset() # <--- Can cause register overflow?
 
-@for_range_opt(train_size)
+
+@for_range_opt(batch_size)
 def _(i):
     @for_range_opt(n_features)
     def _(j):
-        sgd.layers[0].X[i][0][j] = data_train[i][j]
+        sgd.layers[0].X[i][0][j] = data[i][j]
 
-    sgd.layers[1].Y[i] = label_train[i]
+    sgd.layers[1].Y[i] = label[i]
 
 sgd.run()
 
-# @for_range(n_epochs)
-# def _(e):
-#
-#     print_ln("\t\tProcessing epoch %s", e)
-#
-#     # Not actually shuffling, perhaps I need to pass in a param to the compiler?
-#     # Step 2: Shuffle indices
-#     batch_list_order_train.shuffle()
-#
-#     print_ln("%s", batch_list_order_train[0:5])
-#
-#     print_ln("train size: %s", train_size)
-#     data = Matrix(train_size, n_features, sfix)
-#     label = Array(train_size, sfix)
-#
-#     @for_range_parallel(train_size, n_threads)
-#     def _(i):
-#         data[i] = data_train[batch_list_order_train[i]]
-#         label[i] = label_train[batch_list_order_train[i]]
-#
-#
-#     print_ln("max_batch: %s", max_batch)
-#     print_ln("features: %s", n_features)
-#
-#     data_left_to_train = train_size
-#
-#     print_ln("data left to train %s", data_left_to_train)
-#
-#     l_lt_r = data_left_to_train < max_batch
-#     # Although these are all public values, the compiler complained about not being able to determine the truth
-#     # value of the expression "data_left_to_train < max_batch". TODO: Make this cleaner for clear values
-#     batch_size = data_left_to_train * (l_lt_r) + max_batch * (1 - l_lt_r)
-#
-#     # print_ln("batch size: %s", batch_size)
-#     # print_ln("feature size: %s", n_features)
-#
-#     # write training params
-#     @for_range_opt(batch_size)
-#     def _(i):
-#         @for_range_opt(n_features)
-#         def _(j):
-#             sgd.layers[0].X[i][0][j] = data[i][j]
-#         sgd.layers[1].Y[i] = label[i]
-#
-#     print_ln("\t performing training for batch %s", 0)
-#
-#     sgd.run()
-#
-#     data_left_to_train -= max_batch
-#
-#     print_ln("\t data left in batch: %s", data_left_to_train)
-#
-#     current_batch = 1
-#
-#     while data_left_to_train > 0:
-#
-#         l_lt_r = data_left_to_train < max_batch
-#         # Although these are all public values, the compiler complained about not being able to determine the truth
-#         # value of the expression "data_left_to_train < max_batch". TODO: Make this cleaner for clear values
-#         batch_size = data_left_to_train * (l_lt_r) + max_batch * (1 - l_lt_r)
-#
-#         # write training params
-#         @for_range_opt(batch_size)
-#         def _(i):
-#             # print_ln("iteration: %s", i)
-#             @for_range_opt(n_features)
-#             def _(j):
-#                 # print_ln("iteration: %s", j)
-#                 sgd.layers[0].X[i][0][j] = data[i + current_batch * max_batch][j]
-#             sgd.layers[1].Y[i] = label[i]
-#
-#         print_ln("\t performing training for batch %s", current_batch)
-#         print_ln("\t data left in batch: %s", data_left_to_train)
-#         sgd.run()
-#
-#         data_left_to_train -= max_batch
-#         current_batch += 1
+@for_range(n_epochs)
+def _(e):
+
+    print_ln("\t\tProcessing epoch %s", e)
+
+    # Not actually shuffling, perhaps I need to pass in a param to the compiler?
+    # Step 2: Shuffle indices
+    batch_list_order_train.shuffle()
+
+    print_ln("%s", batch_list_order_train[0:5])
+
+    print_ln("train size: %s", train_size)
+    data = Matrix(train_size, n_features, sfix)
+    label = Array(train_size, sfix)
+
+    @for_range_parallel(train_size, n_threads)
+    def _(i):
+        data[i] = data_train[i]
+        label[i] = label_train[i]
+
+
+    print_ln("max_batch: %s", max_batch)
+    print_ln("features: %s", n_features)
+
+    data_left_to_train = train_size
+
+    print_ln("data left to train %s", data_left_to_train)
+
+    l_lt_r = data_left_to_train < max_batch
+    # Although these are all public values, the compiler complained about not being able to determine the truth
+    # value of the expression "data_left_to_train < max_batch". TODO: Make this cleaner for clear values
+    batch_size = data_left_to_train * (l_lt_r) + max_batch * (1 - l_lt_r)
+
+    # print_ln("batch size: %s", batch_size)
+    # print_ln("feature size: %s", n_features)
+
+    # write training params
+    @for_range_opt(batch_size)
+    def _(i):
+        @for_range_opt(n_features)
+        def _(j):
+            sgd.layers[0].X[i][0][j] = data[i][j]
+        sgd.layers[1].Y[i] = label[i]
+
+    print_ln("\t performing training for batch %s", 0)
+
+    sgd.run()
+
+    data_left_to_train -= max_batch
+
+    print_ln("\t data left in batch: %s", data_left_to_train)
+
+    current_batch = 1
+
+    while data_left_to_train > 0:
+
+        l_lt_r = data_left_to_train < max_batch
+        # Although these are all public values, the compiler complained about not being able to determine the truth
+        # value of the expression "data_left_to_train < max_batch". TODO: Make this cleaner for clear values
+        batch_size = data_left_to_train * (l_lt_r) + max_batch * (1 - l_lt_r)
+
+        # write training params
+        @for_range_opt(batch_size)
+        def _(i):
+            # print_ln("iteration: %s", i)
+            @for_range_opt(n_features)
+            def _(j):
+                # print_ln("iteration: %s", j)
+                sgd.layers[0].X[i][0][j] = data[i + current_batch * max_batch][j]
+            sgd.layers[1].Y[i] = label[i]
+
+        print_ln("\t performing training for batch %s", current_batch)
+        print_ln("\t data left in batch: %s", data_left_to_train)
+        sgd.run()
+
+        data_left_to_train -= max_batch
+        current_batch += 1
 
 
 # This concludes training. Store in memory to persist to the next program run (classification)
