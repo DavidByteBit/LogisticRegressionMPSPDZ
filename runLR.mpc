@@ -48,7 +48,7 @@ print_ln("\ttrain_size_bob: %s ", train_size_bob)
 
 # Define logistic regression model
 sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
-              ml.Output(n_examples, approx=True)], 1,
+              ml.Output(n_examples, approx=True)], n_epochs,
              report_loss=True)
 
 sgd.reset() # <--- Can cause register overflow?
