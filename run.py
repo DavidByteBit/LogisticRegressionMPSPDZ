@@ -133,7 +133,7 @@ def write_data(settings_map):
 
     with open(y_train, 'r') as stream:
         for line in stream:
-            alice_data.extend(line.replace("\n", "").split(","))
+            bob_data.extend(line.replace("\n", "").split(",")) # CHANGE
 
     data = []
 
@@ -153,7 +153,7 @@ def write_data(settings_map):
     bob_examples = len(data)
 
     for row in data:
-        bob_data.extend(row)
+        alice_data.extend(row)
 
     with open(y_train, 'r') as stream:
         for line in stream:
