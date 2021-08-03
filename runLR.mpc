@@ -29,8 +29,6 @@ n_examples = alice_examples + bob_examples
 
 train_size = n_examples
 
-max_batch = train_size
-
 train_size_alice = alice_examples
 
 train_size_bob = bob_examples

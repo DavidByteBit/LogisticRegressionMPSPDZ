@@ -1,5 +1,5 @@
 ---
  alice_data_folder: "/home/david/Desktop/lrMP/data/Alice"
  bob_data_folder: "/home/david/Desktop/lrMP/data/Bob"
- path_to_this_repo: "/home/david/Desktop/lrMP/models/model_1"
+ path_to_model: "/home/david/Desktop/lrMP/models/model_1"
  fold: 0
