@@ -110,17 +110,6 @@ sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
 
 sgd.reset() # <--- Can cause register overflow?
 
-
-@for_range_opt(batch_size)
-def _(i):
-    @for_range_opt(n_features)
-    def _(j):
-        sgd.layers[0].X[i][0][j] = data[i][j]
-
-    sgd.layers[1].Y[i] = label[i]
-
-sgd.run()
-
 @for_range(n_epochs)
 def _(e):
 
