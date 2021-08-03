@@ -152,8 +152,8 @@ def write_data(settings_map):
         for line in stream:
             data.append(line.replace("\n", "").split(","))
 
-    data = np.array(data).T.tolist()
     bob_examples = len(data)
+    data = np.array(data).T.tolist()
 
     for row in data:
         alice_data.extend(row)
