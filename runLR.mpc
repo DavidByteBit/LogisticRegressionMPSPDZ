@@ -13,7 +13,7 @@ BOB = 1
 n_threads = 8
 
 # It appears that batching is maxed out at 128
-max_batch = 129
+max_batch = 128
 
 # No traditional command line arguments? Solution is to re-write the script
 # using another python script which can also act as the entry point
@@ -28,6 +28,8 @@ folds = 5
 n_examples = alice_examples + bob_examples
 
 train_size = n_examples
+
+max_batch = train_size
 
 train_size_alice = alice_examples
 
