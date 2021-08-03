@@ -122,7 +122,7 @@ for i in range(len(data)):
 
     print("val: {n}".format(n=classification_intermediate))
 
-    if classification_intermediate >= -0.3:
+    if classification_intermediate >= 0:
         # print("val: {n}".format(n=classification_intermediate))
         label = 1
 
