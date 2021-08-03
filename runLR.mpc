@@ -150,7 +150,6 @@ def _(e):
         @for_range_opt(n_features)
         def _(j):
             sgd.layers[0].X[i][0][j] = data[i][j]
-        # Note, when I go from Y to X, there does not seem to be much difference in training res TODO:
         sgd.layers[1].Y[i] = label[i]
 
     print_ln("\t performing training for batch %s", 0)
