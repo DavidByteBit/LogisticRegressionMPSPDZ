@@ -46,49 +46,37 @@ print_ln("\ttrain_size_alice: %s ", train_size_alice)
 print_ln("\ttrain_size_bob: %s ", train_size_bob)
 
 
-# Define logistic regression model
-sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
-              ml.Output(n_examples, approx=True)], n_epochs,
-             report_loss=True)
-
-sgd.reset() # <--- Can cause register overflow?
-
 # Reference: self.X = MultiArray([N, d, d_in], sfix)
 
-sgd.layers[0].X.input_from(ALICE)
-sgd.layers[1].Y.input_from(BOB)
+# First: Training features
+@for_range(train_size_alice)
+def _(i):
+    @for_range(n_features)
+    def _(j):
+        data_train[i][j] = sfix.get_input_from(ALICE)
 
-sgd.run()
 
-# # First: Training features
-# @for_range(train_size_alice)
-# def _(i):
-#     @for_range(n_features)
-#     def _(j):
-#         sgd.layers[0].X.input_from(ALICE)
-#
-#
-# @for_range(train_size_bob)
-# def _(i):
-#     @for_range(n_features)
-#     def _(j):
-#         data_train[train_size_alice + i][j] = sfix.get_input_from(BOB)
-#
-#
-# print_ln("%s", "\n\n Training features collected \n\n")
-#
-#
-# # Second: Training labels
-# @for_range(train_size_alice)
-# def _(i):
-#     label_train[i] = sfix.get_input_from(ALICE)
-#
-#
-# @for_range(train_size_bob)
-# def _(i):
-#     label_train[train_size_alice + i] = sfix.get_input_from(BOB)
-#
-# print_ln("%s", "\n\n Training labels collected \n\n")
+@for_range(train_size_bob)
+def _(i):
+    @for_range(n_features)
+    def _(j):
+        data_train[train_size_alice + i][j] = sfix.get_input_from(BOB)
+
+
+print_ln("%s", "\n\n Training features collected \n\n")
+
+
+# Second: Training labels
+@for_range(train_size_alice)
+def _(i):
+    label_train[i] = sfix.get_input_from(ALICE)
+
+
+@for_range(train_size_bob)
+def _(i):
+    label_train[train_size_alice + i] = sfix.get_input_from(BOB)
+
+print_ln("%s", "\n\n Training labels collected \n\n")
 
 # Test to see if Alice or Bob are using ALL data allocated to them.
 # If this code is uncommented, we should crash at runtime
@@ -96,18 +84,18 @@ sgd.run()
 # test = sfix.get_input_from(BOB)
 # print_ln("%s", "\n\n WARNING DID NOT CRASH - Something may be wrong with the size of the private input files\n\n")
 
-# print("\tData storage compiled")
-# print_ln("%s", "\n\n Data loaded \n\n")
-#
-# batch_list_order_train = Array(train_size, regint)
+print("\tData storage compiled")
+print_ln("%s", "\n\n Data loaded \n\n")
+
+batch_list_order_train = Array(train_size, regint)
 
 
 # Step 1: First, create a list of indices
-# @for_range(train_size)
-# def _(i):
-#     batch_list_order_train[i] = regint(i)
-#
-# print_ln("%s", batch_list_order_train[0:5])
+@for_range(train_size)
+def _(i):
+    batch_list_order_train[i] = regint(i)
+
+print_ln("%s", batch_list_order_train[0:5])
 
 # # Not actually shuffling, perhaps I need to pass in a param to the compiler?
 #     # Step 2: Shuffle indices
@@ -115,7 +103,25 @@ sgd.run()
 #
 # print_ln("%s", batch_list_order_train[0:5])
 
+# Define logistic regression model
+sgd = ml.SGD([ml.Dense(max_batch, n_features, 1),
+              ml.Output(n_examples, approx=True)], n_epochs,
+             report_loss=True)
 
+sgd.reset() # <--- Can cause register overflow?
+
+
+# write training params
+@for_range_opt(max_batch)
+def _(i):
+    # print_ln("iteration: %s", i)
+    @for_range_opt(n_features)
+    def _(j):
+        # print_ln("iteration: %s", j)
+        sgd.layers[0].X[i][0][j] = data_train[i][j]
+    sgd.layers[1].Y[i] = label_train[i]
+
+sgd.run()
 
 # @for_range(n_epochs)
 # def _(e):
@@ -159,6 +165,7 @@ sgd.run()
 #         @for_range_opt(n_features)
 #         def _(j):
 #             sgd.layers[0].X[i][0][j] = data[i][j]
+#         # Note, when I go from Y to X, there does not seem to be much difference in training res TODO:
 #         sgd.layers[1].Y[i] = label[i]
 #
 #     print_ln("\t performing training for batch %s", 0)

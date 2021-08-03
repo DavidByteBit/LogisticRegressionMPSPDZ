@@ -2,7 +2,6 @@ import yaml
 import subprocess
 import sys
 import math
-import numpy as np
 
 # These files are apart of the repo and are assumed to remain in the relative path they were initially defined to be in
 mpc_file_path = "runLR.mpc"
@@ -127,7 +126,6 @@ def write_data(settings_map):
 
     alice_examples = len(data)
     n_features = len(data[0])
-    data = np.array(data).T.tolist()
 
 
     for row in data:
@@ -135,7 +133,7 @@ def write_data(settings_map):
 
     with open(y_train, 'r') as stream:
         for line in stream:
-            bob_data.extend(line.replace("\n", "").split(",")) # CHANGE
+            alice_data.extend(line.replace("\n", "").split(","))
 
     data = []
 
@@ -153,10 +151,9 @@ def write_data(settings_map):
             data.append(line.replace("\n", "").split(","))
 
     bob_examples = len(data)
-    data = np.array(data).T.tolist()
 
     for row in data:
-        alice_data.extend(row)
+        bob_data.extend(row)
 
     with open(y_train, 'r') as stream:
         for line in stream:
