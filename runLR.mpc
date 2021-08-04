@@ -127,8 +127,8 @@ def _(e):
 
     @for_range_parallel(train_size, n_threads)
     def _(i):
-        data[i] = data_train[i]
-        label[i] = label_train[i]
+        data[i] = data_train[batch_list_order_train[i]]
+        label[i] = label_train[batch_list_order_train[i]]
 
 
     print_ln("max_batch: %s", max_batch)
