@@ -51,6 +51,8 @@ def _(i):
     def _(j):
         data_train[i][j] = sfix.get_input_from(ALICE)
 
+@for_range(train_size_alice)
+def _(i):
     label_train[i] = sfix.get_input_from(ALICE)
 
 
@@ -60,6 +62,8 @@ def _(i):
     def _(j):
         data_train[train_size_alice + i][j] = sfix.get_input_from(BOB)
 
+@for_range(train_size_bob)
+def _(i):
     label_train[train_size_alice + i] = sfix.get_input_from(BOB)
 
 
