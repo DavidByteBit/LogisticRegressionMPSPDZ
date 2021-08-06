@@ -92,7 +92,7 @@ sgd.reset()  # <--- Can cause register overflow?
 sgd.layers[0].X.assign(data_train)
 sgd.layers[1].Y.assign(label_train)
 
-print_ln("%s", sgd.layers[0].X.reveal_nested())
+print_ln("%s", sgd.layers[0].X.reveal_nested()[0:20])
 
 # Populate layers with training data
 # @for_range_opt(n_examples)
