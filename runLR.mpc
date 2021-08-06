@@ -89,14 +89,16 @@ sgd = ml.SGD([ml.Dense(n_examples, n_features, 1),
 sgd.reset()  # <--- Can cause register overflow?
 
 
-# Populate layers with training data
-@for_range_opt(n_examples)
-def _(i):
-    @for_range_opt(n_features)
-    def _(j):
-        sgd.layers[0].X[i][0][j] = data_train[i][j]
+sgd.layers[0].X.assign(data_train)
+sgd.layers[1].Y.assign(label_train)
 
-    sgd.layers[1].Y[i] = label_train[i]
+# Populate layers with training data
+# @for_range_opt(n_examples)
+# def _(i):
+#     @for_range_opt(n_features)
+#     def _(j):
+#         sgd.layers[0].X[i][0][j] = data_train[i][j]  # Check out [i][j][0] and others
+#     sgd.layers[1].Y[i] = label_train[i]
 
 
 sgd.run()
