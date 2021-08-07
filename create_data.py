@@ -33,8 +33,8 @@ def preprocess(dirty_df):
 
 
 # Load the data
-df1 = pd.read_csv('data/alice_data.csv')
-df2 = pd.read_csv('data/bob_data.csv')
+df1 = pd.read_csv('data/alice_data.csv').iloc[:, :5]
+df2 = pd.read_csv('data/bob_data.csv').iloc[:, :5]
 
 print(df1.shape)
 
