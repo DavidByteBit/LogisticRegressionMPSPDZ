@@ -22,7 +22,7 @@ def preprocess(dirty_df):
     target_map = {u'1': 1, u'0': 0}
     dirty_df['__target__'] = dirty_df['cohort_flag'].map(str).map(target_map)
     dirty_df = dirty_df.drop(['cohort_flag'], axis=1)
-    clean_X = dirty_df.drop('__target__', axis=1)
+    clean_X = dirty_df.drop('__target__', axis=1).iloc[: , :5]
     clean_X = clean_X.to_numpy()
     clean_X = preprocessing.normalize(clean_X, norm='l2')
     clean_y = np.array(dirty_df['__target__'])
@@ -33,8 +33,8 @@ def preprocess(dirty_df):
 
 
 # Load the data
-df1 = pd.read_csv('data/alice_data.csv').iloc[:, :5]
-df2 = pd.read_csv('data/bob_data.csv').iloc[:, :5]
+df1 = pd.read_csv('data/alice_data.csv')
+df2 = pd.read_csv('data/bob_data.csv')
 
 print(df1.shape)
 
