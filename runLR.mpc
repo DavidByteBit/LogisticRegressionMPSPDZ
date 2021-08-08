@@ -49,6 +49,9 @@ sgd.reset()  # <--- Can cause register overflow?
 sgd.layers[0].X.input_from(ALICE)
 sgd.layers[1].Y.input_from(BOB)
 
+print_ln("%s", sgd.layers[0].X.reveal_nested()[0:32])
+print_ln("%s", sgd.layers[1].Y.reveal_nested()[0:32])
+
 sgd.run()
 
 # For classification
