@@ -31,7 +31,7 @@ def clipped_relu(z):
 
 class LogisticRegression:
 
-    def __init__(self, examples, labels, iterations=13, learning_rate=0.0001, b=0):
+    def __init__(self, examples, labels, iterations=13, learning_rate=0.0001):
         # self.df = df
         self.examples = examples
         self.labels = labels
@@ -39,16 +39,16 @@ class LogisticRegression:
         self.learning_rate = learning_rate
 
     def train(self):
-        # We initialize our W and b as zeros
-        w = sfix.Array(len(self.examples[0]))
-        w_delta = sfix.Array(len(self.examples[0]) + 1)
-        b = sfix.Array(1)
-
         X = self.examples
         y = self.labels
         m = len(X)  # Number of samples
+        feat = len(X)  # Number of features
 
-        loss = []  # Keeping track of the cost function values
+        # We initialize our W and b as zeros
+        w = sfix.Array(feat)
+        w_delta = sfix.Array(feat + 1)
+        b = sfix.Array(1)
+
 
         @for_range_opt(self.iterations)
         def _(i):
@@ -58,17 +58,17 @@ class LogisticRegression:
 
             # Computes our predictions
             z = dp_batch(w, X, b=b[0])
-            pred = sfix.Array(len(self.examples))
+            pred = sfix.Array(m)
             print_ln("dot product complete")
 
-            @for_range_opt(len(self.examples))
-            def _(j):
-                pred[j] = clipped_relu(z[j])
+            @for_range_opt(m)
+            def _(k):
+                pred[k] = clipped_relu(z[k])
 
             print_ln("classifications complete")
 
             # update bias
-            @for_range_opt(len(y))
+            @for_range_opt(m)
             def _(k):
                 w_delta[0] = w_delta[0] + self.learning_rate * (y[k] - pred[k])
 
@@ -78,7 +78,7 @@ class LogisticRegression:
             @for_range_opt(len(self.examples[0]))
             def _(j):
                 print_ln("delta update for feature %s complete", j)
-                @for_range_opt(len(y))
+                @for_range_opt(m)
                 def _(k):
                     w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) * X[k][j]
 

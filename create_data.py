@@ -26,7 +26,7 @@ def preprocess(dirty_df):
     clean_X = clean_X.to_numpy()
     clean_X = preprocessing.normalize(clean_X, norm='l2')
     clean_y = np.array(dirty_df['__target__'])
-    return clean_X, clean_y
+    return clean_X[:200], clean_y[:200]
 
 
 ##################################################################################
