@@ -46,14 +46,12 @@ class LogisticRegression:
 
         # We initialize our W and b as zeros
         w = sfix.Array(feat)
-        w_delta = sfix.Array(feat + 1)
         b = sfix.Array(1)
-
-        print_ln("%s", y.reveal_nested())
-
 
         @for_range_opt(self.iterations)
         def _(i):
+
+            w_delta = sfix.Array(feat + 1)
 
             print_ln("iteration %s", i)
             time()
@@ -79,7 +77,7 @@ class LogisticRegression:
             # update weights
             @for_range_opt(len(self.examples[0]))
             def _(j):
-                print_ln("delta update for feature %s complete", j)
+                # print_ln("delta update for feature %s complete", j)
                 @for_range_opt(m)
                 def _(k):
                     w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) * X[k][j]
