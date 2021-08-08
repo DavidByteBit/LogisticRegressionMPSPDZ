@@ -35,7 +35,7 @@ def clipped_relu(z):
     gt = z > 0.5
     eq = z + 0.5
 
-    return 0.0 * lt + 1.0 * gt + eq * (1 - lt) * (1 - gt)
+    return cfix(0.0) * lt + cfix(1.0) * gt + eq * (1 - lt) * (1 - gt)
 
 class LogisticRegression:
 
