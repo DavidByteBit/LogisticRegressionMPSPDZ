@@ -1,5 +1,5 @@
 ---
- alice_data_folder: "/home/david/Desktop/lrMP/data/Alice"
- bob_data_folder: "/home/david/Desktop/lrMP/data/Bob"
- path_to_model: "/home/david/Desktop/lrMP/models/model_1"
+ alice_data_folder: "/home/david/Desktop/cus/data/Alice"
+ bob_data_folder: "/home/david/Desktop/cus/data/Bob"
+ path_to_model: "/home/david/Desktop/cus/models/model_1"
  fold: 0
