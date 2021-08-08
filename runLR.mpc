@@ -1,4 +1,5 @@
 from Compiler import ml
+from lr import LogisticRegression
 import math
 
 # NOTE: This script should not be run alone. The entry point to run the program is in run.py.
@@ -69,6 +70,10 @@ def _(i):
 
 print_ln("%s", "\n\n Data populated \n\n")
 
+lr = LogisticRegression(data_train, label_train, iterations=1, learning_rate=0.001)
+
+lr.train()
+
 # Test to see if Alice or Bob are using ALL data allocated to them.
 # If this code is uncommented, we should crash at runtime
 # test = sfix.get_input_from(ALICE)
@@ -86,29 +91,29 @@ print_ln("%s", "\n\n Data populated \n\n")
 # print_ln("%s", batch_list_order_train[0:5])
 
 # Define logistic regression model
-sgd = ml.SGD([ml.Dense(n_examples, n_features, 1),
-              ml.Output(n_examples, approx=True)], n_epochs,
-             report_loss=True, debug=True)
-
-sgd.reset()  # <--- Can cause register overflow?
-
-
-sgd.layers[0].X.assign(data_train)
-sgd.layers[1].Y.assign(label_train)
-
-print_ln("%s", sgd.layers[0].X.reveal_nested()[0:32])
-print_ln("%s", sgd.layers[1].Y.reveal_nested()[0:32])
-
-# Populate layers with training data
-# @for_range_opt(n_examples)
-# def _(i):
-#     @for_range_opt(n_features)
-#     def _(j):
-#         sgd.layers[0].X[i][0][j] = data_train[i][j]  # Check out [i][j][0] and others
-#     sgd.layers[1].Y[i] = label_train[i]
-
-
-sgd.run()
+# sgd = ml.SGD([ml.Dense(n_examples, n_features, 1),
+#               ml.Output(n_examples, approx=True)], n_epochs,
+#              report_loss=True, debug=True)
+#
+# sgd.reset()  # <--- Can cause register overflow?
+#
+#
+# sgd.layers[0].X.assign(data_train)
+# sgd.layers[1].Y.assign(label_train)
+#
+# print_ln("%s", sgd.layers[0].X.reveal_nested()[0:32])
+# print_ln("%s", sgd.layers[1].Y.reveal_nested()[0:32])
+#
+# # Populate layers with training data
+# # @for_range_opt(n_examples)
+# # def _(i):
+# #     @for_range_opt(n_features)
+# #     def _(j):
+# #         sgd.layers[0].X[i][0][j] = data_train[i][j]  # Check out [i][j][0] and others
+# #     sgd.layers[1].Y[i] = label_train[i]
+#
+#
+# sgd.run()
 
 # For classification
 print_ln("Training finished")
