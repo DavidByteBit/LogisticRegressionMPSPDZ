@@ -1,7 +1,7 @@
 #!/bin/bash
 
-rm ../spdz/Programs/Source/lr.py
-cp lr.py ../spdz/Programs/Source/lr.py
+rm ../spdz/Programs/Compiler/lr.py
+cp lr.py ../spdz/Programs/Compiler/lr.py
 
 rm ../spdz/Programs/Source/runLR.mpc
 cp runLR.mpc ../spdz/Programs/Source/runLR.mpc
