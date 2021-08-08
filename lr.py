@@ -104,7 +104,7 @@ class LogisticRegression:
             b[0] = b[0] + b_delta[0]
 
             for j in range(len(self.examples[0])):
-                w[j] = w[j] + w_delta[j]
+                w[j] = w[j] + w_delta[0][j]
 
             print_ln("\n\n\tepch %s complete\n\n", i)
 
