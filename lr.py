@@ -20,7 +20,7 @@ def dp(a, b):
     return res
 
 def dp_batch(vec, matrix, b=0):
-    z = sfix.Array(len(matrix[0]))
+    z = sfix.Array(len(matrix))
     assert(len(vec) == len(matrix[0]))
 
     for i in range(len(matrix)):
