@@ -50,7 +50,8 @@ class LogisticRegression:
 
         loss = []  # Keeping track of the cost function values
 
-        for i in range(self.iterations):
+        @for_range_opt(self.iterations)
+        def _(i):
 
             # Computes our predictions
             z = dp_batch(w, X, b=b)
