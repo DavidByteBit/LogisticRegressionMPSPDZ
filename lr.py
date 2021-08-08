@@ -14,8 +14,6 @@ import math
 
 def dp_batch(vec, matrix, b=0):
     z = sfix.Array(len(matrix))
-    print(len(vec))
-    print(len(matrix[0]))
     assert (len(vec) == len(matrix[0]))
 
     @for_range_opt(len(matrix))
