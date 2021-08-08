@@ -59,6 +59,9 @@ class LogisticRegression:
             # Computes our predictions
             z = dp_batch(w, X, b=b[0])
             pred = sfix.Array(m)
+
+            print_ln("%s", pred.reveal_nested())
+
             print_ln("dot product complete")
 
             @for_range_opt(m)
@@ -81,7 +84,7 @@ class LogisticRegression:
                 # print_ln("delta update for feature %s complete", j)
                 @for_range_opt(m)
                 def _(k):
-                    print_ln("%s", X[k][j].reveal())
+                    # print_ln("%s", X[k][j].reveal())
                     w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) * X[k][j]
 
             b[0] = b[0] + w_delta[0]
