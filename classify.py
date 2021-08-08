@@ -59,6 +59,8 @@ def load_model(file_path):
 
     weights_mid = weights_mid.replace("[", "").replace("]", "").replace(" ", "").replace("\n", "")
 
+    print(len(weights_mid))
+
     weights = weights_mid.split(",")
 
     weights = [float(x) for x in weights]
