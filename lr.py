@@ -55,8 +55,12 @@ class LogisticRegression:
             z = dp_batch(w, X, b=b)
             pred = sfix.Array(len(self.examples))
 
-            for j in range(len(self.examples)):
-                pred[i] = clipped_relu(z[i])
+
+            @for_range(len(self.examples))
+            def _(j):
+                pred[j] = clipped_relu(z[j])
+            # for j in range(len(self.examples)):
+            #     pred[i] = clipped_relu(z[i])
 
             # update bias
             for k in range(len(y)):
