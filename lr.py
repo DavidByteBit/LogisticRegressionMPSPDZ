@@ -42,13 +42,8 @@ class LogisticRegression:
     def train(self):
         # We initialize our W and b as zeros
         w = sfix.Array(len(self.examples[0]))
-        w_delta = sfix.Matrix(1, len(self.examples[0]))
+        w_delta = sfix.Array(len(self.examples[0]) + 1)
         b = sfix.Array(1)
-        b_delta = sfix.Array(1)
-        lr = sfix.Array(len(self.examples[0]))
-
-        for i in range(len(lr)):
-            lr[i] = sfix(self.learning_rate)
 
         X = self.examples
         y = self.labels
@@ -76,36 +71,23 @@ class LogisticRegression:
             # update bias
             @for_range_opt(len(y))
             def _(k):
-                b_delta[0] = b_delta[0] + self.learning_rate * (y[k] - pred[k])
+                w_delta[0] = w_delta[0] + self.learning_rate * (y[k] - pred[k])
 
             print_ln("delta update for bias complete")
 
             # update weights
-            # @for_range_opt(len(self.examples[0]))
-            # def _(j):
-            #     print_ln("delta update for feature %s complete", j)
-            #     @for_range_opt(len(y))
-            #     def _(k):
-            #         w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) * X[k][j]
-
             @for_range_opt(len(self.examples[0]))
-            def _(k):
+            def _(j):
+                print_ln("delta update for feature %s complete", j)
+                @for_range_opt(len(y))
+                def _(k):
+                    w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) * X[k][j]
 
-                diff = sfix.Array(len(self.examples[0]))
-                d = y[k] - pred[k]
-
-                @for_range_opt(len(self.examples[0]))
-                def _(j):
-                    diff[j] = d
-
-                w_delta[0] = w_delta[0] + lr * (y[k] - pred[k]) * X[k]
-                print_ln("delta update for row %s complete", k)
-
-            b[0] = b[0] + b_delta[0]
+            b[0] = b[0] + w_delta[0]
 
             for j in range(len(self.examples[0])):
-                w[j] = w[j] + w_delta[0][j]
+                w[j] = w[j] + w_delta[j + 1]
 
-            print_ln("\n\n\tepch %s complete\n\n", i)
+            print_ln("\n\n\tepoch %s complete\n\n", i)
 
         return w, b[0]
