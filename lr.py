@@ -66,8 +66,10 @@ class LogisticRegression:
                 w_delta[0] = w_delta[0] + self.learning_rate * (y[k] - pred[k])
 
             # update weights
-            for j in range(len(self.examples[0])):
-                for k in range(len(y)):
+            @for_range_opt(len(self.examples[0]))
+            def _(j):
+                @for_range_opt(len(y))
+                def _(k):
                     w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) * X[k][j]
 
             b = b + w_delta[0]
