@@ -63,6 +63,8 @@ def load_model(file_path):
 
     weights = [float(x) for x in weights]
 
+    print(len(weights))
+
     return bias, weights
 
 
