@@ -88,7 +88,7 @@ print_ln("%s", "\n\n Data populated \n\n")
 # Define logistic regression model
 sgd = ml.SGD([ml.Dense(n_examples, n_features, 1),
               ml.Output(n_examples, approx=True)], n_epochs,
-             report_loss=True)
+             report_loss=True, debug=True)
 
 sgd.reset()  # <--- Can cause register overflow?
 
