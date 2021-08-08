@@ -54,6 +54,9 @@ class LogisticRegression:
         @for_range_opt(self.iterations)
         def _(i):
 
+            print_ln("iteration %s", i)
+            time()
+
             # Computes our predictions
             z = dp_batch(w, X, b=b[0])
             pred = sfix.Array(len(self.examples))
