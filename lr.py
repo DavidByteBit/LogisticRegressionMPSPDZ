@@ -49,6 +49,8 @@ class LogisticRegression:
         w_delta = sfix.Array(feat + 1)
         b = sfix.Array(1)
 
+        print_ln("%s", y.reveal_nested())
+
 
         @for_range_opt(self.iterations)
         def _(i):
