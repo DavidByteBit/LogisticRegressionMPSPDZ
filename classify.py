@@ -27,11 +27,7 @@ def sig(x):
 
 
 def dp(a, b):
-    print(len(a))
-    print(len(b))
     assert (len(a) == len(b))
-
-
 
     res = 0
 

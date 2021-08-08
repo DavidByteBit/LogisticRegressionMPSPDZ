@@ -14,21 +14,22 @@ import math
 
 def dp_batch(vec, matrix, b=0):
     z = sfix.Array(len(matrix))
-    assert(len(vec) == len(matrix[0]))
+    assert (len(vec) == len(matrix[0]))
 
-    for i in range(len(matrix)):
-        z[i] += sfix.dot_product(vec, matrix[i]) + b
+    @for_range_opt(len(matrix))
+    def _(i):
+        z[i] = sfix.dot_product(vec, matrix[i]) + b
 
     return z
 
-# TODO: optimize?
+
 def clipped_relu(z):
     a = z < -0.5
     b = z > 0.5
     return a.if_else(0, b.if_else(1, 0.5 + z))
 
-class LogisticRegression:
 
+class LogisticRegression:
 
     def __init__(self, examples, labels, iterations=13, learning_rate=0.001):
         # self.df = df
@@ -54,7 +55,6 @@ class LogisticRegression:
             # Computes our predictions
             z = dp_batch(w, X, b=b)
             pred = sfix.Array(len(self.examples))
-
 
             @for_range_opt(len(self.examples))
             def _(j):
@@ -89,5 +89,3 @@ class LogisticRegression:
             # return {"W": w, "b": b, "loss": loss}
 
         return w, b
-
-
