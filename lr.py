@@ -43,7 +43,7 @@ class LogisticRegression:
         # We initialize our W and b as zeros
         w = sfix.Array(len(self.examples[0]))
         w_delta = sfix.Array(len(self.examples[0]) + 1)
-        b = self.b
+        b = sfix.Array(1)
 
         X = self.examples
         y = self.labels
@@ -55,7 +55,7 @@ class LogisticRegression:
         def _(i):
 
             # Computes our predictions
-            z = dp_batch(w, X, b=b)
+            z = dp_batch(w, X, b=b[0])
             pred = sfix.Array(len(self.examples))
 
             @for_range_opt(len(self.examples))
@@ -74,7 +74,7 @@ class LogisticRegression:
                 def _(k):
                     w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) * X[k][j]
 
-            b = b + w_delta[0]
+            b[0] = b[0] + w_delta[0]
 
             for j in range(len(self.examples[0])):
                 w[j] = w[j] + w_delta[j + 1]
@@ -90,4 +90,4 @@ class LogisticRegression:
             # b = b - self.learning_rate * db
             # return {"W": w, "b": b, "loss": loss}
 
-        return w, b
+        return w, b[0]
