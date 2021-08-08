@@ -64,7 +64,7 @@ class LogisticRegression:
             @for_range_opt(m)
             def _(k):
                 pred[k] = clipped_relu(z[k])
-                print_ln("%s", pred[k].reveal())
+                # print_ln("%s", pred[k].reveal())
 
             print_ln("classifications complete")
 
@@ -81,7 +81,8 @@ class LogisticRegression:
                 # print_ln("delta update for feature %s complete", j)
                 @for_range_opt(m)
                 def _(k):
-                    w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) #* X[k][j]
+                    print_ln("%s", y[k].reveal())
+                    w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) * X[k][j]
 
             b[0] = b[0] + w_delta[0]
 
