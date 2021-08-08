@@ -31,8 +31,9 @@ def clipped_relu(z):
 
 class LogisticRegression:
 
-    def __init__(self, examples, labels, iterations=13, learning_rate=0.0001):
+    def __init__(self, examples, labels, iterations=13, learning_rate=0.0001, b=0):
         # self.df = df
+        self.b = b
         self.examples = examples
         self.labels = labels
         self.iterations = iterations
@@ -42,7 +43,7 @@ class LogisticRegression:
         # We initialize our W and b as zeros
         w = sfix.Array(len(self.examples[0]))
         w_delta = sfix.Array(len(self.examples[0]) + 1)
-        b = sfix(0)
+        b = self.b
 
         X = self.examples
         y = self.labels
