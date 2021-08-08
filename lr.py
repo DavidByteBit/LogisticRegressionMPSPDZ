@@ -45,7 +45,7 @@ class LogisticRegression:
         feat = len(X[0])  # Number of features
 
         # We initialize our W and b as zeros
-        w = sfix.Array(feat)
+        w = sfix.Matrix(1, feat)
         b = sfix.Array(1)
 
         @for_range_opt(self.iterations)
@@ -53,7 +53,7 @@ class LogisticRegression:
 
             w_delta = sfix.Array(feat + 1)
 
-            @for_range(m)
+            @for_range(m + 1)
             def _(i):
                 w_delta[i] = 0.0
 
@@ -61,7 +61,7 @@ class LogisticRegression:
             time()
 
             # Computes our predictions
-            z = dp_batch(w, X, b=b[0])
+            z = dp_batch(w[0], X, b=b[0])
             pred = sfix.Array(m)
 
             @for_range(m)
@@ -97,9 +97,8 @@ class LogisticRegression:
 
             b[0] = b[0] + w_delta[0]
 
-            for j in range(feat):
-                w[j] = w[j] + w_delta[j + 1]
+            w[0] = w[0] + w_delta[1:]
 
             print_ln("\n\n\tepoch %s complete\n\n", i)
 
-        return w, b[0]
+        return w[0], b[0]
