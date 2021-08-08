@@ -56,11 +56,9 @@ class LogisticRegression:
             pred = sfix.Array(len(self.examples))
 
 
-            @for_range(len(self.examples))
+            @for_range_opt(len(self.examples))
             def _(j):
                 pred[j] = clipped_relu(z[j])
-            # for j in range(len(self.examples)):
-            #     pred[i] = clipped_relu(z[i])
 
             # update bias
             for k in range(len(y)):
