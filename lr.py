@@ -11,13 +11,9 @@ from Compiler.GC.types import sbitint
 from functools import reduce
 import math
 
+
 def dp(a, b):
-    res = sfix(0)
-
-    for i in range(len(b)):
-        res += a[i] * b[i]
-
-    return res
+    return Compiler.dot_product(a, b)
 
 def dp_batch(vec, matrix, b=0):
     z = sfix.Array(len(matrix))
