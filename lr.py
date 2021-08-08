@@ -64,7 +64,7 @@ class LogisticRegression:
             @for_range_opt(m)
             def _(k):
                 pred[k] = clipped_relu(z[k])
-                print(pred[k].reveal())
+                print_ln("%s", pred[k].reveal())
 
             print_ln("classifications complete")
 
