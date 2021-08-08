@@ -48,10 +48,14 @@ class LogisticRegression:
         w = sfix.Array(feat)
         b = sfix.Array(1)
 
-        @for_range(self.iterations)
+        @for_range_opt(self.iterations)
         def _(i):
 
             w_delta = sfix.Array(feat + 1)
+
+            @for_range(m)
+            def _(i):
+                w_delta[i] = 0.0
 
             print_ln("iteration %s", i)
             time()
@@ -59,6 +63,10 @@ class LogisticRegression:
             # Computes our predictions
             z = dp_batch(w, X, b=b[0])
             pred = sfix.Array(m)
+
+            @for_range(m)
+            def _(i):
+                pred[i] = 0.0
 
             print_ln("%s", pred.reveal_nested())
 
