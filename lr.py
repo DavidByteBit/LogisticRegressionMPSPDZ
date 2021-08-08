@@ -91,7 +91,7 @@ class LogisticRegression:
             @for_range_opt(len(self.examples[0]))
             def _(k):
 
-                diff = sfix.array(len(self.examples[0]))
+                diff = sfix.Array(len(self.examples[0]))
                 d = y[k] - pred[k]
 
                 @for_range_opt(len(self.examples[0]))
