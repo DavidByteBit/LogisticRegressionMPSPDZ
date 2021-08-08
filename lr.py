@@ -13,7 +13,7 @@ import math
 
 
 def dp(a, b):
-    return Compiler.dot_product(a, b)
+    return sfix.dot_product(a, b)
 
 def dp_batch(vec, matrix, b=0):
     z = sfix.Array(len(matrix))
