@@ -14,6 +14,8 @@ import math
 
 def dp_batch(vec, matrix, b=0):
     z = sfix.Array(len(matrix))
+    print(len(vec))
+    print(len(matrix[0]))
     assert (len(vec) == len(matrix[0]))
 
     @for_range_opt(len(matrix))
@@ -33,7 +35,6 @@ class LogisticRegression:
 
     def __init__(self, examples, labels, iterations=13, learning_rate=0.0001, b=0):
         # self.df = df
-        self.b = sfix(b)
         self.examples = examples
         self.labels = labels
         self.iterations = iterations
