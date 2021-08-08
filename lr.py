@@ -81,7 +81,7 @@ class LogisticRegression:
                 # print_ln("delta update for feature %s complete", j)
                 @for_range_opt(m)
                 def _(k):
-                    print_ln("%s", y[k].reveal())
+                    print_ln("%s", X[k][j].reveal())
                     w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) * X[k][j]
 
             b[0] = b[0] + w_delta[0]
