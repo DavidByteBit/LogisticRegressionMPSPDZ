@@ -30,6 +30,9 @@ def dp(a, b):
 
     assert (len(a) == len(b))
 
+    print(len(a))
+    print(len(b))
+
     res = 0
 
     for i in range(len(a)):
