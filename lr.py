@@ -61,7 +61,8 @@ class LogisticRegression:
                 pred[j] = clipped_relu(z[j])
 
             # update bias
-            for k in range(len(y)):
+            @for_range_opt(len(y))
+            def _(k):
                 w_delta[0] = w_delta[0] + self.learning_rate * (y[k] - pred[k])
 
             # update weights
