@@ -1,5 +1,5 @@
 from Compiler import ml
-from lr import LogisticRegression
+from Source import lr
 import math
 
 # NOTE: This script should not be run alone. The entry point to run the program is in run.py.
