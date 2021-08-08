@@ -12,26 +12,20 @@ from functools import reduce
 import math
 
 
-def dp(a, b):
-    return sfix.dot_product(a, b)
-
 def dp_batch(vec, matrix, b=0):
     z = sfix.Array(len(matrix))
     assert(len(vec) == len(matrix[0]))
 
     for i in range(len(matrix)):
-        z[i] += dp(vec, matrix[i]) + b
+        z[i] += sfix.dot_product(vec, matrix[i]) + b
 
     return z
 
 # TODO: optimize?
 def clipped_relu(z):
-
-    lt = z < - 0.5
-    gt = z > 0.5
-    eq = z + 0.5
-
-    return cfix(0.0) * lt + cfix(1.0) * gt + eq * (1 - lt) * (1 - gt)
+    a = z < -0.5
+    b = z > 0.5
+    return a.if_else(0, b.if_else(1, 0.5 + x))
 
 class LogisticRegression:
 
