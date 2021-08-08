@@ -123,19 +123,17 @@ def write_data(settings_map):
     with open(x_train, 'r') as stream:
         for line in stream:
             data.append(line.replace("\n", "").split(","))
-
-    alice_examples = len(data)
+    #
+    # alice_examples = len(data)
     n_features = len(data[0])
-
-
-    for row in data:
-        alice_data.extend(row)
+    #
+    #
+    # for row in data:
+    #     alice_data.extend(row)
 
     with open(y_train, 'r') as stream:
         for line in stream:
-            alice_data.extend(line.replace("\n", "").split(","))
-
-    data = []
+            bob_data.extend(line.replace("\n", "").split(","))
 
     path = settings_map['bob_data_folder']
 
@@ -150,14 +148,16 @@ def write_data(settings_map):
         for line in stream:
             data.append(line.replace("\n", "").split(","))
 
-    bob_examples = len(data)
+    alice_examples = len(data)
 
     for row in data:
-        bob_data.extend(row)
+        alice_examples.extend(row)
 
     with open(y_train, 'r') as stream:
         for line in stream:
             bob_data.extend(line.replace("\n", "").split(","))
+
+    bob_examples = len(bob_data)
 
     with open(settings_map['alice_private_input_path'], 'w') as stream:
 
