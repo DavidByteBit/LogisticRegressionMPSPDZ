@@ -90,8 +90,16 @@ class LogisticRegression:
 
             @for_range_opt(len(self.examples[0]))
             def _(k):
+
+                diff = sfix.array(len(self.examples[0]))
+                d = y[k] - pred[k]
+
+                @for_range_opt(len(self.examples[0]))
+                def _(j):
+                    diff[j] = d
+
+                w_delta[0] = w_delta[0] + lr * (y[k] - pred[k]) * X[k]
                 print_ln("delta update for row %s complete", k)
-                w_delta[0] = w_delta[0] + lr * (y - pred) * X[k]
 
             b[0] = b[0] + b_delta[0]
 
