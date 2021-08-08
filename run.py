@@ -151,7 +151,7 @@ def write_data(settings_map):
     alice_examples = len(data)
 
     for row in data:
-        alice_examples.extend(row)
+        alice_data.extend(row)
 
     with open(y_train, 'r') as stream:
         for line in stream:
