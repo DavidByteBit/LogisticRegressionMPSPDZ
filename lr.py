@@ -60,19 +60,25 @@ class LogisticRegression:
             # Computes our predictions
             z = dp_batch(w, X, b=b[0])
             pred = sfix.Array(len(self.examples))
+            print_ln("dot product complete")
 
             @for_range_opt(len(self.examples))
             def _(j):
                 pred[j] = clipped_relu(z[j])
+
+            print_ln("classifications complete")
 
             # update bias
             @for_range_opt(len(y))
             def _(k):
                 w_delta[0] = w_delta[0] + self.learning_rate * (y[k] - pred[k])
 
+            print_ln("delta update for bias complete")
+
             # update weights
             @for_range_opt(len(self.examples[0]))
             def _(j):
+                print_ln("delta update for feature %s complete", j)
                 @for_range_opt(len(y))
                 def _(k):
                     w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) * X[k][j]
@@ -82,15 +88,6 @@ class LogisticRegression:
             for j in range(len(self.examples[0])):
                 w[j] = w[j] + w_delta[j + 1]
 
-            # # Computes our cost function
-            # cost = (-1 / m) * np.sum(np.dot(y, np.log(pred).T) + np.dot(1 - y, np.log(1 - pred).T))
-            # loss.append(cost)  # Computes the gradient
-            # dw = (1 / m) * np.dot(X, (pred - y).T)
-            # db = (1 / m) * np.sum(pred - y, axis=1)
-            #
-            # # Updates the W and b
-            # w = w - self.learning_rate * dw
-            # b = b - self.learning_rate * db
-            # return {"W": w, "b": b, "loss": loss}
+            print_ln("\n\n\tepch %s complete\n\n", i)
 
         return w, b[0]
