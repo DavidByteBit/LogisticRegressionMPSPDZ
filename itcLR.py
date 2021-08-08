@@ -48,6 +48,9 @@ print("done training")
 correct = 0
 incorrect = 0
 
+print(clf.coef_.tolist()[0])
+print(clf.intercept_[0])
+
 for i in range(len(pred)):
     if int(float(pred[i])) == int(float(y_test[i])):
         correct += 1
