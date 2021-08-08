@@ -42,7 +42,7 @@ class LogisticRegression:
         X = self.examples
         y = self.labels
         m = len(X)  # Number of samples
-        feat = len(X)  # Number of features
+        feat = len(X[0])  # Number of features
 
         # We initialize our W and b as zeros
         w = sfix.Array(feat)
