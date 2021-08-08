@@ -48,7 +48,7 @@ class LogisticRegression:
         w = sfix.Matrix(1, feat)
         b = sfix.Array(1)
 
-        @for_range_opt(self.iterations)
+        @for_range(self.iterations)
         def _(i):
 
             w_delta = sfix.Array(feat + 1)
