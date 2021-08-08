@@ -31,7 +31,7 @@ def clipped_relu(z):
 
 class LogisticRegression:
 
-    def __init__(self, examples, labels, iterations=13, learning_rate=0.001):
+    def __init__(self, examples, labels, iterations=13, learning_rate=0.0001):
         # self.df = df
         self.examples = examples
         self.labels = labels
@@ -75,7 +75,7 @@ class LogisticRegression:
             b = b + w_delta[0]
 
             for j in range(len(self.examples[0])):
-                w[j] = w[j] + w_delta[j]
+                w[j] = w[j] + w_delta[j + 1]
 
             # # Computes our cost function
             # cost = (-1 / m) * np.sum(np.dot(y, np.log(pred).T) + np.dot(1 - y, np.log(1 - pred).T))
