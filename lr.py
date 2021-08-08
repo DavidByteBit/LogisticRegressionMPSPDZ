@@ -33,7 +33,7 @@ class LogisticRegression:
 
     def __init__(self, examples, labels, iterations=13, learning_rate=0.0001, b=0):
         # self.df = df
-        self.b = b
+        self.b = sfix(b)
         self.examples = examples
         self.labels = labels
         self.iterations = iterations
