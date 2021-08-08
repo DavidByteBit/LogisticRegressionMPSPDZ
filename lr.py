@@ -25,7 +25,7 @@ def dp_batch(vec, matrix, b=0):
 def clipped_relu(z):
     a = z < -0.5
     b = z > 0.5
-    return a.if_else(0, b.if_else(1, 0.5 + x))
+    return a.if_else(0, b.if_else(1, 0.5 + z))
 
 class LogisticRegression:
 
