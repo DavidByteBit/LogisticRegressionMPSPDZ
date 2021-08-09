@@ -75,7 +75,7 @@ class LogisticRegression:
             def _(i):
                 pred[i] = 0.0
 
-            print_ln("%s", pred.reveal_nested())
+            # print_ln("%s", pred.reveal_nested())
 
             print_ln("dot product complete")
 
@@ -93,20 +93,25 @@ class LogisticRegression:
 
             print_ln("delta update for bias complete")
 
+            counter = sfix.Array(1)
+
             # update weights
             @for_range_opt(feat)
             def _(j):
                 # print_ln("delta update for feature %s complete", j)
                 @for_range_opt(m)
                 def _(k):
+                    counter[0] += X[k][0]
                     # print_ln("%s", X[k][j].reveal())
-                    w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) * pred[k] * (1 - pred[k]) * X[k][j]
+                    w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) * X[k][j]
+
+            print_ln("here %s", counter[0].reveal())
 
             b[0] = b[0] + w_delta[0]
 
             w[0] = w[0] + w_delta[1:]
 
-            print_ln("%s", w[0].reveal_nested())
+            # print_ln("%s", w[0].reveal_nested())
 
             print_ln("\n\n\tepoch %s complete\n\n", i)
 
