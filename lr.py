@@ -106,7 +106,7 @@ class LogisticRegression:
 
             w[0] = w[0] + w_delta[1:]
 
-            print_ln("%s", w[0])
+            print_ln("%s", w[0].reveal_nested())
 
             print_ln("\n\n\tepoch %s complete\n\n", i)
 
