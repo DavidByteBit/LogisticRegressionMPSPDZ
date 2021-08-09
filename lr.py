@@ -113,7 +113,7 @@ class LogisticRegression:
                 def _(j):
                     w_delta[j + 1] += save[0] * X[k][j]
 
-            b[0] = b[0] + w_delta[0]  # - 1.0 * (self.learning_rate * b[0])
+            b[0] = 0  # b[0] + w_delta[0]  # - 1.0 * (self.learning_rate * b[0])
 
             print_ln("bias = %s", b[0].reveal())
 
