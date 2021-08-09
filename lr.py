@@ -55,7 +55,7 @@ class LogisticRegression:
 
         b[0] = 0.0
 
-        @for_range(self.iterations)
+        @for_range_opt(self.iterations)
         def _(i):
 
             w_delta = sfix.Array(feat + 1)
