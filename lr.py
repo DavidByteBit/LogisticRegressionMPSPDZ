@@ -29,6 +29,18 @@ def clipped_relu(z):
     return a.if_else(0, b.if_else(1, 0.5 + z))
 
 
+def sig5(x):
+    cuts = [-5, -2.5, 2.5, 5]
+    le = [0] + [x <= cut for cut in cuts] + [1]
+    select = [le[i + 1] - le[i] for i in range(5)]
+    outputs = [cfix(10 ** -4),
+               0.02776 * x + 0.145,
+               0.17 * x + 0.5,
+               0.02776 * x + 0.85498,
+               cfix(1 - 10 ** -4)]
+    return sum(a * b for a, b in zip(select, outputs))
+
+
 class LogisticRegression:
 
     def __init__(self, examples, labels, iterations=13, learning_rate=0.0001):
@@ -81,7 +93,7 @@ class LogisticRegression:
 
             @for_range_opt(m)
             def _(k):
-                pred[k] = clipped_relu(z[k])
+                pred[k] = sig5(z[k])
                 # print_ln("%s", pred[k].reveal())
 
             print_ln("classifications complete")
@@ -94,18 +106,6 @@ class LogisticRegression:
             print_ln("delta update for bias complete")
 
             counter = sfix.Array(2)
-
-            # # update weights
-            # @for_range(feat)
-            # def _(j):
-            #     # print_ln("delta update for feature %s complete", j)
-            #     @for_range(m)
-            #     def _(k):
-            #         counter[0] += X[k][0]
-            #         counter[1] += self.learning_rate * (y[k] - pred[k])
-            #         # print_ln("%s", X[k][j].reveal())
-            #         w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) * X[k][j]
-
 
             @for_range(m)
             def _(k):
