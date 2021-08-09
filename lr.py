@@ -110,7 +110,7 @@ class LogisticRegression:
 
             b[0] = b[0] + w_delta[0]
 
-            print_ln(w_delta[1:].reveal_nested())
+            print_ln("%s", w_delta[1:].reveal_nested())
 
             w[0] = w[0] + w_delta[1:]
 
