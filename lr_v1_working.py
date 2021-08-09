@@ -110,7 +110,7 @@ class LogisticRegression:
             @for_range(m)
             def _(k):
                 save = sfix.Array(1)
-                save[0] = self.learning_rate * (y[k] - pred[k]) * pred[k] * (1 - pred[k])
+                save[0] = self.learning_rate * (y[k] - pred[k])
                 @for_range(feat)
                 def _(j):
                     w_delta[j + 1] += save[0] * X[k][j]
