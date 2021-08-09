@@ -109,7 +109,7 @@ class LogisticRegression:
 
             @for_range(m)
             def _(k):
-                save = Array(1)
+                save = sfix.Array(1)
                 save[0] = self.learning_rate * (y[k] - pred[k])
                 @for_range(feat)
                 def _(j):
