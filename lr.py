@@ -95,16 +95,26 @@ class LogisticRegression:
 
             counter = sfix.Array(2)
 
-            # update weights
-            @for_range(feat)
-            def _(j):
-                # print_ln("delta update for feature %s complete", j)
-                @for_range(m)
-                def _(k):
-                    counter[0] += X[k][0]
-                    counter[1] += self.learning_rate * (y[k] - pred[k])
-                    # print_ln("%s", X[k][j].reveal())
-                    w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) * X[k][j]
+            # # update weights
+            # @for_range(feat)
+            # def _(j):
+            #     # print_ln("delta update for feature %s complete", j)
+            #     @for_range(m)
+            #     def _(k):
+            #         counter[0] += X[k][0]
+            #         counter[1] += self.learning_rate * (y[k] - pred[k])
+            #         # print_ln("%s", X[k][j].reveal())
+            #         w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) * X[k][j]
+
+
+            @for_range(m)
+            def _(k):
+                save = Array(1)
+                save[0] = self.learning_rate * (y[k] - pred[k])
+                @for_range(feat)
+                def _(j):
+                    w_delta[j + 1] += save[0] * X[k][j]
+
 
             print_ln("here %s", counter[0].reveal())
 
