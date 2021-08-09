@@ -93,7 +93,7 @@ class LogisticRegression:
 
             @for_range_opt(m)
             def _(k):
-                pred[k] = sig5(z[k])
+                pred[k] = clipped_relu(z[k])
                 # print_ln("%s", pred[k].reveal())
 
             print_ln("classifications complete")
