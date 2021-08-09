@@ -93,7 +93,7 @@ class LogisticRegression:
 
             print_ln("delta update for bias complete")
 
-            counter = sfix.Array(1)
+            counter = sfix.Array(2)
 
             # update weights
             @for_range_opt(feat)
@@ -102,12 +102,15 @@ class LogisticRegression:
                 @for_range_opt(m)
                 def _(k):
                     counter[0] += X[k][0]
+                    counter[1] += self.learning_rate * (y[k] - pred[k])
                     # print_ln("%s", X[k][j].reveal())
                     w_delta[j + 1] = w_delta[j + 1] + self.learning_rate * (y[k] - pred[k]) * X[k][j]
 
             print_ln("here %s", counter[0].reveal())
 
             b[0] = b[0] + w_delta[0]
+
+            print_ln(w_delta[1:].reveal_nested())
 
             w[0] = w[0] + w_delta[1:]
 
