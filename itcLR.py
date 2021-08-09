@@ -40,7 +40,7 @@ populate(path, y_test, "y")
 
 
 clf = LogisticRegression(penalty='l2', tol=0.001, C=1.0, random_state=42,
-                         solver='sag', max_iter=8).fit(X_train, y_train)
+                         solver='sgd', max_iter=8).fit(X_train, y_train)
 pred = clf.predict(X_test)
 
 print("done training")

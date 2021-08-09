@@ -101,7 +101,7 @@ class LogisticRegression:
             # update bias
             @for_range_opt(m)
             def _(k):
-                w_delta[0] = w_delta[0] + self.learning_rate * (y[k] - pred[k])
+                w_delta[0] = w_delta[0] + self.learning_rate * (y[k] - pred[k]) # + momentum * w_delta[0]
 
             print_ln("delta update for bias complete")
 
@@ -122,7 +122,9 @@ class LogisticRegression:
 
             print_ln("%s", w_delta[1:].reveal_nested())
 
-            w[0] = w[0] + w_delta[1:]
+            @for_range(m)
+            def _(j):
+                w[0][j] = w[0][j] + w_delta[j + 1] - self.learning_rate * w[0][j]
 
             # print_ln("%s", w[0].reveal_nested())
 
