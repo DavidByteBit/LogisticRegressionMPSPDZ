@@ -82,7 +82,7 @@ def _(i):
 
 print_ln("%s", "\n\n Data populated \n\n")
 
-lr = lr.LogisticRegression(data_train, label_train, iterations=n_epochs, learning_rate=0.001)
+lr = lr.LogisticRegression(data_train, label_train, iterations=n_epochs, learning_rate=0.0001)
 
 w, b = lr.train()
 
