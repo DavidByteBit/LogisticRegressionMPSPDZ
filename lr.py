@@ -116,6 +116,8 @@ class LogisticRegression:
 
             b[0] = b[0] + w_delta[0] - self.learning_rate * b[0]
 
+            print_ln("bias = %s", b[0].reveal())
+
             print_ln("%s", w_delta.reveal_nested())
 
             @for_range(m)
