@@ -48,7 +48,35 @@ train_size_bob = bob_examples
 
 data_train = Matrix(n_examples, n_features, sfix)
 
+alice_data = Matrix(alice_examples, n_features, sfix)
+
+bob_data = Matrix(bob_examples, n_features, sfix)
+
 label_train = Array(n_examples, sfix)
+
+alice_label = Array(alice_examples, sfix)
+
+bob_label = Array(bob_examples, sfix)
+
+
+alice_data.input_from(ALICE)
+alice_label.input_from(ALICE)
+
+bob_data.input_from(BOB)
+bob_label.input_from(BOB)
+
+@for_range(n_examples)
+def _(i):
+    @for_range(n_features)
+    def _(j):
+        data_train[i][j] = alice_data[i][j]
+        data_train[i + alice_examples][j] = bob_data[i][j]
+
+    label_train[i] = alice_label[i]
+    label_train[i + alice_examples] = bob_label[i]
+
+
+
 
 print_ln("\ttrain size: %s", n_examples)
 print_ln("\ttrain_size_alice: %s ", train_size_alice)
@@ -57,38 +85,40 @@ print_ln("\ttrain_size_bob: %s ", train_size_bob)
 
 # Reference: self.X = MultiArray([N, d, d_in], sfix)
 
-# First: Training features
-@for_range(train_size_alice)
-def _(i):
-    @for_range(n_features)
-    def _(j):
-        data_train[i][j] = sfix.get_input_from(ALICE)
-
-@for_range(train_size_alice)
-def _(i):
-    label_train[i] = sfix.get_input_from(ALICE)
-
-
-@for_range(train_size_bob)
-def _(i):
-    @for_range(n_features)
-    def _(j):
-        data_train[train_size_alice + i][j] = sfix.get_input_from(BOB)
-
-@for_range(train_size_bob)
-def _(i):
-    label_train[train_size_alice + i] = sfix.get_input_from(BOB)
+# # First: Training features
+# @for_range(train_size_alice)
+# def _(i):
+#     @for_range(n_features)
+#     def _(j):
+#         data_train[i][j] = sfix.get_input_from(ALICE)
+#
+# @for_range(train_size_alice)
+# def _(i):
+#     label_train[i] = sfix.get_input_from(ALICE)
+#
+#
+# @for_range(train_size_bob)
+# def _(i):
+#     @for_range(n_features)
+#     def _(j):
+#         data_train[train_size_alice + i][j] = sfix.get_input_from(BOB)
+#
+# @for_range(train_size_bob)
+# def _(i):
+#     label_train[train_size_alice + i] = sfix.get_input_from(BOB)
 
 
 print_ln("%s", "\n\n Data populated \n\n")
 
-lr = lr.LogisticRegression(data_train, label_train, iterations=n_epochs, learning_rate=0.001)
+lr = 0.001
+
+lr = lr.LogisticRegression(data_train, label_train, iterations=n_epochs, learning_rate=lr)
 
 w, b = lr.train()
 
 # For classification
-print_ln("Training finished")
 print_ln("%s", n_epochs)
-# print_ln("%s", sgd.layers[0].N)
+print_ln("%s", lr)
+print_ln("Training finished")
 print_ln("%s", b.reveal())
 print_ln("%s", w.reveal_nested())

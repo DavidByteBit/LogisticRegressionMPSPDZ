@@ -27,10 +27,6 @@ def sig(x):
 
 
 def dp(a, b):
-
-    print(len(a))
-    print(len(b))
-
     assert (len(a) == len(b))
 
     res = 0
@@ -54,8 +50,8 @@ def load_model(file_path):
                 delim = i
             i += 1
 
-    bias = float(output[delim + 2].replace("\n", ""))
-    weights_mid = output[delim + 3]
+    bias = float(output[delim + 1].replace("\n", ""))
+    weights_mid = output[delim + 2]
 
     weights_mid = weights_mid.replace("[", "").replace("]", "").replace(" ", "").replace("\n", "")
 
