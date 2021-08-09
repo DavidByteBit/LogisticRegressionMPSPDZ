@@ -96,10 +96,10 @@ class LogisticRegression:
             counter = sfix.Array(2)
 
             # update weights
-            @for_range_opt(feat)
+            @for_range(feat)
             def _(j):
                 # print_ln("delta update for feature %s complete", j)
-                @for_range_opt(m)
+                @for_range(m)
                 def _(k):
                     counter[0] += X[k][0]
                     counter[1] += self.learning_rate * (y[k] - pred[k])
