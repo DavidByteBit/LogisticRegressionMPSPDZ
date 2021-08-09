@@ -90,7 +90,7 @@ class LogisticRegression:
 
             print_ln("dot product complete")
 
-            @for_range_opt(m)
+            @for_range(m)
             def _(k):
                 pred[k] = clipped_relu(z[k])
                 # print_ln("%s", pred[k].reveal())
@@ -98,7 +98,7 @@ class LogisticRegression:
             print_ln("classifications complete")
 
             # update bias
-            @for_range_opt(m)
+            @for_range(m)
             def _(k):
                 w_delta[0] = w_delta[0] + self.learning_rate * (y[k] - pred[k])  # + momentum * w_delta[0]
 
