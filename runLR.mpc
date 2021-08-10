@@ -89,7 +89,7 @@ print_ln("%s", "\n\n Data populated \n\n")
 
 # Define logistic regression model
 sgd = ml.SGD([ml.Dense(alice_examples, n_features, 1),
-              ml.Output(alice_examples, approx=3)], 13,
+              ml.Output(alice_examples, approx=3)], n_epochs,
              report_loss=True, debug=True)
 
 sgd.reset()  # <--- Can cause register overflow?
@@ -113,7 +113,7 @@ print_ln("%s", sgd.layers[1].Y.reveal_nested()[0:32])
 #     sgd.layers[1].Y[i] = label_train[i]
 
 
-sgd.run(batch_size=4)
+sgd.run(batch_size=128)
 
 # For classification
 print_ln("Training finished")
