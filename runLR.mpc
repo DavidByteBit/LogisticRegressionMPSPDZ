@@ -118,7 +118,7 @@ sgd.run(batch_size=4)
 # For classification
 print_ln("Training finished")
 print_ln("%s", n_epochs)
-print_ln("%s", sgd.layers[0].N)
+# print_ln("%s", sgd.layers[0].N)
 print_ln("%s", sgd.layers[0].b[0].reveal())
 print_ln("%s", sgd.layers[0].W.reveal_nested())
 
