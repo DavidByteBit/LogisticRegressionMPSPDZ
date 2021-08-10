@@ -88,8 +88,8 @@ print_ln("%s", "\n\n Data populated \n\n")
 # print_ln("%s", batch_list_order_train[0:5])
 
 # Define logistic regression model
-sgd = ml.SGD([ml.Dense(alice_examples, n_features, 1),
-              ml.Output(alice_examples, approx=3)], 10,
+sgd = ml.SGD([ml.Dense(n_examples, n_features, 1),
+              ml.Output(n_examples, approx=3)], 10,
              report_loss=True, debug=False)
 
 sgd.reset()  # <--- Can cause register overflow?
