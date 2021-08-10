@@ -113,7 +113,7 @@ print_ln("%s", sgd.layers[1].Y.reveal_nested()[0:32])
 #     sgd.layers[1].Y[i] = label_train[i]
 
 
-sgd.run(batch_size=8)
+sgd.run(batch_size=32)
 
 # For classification
 print_ln("Training finished")
