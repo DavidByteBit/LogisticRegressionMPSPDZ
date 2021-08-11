@@ -38,6 +38,7 @@ def edit_source_code(settings_map, params):
     # 'command line arguments' for our .mpc file
     n_epochs = settings_map['n_epochs']
     folds = settings_map['folds']
+    lambda_ = settings_map['lambda']
     alice_examples = params[0]
     bob_examples = params[1]
     n_features = params[2]
@@ -63,6 +64,7 @@ def edit_source_code(settings_map, params):
     file[start_of_delim + 3] = "n_features = {n}\n".format(n=n_features)
     file[start_of_delim + 4] = "n_epochs = {n}\n".format(n=n_epochs)
     file[start_of_delim + 5] = "folds = {n}\n".format(n=folds)
+    file[start_of_delim + 6] = "lambda_ = {n}\n".format(n=lambda_)
 
     # file as a string
     file = ''.join([s for s in file])
