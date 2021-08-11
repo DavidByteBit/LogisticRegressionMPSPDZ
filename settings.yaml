@@ -10,3 +10,4 @@
  create_data: "False"
  compiler: "-R 64 -Y runLR"
  lambda: "1"
+ batch: "128"
