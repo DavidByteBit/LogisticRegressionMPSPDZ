@@ -29,7 +29,8 @@ def run():
     edit_source_code(settings_map, params)
 
     # Compile .mpc program
-    subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/compile.sh")
+    c = settings_map["compiler"]
+    subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/compile.sh %s" % c, shell=True)
     # subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/classify.sh")
 
 
