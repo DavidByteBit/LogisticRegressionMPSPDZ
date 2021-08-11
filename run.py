@@ -30,8 +30,7 @@ def run():
 
     # Compile .mpc program
     c = settings_map["compiler"]
-    print(settings_map['path_to_this_repo'] + "/bash_scripts/compile.sh " + c)
-    subprocess.check_call([settings_map['path_to_this_repo'] + "/bash_scripts/compile.sh ", c])
+    subprocess.check_call([settings_map['path_to_this_repo'] + "/bash_scripts/compile.sh", c])
     # subprocess.call(settings_map['path_to_this_repo'] + "/bash_scripts/classify.sh")
 
 
