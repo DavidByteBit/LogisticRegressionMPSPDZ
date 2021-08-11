@@ -11,7 +11,12 @@ from sklearn import preprocessing
 from numpy import savetxt
 import sys
 
+rows = None
+cols = None
 num_of_folds = int(sys.argv[1])
+if len(sys.argv) > 2:
+    rows = int(sys.argv[2])
+    cols = int(sys.argv[3])
 
 
 
@@ -23,9 +28,17 @@ def preprocess(dirty_df):
     dirty_df['__target__'] = dirty_df['cohort_flag'].map(str).map(target_map)
     dirty_df = dirty_df.drop(['cohort_flag'], axis=1)
     clean_X = dirty_df.drop('__target__', axis=1)
+
+    if cols is not None:
+        clean_X = clean_X.iloc[:, :cols]
+
     clean_X = clean_X.to_numpy()
     clean_X = preprocessing.normalize(clean_X, norm='l2')
     clean_y = np.array(dirty_df['__target__'])
+
+    if rows is not None:
+        return clean_X[0:rows], clean_y[0:rows]
+
     return clean_X, clean_y
 
 
