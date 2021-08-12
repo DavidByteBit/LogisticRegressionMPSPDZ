@@ -113,10 +113,12 @@ def edit_source_code(settings_map, params):
 def write_data(settings_map):
     path = settings_map['alice_data_folder']
 
-    x_train = path + "/train_X_fold{n}.csv".format(n=0)
-    y_train = path + "/train_y_fold{n}.csv".format(n=0)
-    x_test = path + "/test_X_fold{n}.csv".format(n=0)
-    y_test = path + "/test_y_fold{n}.csv".format(n=0)
+    fold = settings_map['fold']
+
+    x_train = path + "/train_X_fold{n}.csv".format(n=fold)
+    y_train = path + "/train_y_fold{n}.csv".format(n=fold)
+    x_test = path + "/test_X_fold{n}.csv".format(n=fold)
+    y_test = path + "/test_y_fold{n}.csv".format(n=fold)
 
     paths = [x_train, y_train]
 
@@ -144,10 +146,10 @@ def write_data(settings_map):
 
     path = settings_map['bob_data_folder']
 
-    x_train = path + "/train_X_fold{n}.csv".format(n=0)
-    y_train = path + "/train_y_fold{n}.csv".format(n=0)
-    x_test = path + "/test_X_fold{n}.csv".format(n=0)
-    y_test = path + "/test_y_fold{n}.csv".format(n=0)
+    x_train = path + "/train_X_fold{n}.csv".format(n=fold)
+    y_train = path + "/train_y_fold{n}.csv".format(n=fold)
+    x_test = path + "/test_X_fold{n}.csv".format(n=fold)
+    y_test = path + "/test_y_fold{n}.csv".format(n=fold)
 
     paths = [x_train, y_train]
 
