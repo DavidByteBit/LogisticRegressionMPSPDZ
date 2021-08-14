@@ -14,7 +14,7 @@ def gen_samples_(d):
     gaussian_vec = sfix.Array(d)
 
     # div two since the Box-Mueller transform produces 2 samples
-    @for_range(d // 2)
+    @for_range_opt(d // 2)
     def _(i):
         # TODO: test range
         A = sfix.get_random(0, 1)
