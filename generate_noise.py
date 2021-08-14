@@ -20,7 +20,7 @@ def produce_Guassian_noise_(n):
         A = sint.get_random()
         B = sint.get_random()
 
-        C = sqrt(-2 * log_fx(A, e))
+        C = sqrt(-2 * log_fx(A, float(e)))
 
         trig_arg = (2 * pi) * B
         cosine = cos(trig_arg)
