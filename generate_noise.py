@@ -56,7 +56,7 @@ def normalize_(vec, d):
     s = sfix.Array(1)
     s[0] = sfix(0)
 
-    @for_range(d)
+    @for_range_opt(d)
     def _(i):
         s[0] += L2_norm_vec_intermediate[i]
 
@@ -65,7 +65,7 @@ def normalize_(vec, d):
 
     L2_norm = sqrt(s[0])
 
-    @for_range(d)
+    @for_range_opt(d)
     def _(i):
         L2_norm_vec[i] = L2_norm_vec_intermediate[i] / L2_norm
 
@@ -79,7 +79,7 @@ def gen_gamma_dis(d, n, epsilon, lamb):
     samples = gen_samples_(d)
     samples_log = sfix.Array(d)
 
-    @for_range(d)
+    @for_range_opt(d)
     def _(i):
         samples_log[i] = -1 * log_fx(samples[i], e)
 
@@ -88,7 +88,7 @@ def gen_gamma_dis(d, n, epsilon, lamb):
     # equivalent to dividing by 2/n*epsilon*lambda
     norm_const = n * epsilon * lamb * 0.5
 
-    @for_range(d)
+    @for_range_opt(d)
     def _(i):
         gamma_dis[i] = samples_log[i] * norm_const
 
