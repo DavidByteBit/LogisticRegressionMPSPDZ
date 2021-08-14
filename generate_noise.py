@@ -50,6 +50,8 @@ def normalize_(vec, d):
 
     L2_norm_vec_intermediate = L2_norm_vec_intermediate * L2_norm_vec_intermediate
 
+    print(L2_norm_vec_intermediate)
+
     s = sfix.Array(1)
     s[0] = sfix(0)
 
