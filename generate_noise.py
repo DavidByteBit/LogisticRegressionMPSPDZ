@@ -9,6 +9,9 @@ pi = math.pi
 
 
 def gen_samples_(d):
+
+    print_ln("generating samples")
+
     assert d >= 1
 
     gaussian_vec = sfix.Array(d)
@@ -41,17 +44,14 @@ def gen_samples_(d):
 
 def normalize_(vec, d):
 
+    print_ln("normalizing samples")
+
     L2_norm_vec_intermediate = sfix.Array(d)
     L2_norm_vec = sfix.Array(d)
-
-
-    print(L2_norm_vec_intermediate)
 
     @for_range_opt(d)
     def _(i):
         L2_norm_vec_intermediate[i] = vec[i] * vec[i]
-
-    print(L2_norm_vec_intermediate)
 
     s = sfix.Array(1)
     s[0] = sfix(0)
@@ -73,6 +73,8 @@ def normalize_(vec, d):
 
 
 def gen_gamma_dis(d, n, epsilon, lamb):
+
+    print_ln("generating gamma dis samples")
 
     samples = gen_samples_(d)
     samples_log = sfix.Array(d)
