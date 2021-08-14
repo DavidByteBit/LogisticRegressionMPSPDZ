@@ -48,6 +48,8 @@ def normalize_(vec, d):
     def _(i):
         L2_norm_vec_intermediate[i] = vec[i]
 
+    print(L2_norm_vec_intermediate)
+
     L2_norm_vec_intermediate = L2_norm_vec_intermediate * L2_norm_vec_intermediate
 
     print(L2_norm_vec_intermediate)
