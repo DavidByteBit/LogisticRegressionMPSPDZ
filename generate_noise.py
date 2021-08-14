@@ -7,14 +7,14 @@ import math
 e = math.e
 pi = math.pi
 
-def produce_Guassian_noise_(n):
 
-    assert n >= 1
+def gen_samples_(d):
+    assert d >= 1
 
-    gaussian_vec = sfix.Array(n)
+    gaussian_vec = sfix.Array(d)
 
     # div two since the Box-Mueller transform produces 2 samples
-    @for_range(n // 2)
+    @for_range(d // 2)
     def _(i):
         # TODO: test range
         A = sfix.get_random(0, 1)
@@ -33,20 +33,18 @@ def produce_Guassian_noise_(n):
         gaussian_vec[(2 * i) + 1] = r2
 
     # if n is odd, our vec is one element short. Obtain one more sample
-    if n % 2 == 1:
-        gaussian_vec[n - 1] = produce_Guassian_noise_(2)[0]
+    if d % 2 == 1:
+        gaussian_vec[d - 1] = gen_samples_(2)[0]
 
     return gaussian_vec
 
 
-def normalize_(vec):
+def normalize_(vec, d):
 
-    n = vec.length
+    L2_norm_vec_intermediate = sfix.Array(d)
+    L2_norm_vec = sfix.Array(d)
 
-    L2_norm_vec_intermediate = sfix.Array(n)
-    L2_norm_vec = sfix.Array(n)
-
-    @for_range(n)
+    @for_range(d)
     def _(i):
         L2_norm_vec_intermediate[i] = vec[i]
 
@@ -54,20 +52,58 @@ def normalize_(vec):
 
     s = sfix(0)
 
-    for i in range(n):
+    for i in range(d):
         s += L2_norm_vec_intermediate[i]
 
     L2_norm = sqrt(s)
 
-    for i in range(n):
-        L2_norm_vec[i] = L2_norm_vec_intermediate[i]/L2_norm
+    for i in range(d):
+        L2_norm_vec[i] = L2_norm_vec_intermediate[i] / L2_norm
 
     return L2_norm_vec
 
 
-def gen_noise(n):
-    vec = produce_Guassian_noise_(n)
-    vec = normalize_(vec)
+def gamma_helper_log_(vec, d):
+
+    new_vec = sfix.Array(d)
+
+    @for_range(d)
+    def _(i):
+        new_vec[i] = -1 * log_fx(vec[i], e)
+
+    return new_vec
 
 
-gen_noise(16)
+def gen_gamma_dis(d, n, epsilon, lamb):
+
+    samples = gen_samples_(d)
+    samples_log = gamma_helper_log_(samples, d)
+
+    gamma_dis = sfix.Array(d)
+
+    norm_const = n * epsilon * lamb * 0.5
+
+    @for_range(d)
+    def _(i):
+        gamma_dis[i] = samples_log[i] * norm_const
+
+    return gamma_dis
+
+
+def gen_noise(d, n, epsilon, lamb):
+
+    gaussian_vec = gen_samples_(d)
+    gaussian_vec_normalized = normalize_(gaussian_vec, d)
+
+    # TODO: figure out - Is the gama distribution suppose to build off of the normalized gaus vec? Or is it seperate?
+    gama_dis = gen_gamma_dis(d, n, epsilon, lamb)
+
+    return gaussian_vec_normalized, gama_dis
+
+
+d_ = 16
+n_ = 5
+epsilon_ = 0.1
+lamb_ = 0.1
+
+gen_noise(d_, n_, epsilon_, lamb_)
