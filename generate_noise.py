@@ -63,24 +63,18 @@ def normalize_(vec, d):
     return L2_norm_vec
 
 
-def gamma_helper_log_(vec, d):
-
-    new_vec = sfix.Array(d)
-
-    @for_range(d)
-    def _(i):
-        new_vec[i] = -1 * log_fx(vec[i], e)
-
-    return new_vec
-
-
 def gen_gamma_dis(d, n, epsilon, lamb):
 
     samples = gen_samples_(d)
-    samples_log = gamma_helper_log_(samples, d)
+    samples_log = sfix.Array(d)
+
+    @for_range(d)
+    def _(i):
+        samples_log[i] = -1 * log_fx(samples[i], e)
 
     gamma_dis = sfix.Array(d)
 
+    # equivalent to dividing by 2/n*epsilon*lambda
     norm_const = n * epsilon * lamb * 0.5
 
     @for_range(d)
@@ -95,13 +89,12 @@ def gen_noise(d, n, epsilon, lamb):
     gaussian_vec = gen_samples_(d)
     gaussian_vec_normalized = normalize_(gaussian_vec, d)
 
-    # TODO: figure out - Is the gama distribution suppose to build off of the normalized gaus vec? Or is it seperate?
-    gama_dis = gen_gamma_dis(d, n, epsilon, lamb)
+    gamma_dis = gen_gamma_dis(d, n, epsilon, lamb)
 
-    return gaussian_vec_normalized, gama_dis
+    return gaussian_vec_normalized, gamma_dis
 
 
-d_ = 16
+d_ = 10000
 n_ = 5
 epsilon_ = 0.1
 lamb_ = 0.1
