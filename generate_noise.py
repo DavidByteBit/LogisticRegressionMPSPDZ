@@ -52,8 +52,13 @@ def normalize_(vec, d):
 
     s = sfix(0)
 
-    for i in range(d):
+    @for_range(d)
+    def _(i):
+        global s
         s += L2_norm_vec_intermediate[i]
+
+    # for i in range(d):
+    #     s += L2_norm_vec_intermediate[i]
 
     L2_norm = sqrt(s)
 
