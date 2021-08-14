@@ -44,13 +44,12 @@ def normalize_(vec, d):
     L2_norm_vec_intermediate = sfix.Array(d)
     L2_norm_vec = sfix.Array(d)
 
-    @for_range(d)
-    def _(i):
-        L2_norm_vec_intermediate[i] = vec[i]
 
     print(L2_norm_vec_intermediate)
 
-    L2_norm_vec_intermediate = L2_norm_vec_intermediate * L2_norm_vec_intermediate
+    @for_range_opt(d)
+    def _(i):
+        L2_norm_vec_intermediate[i] = vec[i] * vec[i]
 
     print(L2_norm_vec_intermediate)
 
