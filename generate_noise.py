@@ -99,6 +99,7 @@ n_ = 5
 epsilon_ = 0.1
 lamb_ = 0.1
 
-res = gen_noise(d_, n_, epsilon_, lamb_)
+gaus, gamm = gen_noise(d_, n_, epsilon_, lamb_)
 
-print_ln("%s", res.reveal_nested())
+print_ln("%s", gaus.reveal_nested()[:20])
+print_ln("%s", gamm.reveal_nested()[:20])
