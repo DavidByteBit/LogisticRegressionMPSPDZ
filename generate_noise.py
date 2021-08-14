@@ -44,6 +44,7 @@ def normalize_(vec):
     n = vec.length
 
     L2_norm_vec_intermediate = sfix.Array(n)
+    L2_norm_vec = sfix.Array(n)
 
     @for_range(n)
     def _(i):
@@ -59,9 +60,9 @@ def normalize_(vec):
     L2_norm = sqrt(s)
 
     for i in range(n):
-        L2_norm_vec_intermediate[i] = L2_norm_vec_intermediate[i]/L2_norm
+        L2_norm_vec[i] = L2_norm_vec_intermediate[i]/L2_norm
 
-    return L2_norm_vec_intermediate
+    return L2_norm_vec
 
 
 def gen_noise(n):
