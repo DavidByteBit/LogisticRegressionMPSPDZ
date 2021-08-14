@@ -11,7 +11,7 @@ def produce_Guassian_noise_(n):
 
     assert n >= 1
 
-    gaussian_vec = sint.Array(n)
+    gaussian_vec = sfix.Array(n)
 
     # div two since the Box-Mueller transform produces 2 samples
     @for_range(n // 2)
