@@ -41,7 +41,7 @@ def produce_Guassian_noise_(n):
 
 def normalize_(vec):
 
-    n = vec.len()
+    n = vec.length
 
     L2_norm = sfix(0)
     L2_norm_vec_intermediate = sint.Array(n)
