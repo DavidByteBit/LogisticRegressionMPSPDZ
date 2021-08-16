@@ -84,7 +84,8 @@ def gen_gamma_dis2_(d, n, epsilon=1, lamb=1):
     print_ln("generating gamma dis samples")
 
     #gamma_samples = sfix.Array(d)
-    global final_gamma = sfix._new(0)
+    final_gamma = sfix._new(0)
+    global final_gamma
 
     @for_range_opt(d)
     def _(i):
