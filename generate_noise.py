@@ -2,9 +2,10 @@ from Compiler.mpc_math import log_fx
 from Compiler.mpc_math import cos
 from Compiler.mpc_math import sin
 from Compiler.mpc_math import sqrt
-import math
 from Compiler.types import *
 from Compiler.library import *
+
+import math
 
 
 e = math.e
