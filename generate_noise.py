@@ -84,11 +84,11 @@ def gen_gamma_dis2_(d, n, epsilon=1, lamb=1):
     print_ln("generating gamma dis samples")
 
     #gamma_samples = sfix.Array(d)
+    global final_gamma
     final_gamma = sfix._new(0)
 
     @for_range_opt(d)
     def _(i):
-        global final_gamma
         final_gamma = final_gamma + generate_exp_distribution_()
 
 
