@@ -86,7 +86,7 @@ def gen_gamma_dis2_(d, n, epsilon=1, lamb=1):
         global final_gamma
         final_gamma = final_gamma + generate_exp_distribution_()
 
-    print_ln("%s", final_gamma.reveal())
+    # print_ln("%s", final_gamma.reveal())
 
     norm_const = n * epsilon * lamb
     div = 2/norm_const
@@ -111,12 +111,12 @@ def gen_noise(d, n, epsilon, lamb):
 #### end
 
 
-d_ = 1700
-n_ = 1800
-epsilon_ = 1
-lamb_ = 1
-
-noise_vector = gen_noise(d_, n_, epsilon_, lamb_)
-
-print_ln("%s", noise_vector.reveal()[:20])
+# d_ = 1700
+# n_ = 1800
+# epsilon_ = 1
+# lamb_ = 1
+#
+# noise_vector = gen_noise(d_, n_, epsilon_, lamb_)
+#
+# print_ln("%s", noise_vector.reveal()[:20])
 
