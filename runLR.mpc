@@ -90,7 +90,7 @@ bias = sgd.layers[0].b[0] + dp_noise[0]
 weights_l = sgd.layers[0].W.reveal_nested()
 print(type(weights_l))
 print(type(weights_l[0]))
-print(type(cfix(weights_l[0][0])))
+print(type(sfix(weights_l[0][0])))
 weights_A = sfix.Array(n_features)
 
 @for_range(n_features)
