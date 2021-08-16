@@ -86,12 +86,12 @@ def gen_gamma_dis2_(d, n, epsilon=1, lamb=1):
         global final_gamma
         final_gamma = final_gamma + generate_exp_distribution_()
 
-    # print_ln("%s", final_gamma.reveal())
-
     norm_const = n * epsilon * lamb
     div = 2/norm_const
 
     final_gamma = final_gamma * div
+
+    # print_ln("%s", final_gamma.reveal())
 
     return final_gamma
 #### end
