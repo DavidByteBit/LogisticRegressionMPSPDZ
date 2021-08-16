@@ -10,7 +10,7 @@ pi = math.pi
 
 def gen_samples_(d):
 
-    print_ln("generating samples")
+    # print_ln("generating samples")
 
     assert d >= 1
 
@@ -44,7 +44,7 @@ def gen_samples_(d):
 
 def normalize_(vec, d):
 
-    print_ln("normalizing samples")
+    # print_ln("normalizing samples")
 
     L2_norm_vec_intermediate = sfix.Array(d)
     L2_norm_vec_intermediate.assign_vector(vec * vec)
@@ -76,7 +76,7 @@ def generate_exp_distribution_():
 
 def gen_gamma_dis2_(d, n, epsilon=1, lamb=1):
 
-    print_ln("generating gamma dis samples")
+    # print_ln("generating gamma dis samples")
 
     global final_gamma
     final_gamma = sfix._new(0)
