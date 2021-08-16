@@ -42,7 +42,8 @@ def gen_samples_(d):
         ra = r1.reveal()
         rb = r2.reveal()
 
-        if ra < 0 or rb < 0:
+        @if_(ra < 0 or rb < 0)
+        def _():
             print_ln("negative number")
 
         gaussian_vec[2 * i] = r1
