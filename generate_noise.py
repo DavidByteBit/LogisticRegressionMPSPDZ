@@ -42,7 +42,11 @@ def gen_samples_(d):
         ra = r1.reveal()
         rb = r2.reveal()
 
-        @if_(ra < 0 or rb < 0)
+        @if_(ra < 0)
+        def _():
+            print_ln("negative number")
+
+        @if_(rb < 0)
         def _():
             print_ln("negative number")
 
