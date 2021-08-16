@@ -85,7 +85,6 @@ def gen_gamma_dis2_(d, n, epsilon=1, lamb=1):
 
     #gamma_samples = sfix.Array(d)
     final_gamma = sfix.assign(0)
-    global final_gamma
 
     @for_range_opt(d)
     def _(i):
