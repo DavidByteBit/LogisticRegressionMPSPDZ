@@ -39,16 +39,17 @@ def gen_samples_(d):
         r1 = C * cosine
         r2 = C * sine
 
-        ra = r1.reveal()
-        rb = r2.reveal()
-
-        @if_(ra < 0)
-        def _():
-            print_ln("negative number")
-
-        @if_(rb < 0)
-        def _():
-            print_ln("negative number")
+        # We do in fact obtain negative numbers
+        # ra = r1.reveal()
+        # rb = r2.reveal()
+        #
+        # @if_(ra < 0)
+        # def _():
+        #     print_ln("negative number")
+        #
+        # @if_(rb < 0)
+        # def _():
+        #     print_ln("negative number")
 
         gaussian_vec[2 * i] = r1
         gaussian_vec[(2 * i) + 1] = r2

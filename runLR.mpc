@@ -85,6 +85,13 @@ print_ln("%s", batch_size)
 
 dp_noise = generate_noise.gen_noise(n_features + 1, n_examples)
 
+@for_range(n_features + 1)
+def _(i):
+    ra = dp_noise[i].reveal()
+    @if_(ra < 0)
+    def _():
+        print_ln("negative number")
+
 bias = sgd.layers[0].b[0] + dp_noise[0]
 # turns it into a list
 weights_l = sgd.layers[0].W
