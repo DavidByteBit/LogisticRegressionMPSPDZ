@@ -87,7 +87,7 @@ dp_noise = generate_noise.gen_noise(n_features + 1, n_examples)
 
 bias = sgd.layers[0].b[0] + dp_noise[0]
 # turns it into a list
-weights_l = sgd.layers[0].W.reveal_nested()
+weights_l = sgd.layers[0].W
 print(type(weights_l))
 print(type(weights_l[0]))
 print(type(sfix(weights_l[0][0])))
