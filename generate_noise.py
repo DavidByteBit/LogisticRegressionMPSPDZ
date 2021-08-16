@@ -60,9 +60,6 @@ def normalize_(vec, d):
     def _(i):
         s[0] += L2_norm_vec_intermediate[i]
 
-    # for i in range(d):
-    #     s += L2_norm_vec_intermediate[i]
-
     L2_norm = sqrt(s[0])
 
     @for_range_opt(d)
@@ -83,7 +80,6 @@ def gen_gamma_dis2_(d, n, epsilon=1, lamb=1):
 
     print_ln("generating gamma dis samples")
 
-    #gamma_samples = sfix.Array(d)
     global final_gamma
     final_gamma = sfix._new(0)
 
@@ -92,8 +88,6 @@ def gen_gamma_dis2_(d, n, epsilon=1, lamb=1):
         global final_gamma
         final_gamma = final_gamma + generate_exp_distribution_()
 
-
-    # equivalent to dividing by 2/n*epsilon*lambda
     norm_const = n * epsilon * lamb
     div = 2/norm_const
 
@@ -110,7 +104,7 @@ def gen_noise(d, n, epsilon, lamb):
 
     #### added by sikha
     gamma = gen_gamma_dis2_(d, n, epsilon, lamb)
-    noise_vector = sfix.Array(d)
+    #noise_vector = sfix.Array(d)
     noise_vector.assign_vector(gaussian_vec_normalized.get_vector() * gamma)
 
     return noise_vector
