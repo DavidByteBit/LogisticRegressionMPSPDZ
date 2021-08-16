@@ -80,7 +80,7 @@ def normalize_(vec, d):
     L2_norm = sqrt(s)
 
     L2_norm_vec = sfix.Array(d)
-    L2_norm_vec.assign_vector(L2_norm_vec_intermediate / L2_norm)
+    L2_norm_vec.assign_vector(vec / L2_norm)
 
     return L2_norm_vec
 #### end
