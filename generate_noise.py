@@ -46,7 +46,7 @@ def normalize_(vec, d):
     print_ln("normalizing samples")
 
     L2_norm_vec_intermediate = sfix.Array(d)
-    L2_norm_vec_intermediate.assign(vec * vec)
+    L2_norm_vec_intermediate.assign_vector(vec * vec)
 
     global s
     s = sfix._new(0)
@@ -59,7 +59,7 @@ def normalize_(vec, d):
     L2_norm = sqrt(s)
 
     L2_norm_vec = sfix.Array(d)
-    L2_norm_vec.assign(L2_norm_vec_intermediate / L2_norm)
+    L2_norm_vec.assign_vector(L2_norm_vec_intermediate / L2_norm)
 
     return L2_norm_vec
 
@@ -96,15 +96,34 @@ def gen_gamma_dis2_(d, n, epsilon=1, lamb=1):
 
 def gen_noise(d, n, epsilon, lamb):
 
-    gaussian_vec = gen_samples_(d)
-    gaussian_vec_normalized = normalize_(gaussian_vec, d)
+    q = 10
+    a = sfix.Array(q)
 
-    #### added by sikha
-    gamma = gen_gamma_dis2_(d, n, epsilon, lamb)
-    noise_vector = sfix.Array(d)
-    noise_vector.assign_vector(gaussian_vec_normalized.get_vector() * gamma)
+    @for_range(q)
+    def _(i):
+        a[i] = sfix(i * 10.0)
 
-    return noise_vector
+    b = sfix.Array(q)
+
+    b.assign_vector(a / 10)
+
+    c = sfix.Array(q)
+
+    c.assign_vector(a * 10)
+
+    print_ln("%s", a.reveal())
+    print_ln("%s", b.reveal())
+    print_ln("%s", c.reveal())
+
+    # gaussian_vec = gen_samples_(d)
+    # gaussian_vec_normalized = normalize_(gaussian_vec, d)
+    #
+    # #### added by sikha
+    # gamma = gen_gamma_dis2_(d, n, epsilon, lamb)
+    # noise_vector = sfix.Array(d)
+    # noise_vector.assign_vector(gaussian_vec_normalized.get_vector() * gamma)
+    #
+    # return noise_vector
     #### end
 
 
