@@ -86,7 +86,11 @@ print_ln("%s", batch_size)
 dp_noise = generate_noise.gen_noise(n_features + 1, n_examples)
 
 bias = sgd.layers[0].b[0].reveal() + dp_noise[0]
-weights = sgd.layers[0].W.reveal_nested() + dp_noise[1:]
+weights = sgd.layers[0].W.reveal_nested()
+
+@for_range(weights.length)
+def _(i):
+    weights[i] += dp_noise[i]
 
 # For classification
 print_ln("Training finished")
