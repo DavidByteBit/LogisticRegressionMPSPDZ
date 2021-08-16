@@ -35,7 +35,7 @@ def gen_samples_(d):
         gaussian_vec[2 * i] = r1
         gaussian_vec[(2 * i) + 1] = r2
 
-    # if n is odd, our vec is one element short. Obtain one more sample
+    # if d is odd, our vec is one element short. Obtain one more sample
     if d % 2 == 1:
         gaussian_vec[d - 1] = gen_samples_(2)[0]
 
@@ -72,27 +72,33 @@ def normalize_(vec, d):
     return L2_norm_vec
 
 
-def gen_gamma_dis(d, n, epsilon, lamb):
+# exponential distribution with rate 1 (Exp(1))
+def generate_exp_distribution_():
+    U = sfix.get_random(0, 1)
+    exp_sample = -1 * log_fx(U, e)
+    return exp_sample
+
+
+def gen_gamma_dis2_(d, n, epsilon=1, lamb=1):
 
     print_ln("generating gamma dis samples")
 
-    samples = gen_samples_(d)
-    samples_log = sfix.Array(d)
+    #gamma_samples = sfix.Array(d)
+    final_gamma = sfix._new(0)
 
     @for_range_opt(d)
     def _(i):
-        samples_log[i] = -1 * log_fx(samples[i], e)
+        final_gamma = final_gamma + generate_exp_distribution_()
 
-    gamma_dis = sfix.Array(d)
 
     # equivalent to dividing by 2/n*epsilon*lambda
-    norm_const = n * epsilon * lamb * 0.5
+    norm_const = n * epsilon * lamb
+    div = 2/norm_const
 
-    @for_range(d)
-    def _(i):
-        gamma_dis[i] = samples_log[i] * norm_const
+    final_gamma = final_gamma * div
 
-    return gamma_dis
+    return final_gamma
+#### end
 
 
 def gen_noise(d, n, epsilon, lamb):
@@ -100,17 +106,19 @@ def gen_noise(d, n, epsilon, lamb):
     gaussian_vec = gen_samples_(d)
     gaussian_vec_normalized = normalize_(gaussian_vec, d)
 
-    gamma_dis = gen_gamma_dis(d, n, epsilon, lamb)
+    #### added by sikha
+    gamma = gen_gamma_dis2_(d, n, epsilon, lamb)
+    noise_vector = sfix.Array(d)
+    noise_vector.assign_vector(gaussian_vec_normalized.get_vector() * gamma)
 
-    return gaussian_vec_normalized, gamma_dis
+    return noise_vector
+    #### end
 
 
-d_ = 10000
-n_ = 5
-epsilon_ = 0.1
-lamb_ = 0.1
+d_ = 1700
+n_ = 1800
+epsilon_ = 1
+lamb_ = 1
 
-gaus, gamm = gen_noise(d_, n_, epsilon_, lamb_)
+noise_vector = gen_noise(d_, n_, epsilon_, lamb_)
 
-print_ln("%s", gaus.reveal_nested()[:20])
-print_ln("%s", gamm.reveal_nested()[:20])
