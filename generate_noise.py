@@ -105,11 +105,11 @@ def gen_noise(d, n, epsilon, lamb):
 
     b = sfix.Array(q)
 
-    b.assign_vector(a / 10)
+    b.assign_vector(a / 10.0)
 
     c = sfix.Array(q)
 
-    c.assign_vector(a * 10)
+    c.assign_vector(a * 10.0)
 
     print_ln("%s", a.reveal())
     print_ln("%s", b.reveal())
