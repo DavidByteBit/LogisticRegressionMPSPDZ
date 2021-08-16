@@ -40,7 +40,7 @@ def gen_samples_(d):
         r2 = C * sine
 
         ra = r1.reveal()
-        rb = r2.reaveal()
+        rb = r2.reveal()
 
         if ra < 0 or rb < 0:
             print_ln("negative number")
