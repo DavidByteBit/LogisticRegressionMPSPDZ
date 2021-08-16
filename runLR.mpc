@@ -1,5 +1,5 @@
 from Compiler import ml
-import generate_noise
+from Compiler import generate_noise
 import math
 
 # NOTE: This script should not be run alone. The entry point to run the program is in run.py.
