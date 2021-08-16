@@ -46,26 +46,24 @@ def normalize_(vec, d):
     print_ln("normalizing samples")
 
     L2_norm_vec_intermediate = sfix.Array(d)
-    L2_norm_vec = sfix.Array(d)
-
     L2_norm_vec_intermediate.assign(vec * vec)
 
-    @for_range_opt(d)
-    def _(i):
-        L2_norm_vec_intermediate[i] = vec[i] * vec[i]
-
-    s = sfix.Array(1)
-    s[0] = sfix(0)
+    global s
+    s = sfix._new(0)
 
     @for_range(d)
     def _(i):
-        s[0] += L2_norm_vec_intermediate[i]
+        global s
+        s += L2_norm_vec_intermediate[i]
 
-    L2_norm = sqrt(s[0])
+    L2_norm = sqrt(s)
 
-    @for_range_opt(d)
-    def _(i):
-        L2_norm_vec[i] = L2_norm_vec_intermediate[i] / L2_norm
+    L2_norm_vec = sfix.Array(d)
+    L2_norm_vec.assign(L2_norm_vec_intermediate / L2_norm)
+
+    # @for_range_opt(d)
+    # def _(i):
+    #     L2_norm_vec[i] = L2_norm_vec_intermediate[i] / L2_norm
 
     return L2_norm_vec
 
