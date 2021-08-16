@@ -86,12 +86,19 @@ print_ln("%s", batch_size)
 dp_noise = generate_noise.gen_noise(n_features + 1, n_examples)
 
 bias = sgd.layers[0].b[0] + dp_noise[0]
-weights = sgd.layers[0].W.reveal_nested()
+# turns it into a list
+weights_l = sgd.layers[0].W.reveal_nested()
+weights_A = sfix.Array(n_features)
+weights_A.assign_vector(weights_l)
 
-for i in range(n_features):
-    weights[i] += dp_noise[i + 1]
+@for_range(n_features)
+def _(i):
+    weights_A[i] += dp_noise[i + 1]
+
+# for i in range(n_features):
+#     weights[i] += dp_noise[i + 1]
 
 # For classification
 print_ln("Training finished")
 print_ln("%s", bias.reveal())
-print_ln("%s", weights)
+print_ln("%s", weights_A.reveal())
