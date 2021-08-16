@@ -61,10 +61,6 @@ def normalize_(vec, d):
     L2_norm_vec = sfix.Array(d)
     L2_norm_vec.assign(L2_norm_vec_intermediate / L2_norm)
 
-    # @for_range_opt(d)
-    # def _(i):
-    #     L2_norm_vec[i] = L2_norm_vec_intermediate[i] / L2_norm
-
     return L2_norm_vec
 
 
@@ -87,7 +83,7 @@ def gen_gamma_dis2_(d, n, epsilon=1, lamb=1):
         global final_gamma
         final_gamma = final_gamma + generate_exp_distribution_()
 
-    print_ln(final_gamma.reveal())
+    print_ln("%s", final_gamma.reveal())
 
     norm_const = n * epsilon * lamb
     div = 2/norm_const
