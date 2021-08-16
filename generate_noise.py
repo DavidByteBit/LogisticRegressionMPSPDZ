@@ -34,18 +34,6 @@ def gen_samples_(d):
         r1 = C * cosine
         r2 = C * sine
 
-        # We do in fact obtain negative numbers
-        # ra = r1.reveal()
-        # rb = r2.reveal()
-        #
-        # @if_(ra < 0)
-        # def _():
-        #     print_ln("negative number")
-        #
-        # @if_(rb < 0)
-        # def _():
-        #     print_ln("negative number")
-
         gaussian_vec[2 * i] = r1
         gaussian_vec[(2 * i) + 1] = r2
 
@@ -64,13 +52,7 @@ def normalize_(vec, d):
     L2_norm_vec_intermediate = sfix.Array(d)
     L2_norm_vec_intermediate.assign_vector(vec * vec)
 
-    global s
-    s = sfix._new(0)
-
-    @for_range(d)
-    def _(i):
-        global s
-        s += L2_norm_vec_intermediate[i]
+    s = sum(L2_norm_vec_intermediate)
 
     L2_norm = sqrt(s)
 
