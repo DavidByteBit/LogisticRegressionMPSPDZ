@@ -89,6 +89,7 @@ def gen_gamma_dis2_(d, n, epsilon=1, lamb=1):
 
     @for_range_opt(d)
     def _(i):
+        global final_gamma
         final_gamma = final_gamma + generate_exp_distribution_()
 
 
