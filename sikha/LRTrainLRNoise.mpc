@@ -1,0 +1,141 @@
+from Compiler import ml
+from Compiler import mpc_noise
+  
+program.options_from_args()
+
+try:
+    # parameters by args
+    N1=int(program.args[1])
+    N2=int(program.args[2])
+    num_features=int(program.args[3])
+    num_epochs=int(program.args[4])
+    batch_size=int(program.args[5])
+    lambda_ = int(program.args[6])
+    epsilon = int(program.args[7])
+    N = N1+N2
+except:
+    # parameters default
+    #N1=664
+    #N2=700
+    N=1369
+    lambda_=1
+    num_features=1874
+    num_epochs=50
+    batch_size=128
+
+
+start_timer(100)
+
+#train_X = sfix.Matrix(N,num_features)
+#train_y = sfix.Matrix(N,1)
+
+
+alice_X = sfix.Matrix(N1,num_features)
+bob_X = sfix.Matrix(N2,num_features)
+alice_y = sfix.Matrix(N1,1)
+bob_y = sfix.Matrix(N2,1)
+
+##### features followed by tragetlabels
+alice_X.input_from(0)
+alice_y.input_from(0)
+bob_X.input_from(1)
+bob_y.input_from(1)
+
+#train_X.input_from(0)
+#train_y.input_from(0)
+
+
+#@for_range(1)
+#def _(i):
+#        @for_range(num_features)
+#        def _(j):
+#                print_ln("Sample-%s-feature-%s is %s", i ,j, train_X[i][j].reveal())
+
+##### row-wise : <features,target>
+##### reading element wise with if condition : todo: replace if condition for MPC
+#@for_range(2)
+#def _(i):
+#       @for_range(5)
+#       def _(j):
+#               if j:
+#                  alice_X[i][j] = sfix.get_input_from(0)
+#               else:
+#                  alice_y[i][j] = sfix.get_input_from(0)
+
+
+########### Reading data from Alice
+#@for_range(N1)
+#def _(i):
+#    feature_row = Array(num_features,sfix)
+#    label_row = Array(1,sfix)
+#    feature_row.input_from(0)
+#    label_row.input_from(0)
+#    alice_X[i].assign_vector(feature_row.get_vector())
+#    alice_y[i].assign_vector(label_row.get_vector())
+
+
+########### Reading data from Bob
+#@for_range(2)
+#def _(i):
+#    feature_row = Array(4,sfix)
+#    label_row = Array(1,sfix)
+#    feature_row.input_from(1)
+#    label_row.input_from(1)
+#    bob_X[i].assign_vector(feature_row.get_vector())
+#    bob_y[i].assign_vector(label_row.get_vector())
+
+
+
+########### Create training dataset
+@for_range(N1)
+def _(i):
+        train_X[i].assign_vector(alice_X[i].get_vector())
+        train_y[i].assign_vector(alice_y[i].get_vector())
+
+@for_range(N2)
+def _(i):
+        train_X[i+N1].assign_vector(bob_X[i].get_vector())
+        train_y[i+N1].assign_vector(bob_y[i].get_vector())
+
+########### Train simple LR
+import ml
+
+
+ml.Layer.back_batch_size = batch_size
+#debug = 'debug'
+
+layers = [ml.Dense(N, num_features, 1),
+                  ml.Output(N, approx=3)]
+
+sgd = ml.SGD(layers,num_epochs,report_loss=True,lambda_=lambda_)
+sgd.layers[0].X.assign(train_X)
+sgd.layers[1].Y.assign(train_y)
+sgd.reset()
+sgd.run(batch_size=batch_size)
+stop_timer(100)
+
+
+weights = sfix.Array(num_features+1)
+@for_range(num_features)
+def _(i):
+    weights[i] = layers[0].W[i][0]
+weights[num_features] = layers[0].b[0]
+
+noise = mpc_noise.gen_noise(num_features+1, N, epsilon=epsilon, lamb=lambda_)
+
+noisy_weights.assign_vector(weights.get_vector() + noise.get_vector())
+
+
+#if debug:
+#    @for_range(402)
+#    def _(i):
+#        print_ln('%s %s', layers[-1].Y[i].reveal(),
+#                 ml.sigmoid(layers[-1].X[i]).reveal())
+
+print_ln('Bias %s',noisy_weights[num_features].reveal())
+print_ln('Weights:')
+@for_range(num_features)
+def _(i):
+      print_ln('%s,',noisy_weights[i].reveal())
+
+                                                      
