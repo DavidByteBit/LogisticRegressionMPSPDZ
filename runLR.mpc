@@ -88,8 +88,7 @@ dp_noise = generate_noise.gen_noise(n_features + 1, n_examples)
 bias = sgd.layers[0].b[0].reveal() + dp_noise[0]
 weights = sgd.layers[0].W.reveal_nested()
 
-@for_range(n_features)
-def _(i):
+for i in range(n_features):
     weights[i] += dp_noise[i + 1]
 
 # For classification
