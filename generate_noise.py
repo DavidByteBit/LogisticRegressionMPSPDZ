@@ -39,6 +39,12 @@ def gen_samples_(d):
         r1 = C * cosine
         r2 = C * sine
 
+        ra = r1.reveal()
+        rb = r2.reaveal()
+
+        if ra < 0 or rb < 0:
+            print_ln("negative number")
+
         gaussian_vec[2 * i] = r1
         gaussian_vec[(2 * i) + 1] = r2
 
