@@ -19,7 +19,6 @@ def gen_samples_(d):
     # div two since the Box-Mueller transform produces 2 samples
     @for_range_opt(d // 2)
     def _(i):
-        # TODO: test range
         A = sfix.get_random(0, 1)
         B = sfix.get_random(0, 1)
 
@@ -48,6 +47,8 @@ def normalize_(vec, d):
 
     L2_norm_vec_intermediate = sfix.Array(d)
     L2_norm_vec = sfix.Array(d)
+
+    L2_norm_vec_intermediate.assign(vec * vec)
 
     @for_range_opt(d)
     def _(i):
@@ -88,6 +89,8 @@ def gen_gamma_dis2_(d, n, epsilon=1, lamb=1):
         global final_gamma
         final_gamma = final_gamma + generate_exp_distribution_()
 
+    print_ln(final_gamma.reveal())
+
     norm_const = n * epsilon * lamb
     div = 2/norm_const
 
@@ -104,7 +107,7 @@ def gen_noise(d, n, epsilon, lamb):
 
     #### added by sikha
     gamma = gen_gamma_dis2_(d, n, epsilon, lamb)
-    #noise_vector = sfix.Array(d)
+    noise_vector = sfix.Array(d)
     noise_vector.assign_vector(gaussian_vec_normalized.get_vector() * gamma)
 
     return noise_vector
