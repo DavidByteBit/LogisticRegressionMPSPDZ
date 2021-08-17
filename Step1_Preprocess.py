@@ -35,6 +35,6 @@ df1 = pd.read_csv(data_path)
 
 X1, y1 = preprocess(df1)
 
-savetxt(save_folder + "/train_features.csv", X1, delimiter=',', fmt='%s')
-savetxt(save_folder + "/train_labels.csv", y1, delimiter=',', fmt='%s')
+savetxt(save_folder + "/features.csv", X1, delimiter=',', fmt='%s')
+savetxt(save_folder + "/labels.csv", y1, delimiter=',', fmt='%s')
 
