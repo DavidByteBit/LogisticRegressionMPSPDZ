@@ -22,4 +22,7 @@ ADD Step5_classification.py /opt/app/MP-SPDZ/
 ADD Step3_LR_training.mpc /opt/app/MP-SPDZ/Programs/Source/lr_training.mpc
 ADD run_all_steps.sh /opt/app/MP-SPDZ/
 
-RUN /opt/app/MP-SPDZ/compile.py -R 64 -Y lr_training 832 831 1784 300 128 1 1
+ADD Input-P0-0 /opt/app/MP-SPDZ/Player-Data/
+ADD Input-P0-0 /opt/app/MP-SPDZ/Player-Data/Input-P1-0
+
+RUN /opt/app/MP-SPDZ/compile.py -R 64 -Y lr_training 832 832 1784 300 128 1 1
