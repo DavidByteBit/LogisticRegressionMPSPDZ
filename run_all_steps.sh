@@ -17,7 +17,8 @@ results="logs/results_$timestamp.txt"
 
 python3  Step1_Preprocess.py $data_path $save_folder $process_labels
 
-/opt/app/MP-SPDZ/Scripts/../$protocol $party lr_training-$n_examples_train-$n_examples_test-$n_features-$n_epochs-$batch_size-$lambda -pn $port -h $ip_source > $results
+/opt/app/MP-SPDZ/Scripts/../$protocol $party lr_training-$N1-$N2-$num_features-$num_epochs-$batch_size-$lambda_-$epsilon -pn $port -h $ip_source > $results
+
+cat $results
 
 python3 Step5_classification.py $path_to_model $test_data_folder $prediction_file_path $process_labels 
-
