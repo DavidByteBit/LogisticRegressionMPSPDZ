@@ -13,7 +13,7 @@ import pathlib
 import sys
 import traceback
 
-sys.path.append('/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages')
+#sys.path.append('/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages')
 
 import datetime
 import trainIDASH
