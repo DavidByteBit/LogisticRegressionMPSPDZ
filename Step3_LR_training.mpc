@@ -132,8 +132,7 @@ noisy_weights.assign_vector(weights.get_vector() + noise.get_vector())
 #        print_ln('%s %s', layers[-1].Y[i].reveal(),
 #                 ml.sigmoid(layers[-1].X[i]).reveal())
 
-print_ln('Bias %s',noisy_weights[num_features].reveal())
-print_ln('Weights:')
+print_ln('Bias %s,',noisy_weights[num_features].reveal())
 @for_range(num_features)
 def _(i):
-      print_ln('%s,',noisy_weights[i].reveal())
+      print_ln('Weight %s,',noisy_weights[i].reveal())

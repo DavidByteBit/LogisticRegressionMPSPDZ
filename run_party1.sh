@@ -2,7 +2,7 @@
 docker run -p 1730:1730 -e port=1729 -e party=1 -e ip_source="192.168.0.13" \
    -e protocol="replicated-ring-party.x"  \
    -e process_labels="true" \
-   -e data_path="/opt/app/MP-SPDZ/data/IDASH-ALICE/party_2.csv" \
+   -e data_path="/opt/app/MP-SPDZ/data/party_1.csv" \
    -e save_folder="/opt/app/MP-SPDZ/save/" \
    -e path_to_model="/opt/app/MP-SPDZ/save/"  \
    -e test_data_folder="/opt/app/MP-SPDZ/save/" \
