@@ -19,11 +19,6 @@ ADD Step5_classification.py /opt/app/MP-SPDZ/
 ADD Step3_LR_training.mpc /opt/app/MP-SPDZ/Programs/Source/lr_training.mpc
 
 ADD run_all_steps.sh /opt/app/MP-SPDZ/
+ADD gen_files_mpc.sh  /opt/app/MP-SPDZ/
 
-ADD Input-P0-0 /opt/app/MP-SPDZ/Player-Data/
-ADD Input-P1-0 /opt/app/MP-SPDZ/Player-Data/
-
-RUN Scripts/setup-ssl.sh 3
-RUN c_rehash Player-Data
-
-RUN /opt/app/MP-SPDZ/compile.py -R 64 -Y lr_training 831 831 1874 300 128 1 1
+CMD [ "/opt/app/MP-SPDZ/run_all_steps.sh" ]

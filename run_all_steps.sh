@@ -19,18 +19,27 @@ echo "process_labels=$process_labels"
 echo "path_to_model=$path_to_model" 
 echo "test_data_folder=$test_data_folder" 
 echo "prediction_file_path=$prediction_file_path"
+echo "task_training_testing=$task_training_testing"
+
+c_rehash Player-Data
 
 python3  Step1_Preprocess.py $data_path $save_folder $process_labels $party
 
+./gen_files_mpc.sh # generate Input-P$party-0
+
+/opt/app/MP-SPDZ/compile.py -R 64 -Y lr_training $N1 $N2 $num_features $num_epochs $batch_size $lambda $epsilon
+
 if [ $party -eq '0' ]
 then
-    results="$save_folder/results.txt"
-    weights="$save_folder/weights.txt"
+    results="$save_folder/results$timestamp.txt" 
     /opt/app/MP-SPDZ/Scripts/../$protocol $party lr_training-$N1-$N2-$num_features-$num_epochs-$batch_size-$lambda-$epsilon -pn $port -h $ip_source > $results
-    cat $results | grep Bias | sed 's/Bias //g' > $weights
-    cat $results | grep Weight | sed 's/Weight //g' | tr -d "\n" >> $weights
+    cat $results | grep Bias | sed 's/Bias //g' > $path_to_model
+    cat $results | grep Weight | sed 's/Weight //g' | tr -d "\n" >> $path_to_model
 
-    python3 Step5_classification.py $weights $test_data_folder $prediction_file_path $process_labels
+    if [ $task_training_testing == "testing" ]
+    then
+        python3 Step5_classification.py $path_to_model $test_data_folder $prediction_file_path $process_labels
+    fi
 else
     /opt/app/MP-SPDZ/Scripts/../$protocol $party lr_training-$N1-$N2-$num_features-$num_epochs-$batch_size-$lambda-$epsilon -pn $port -h $ip_source
 fi
