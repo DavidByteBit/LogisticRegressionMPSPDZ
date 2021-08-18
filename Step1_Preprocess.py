@@ -13,9 +13,9 @@ import sys
 
 ##################################################################################
 
-def preprocess(dirty_df, labels):
+def preprocess(dirty_df, has_labels):
 
-    if labels:
+    if has_labels:
         dirty_df = dirty_df.drop(['patient_id', 'cohort_type'], axis=1)
         target_map = {u'1': 1, u'0': 0}
         dirty_df['__target__'] = dirty_df['cohort_flag'].map(str).map(target_map)
