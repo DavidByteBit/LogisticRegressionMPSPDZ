@@ -28,7 +28,7 @@ then
     weights="$save_folder/weights.txt"
     /opt/app/MP-SPDZ/Scripts/../$protocol $party lr_training-$N1-$N2-$num_features-$num_epochs-$batch_size-$lambda-$epsilon -pn $port -h $ip_source > $results
     cat $results | grep Bias | sed 's/Bias //g' > $weights
-    cat $results | grep Weight | sed 's/Weight //g' >> $weights
+    cat $results | grep Weight | sed 's/Weight //g' | tr -d "\n" >> $weights
 
     python3 Step5_classification.py $weights $test_data_folder $prediction_file_path $process_labels
 else

@@ -14,7 +14,6 @@ def load_model(file_path):
             line = line.replace("\n", "").split(",")
             bias = line[0]
             weights = line[1:]
-
     return bias, weights
 
 
@@ -69,7 +68,10 @@ b, W = load_model(path_to_model)
 
 # Overwrite model
 for i in range(len(clf_dummy.coef_[0])):
-    clf_dummy.coef_[0][i] = W[i]
+    try:
+        clf_dummy.coef_[0][i] = W[i]
+    except:
+        None
 clf_dummy.intercept_[0] = b
 
 # Start classifying
