@@ -33,9 +33,14 @@ class processData:
                 clean_y = np.array(dirty_df['__target__'])
             else:
                 print('Test Program - Dropping only patient id')
-                clean_X = dirty_df.drop(['patient_id'], axis = 1)
+                dirty_df = dirty_df.drop(['patient_id'], axis = 1)
+                #if {'cohort_flag', 'cohort_type'}.issubset(df.columns):
+                if 'cohort_flag' in dirty_df.columns:
+                    dirty_df = dirty_df.drop(['cohort_flag'], axis = 1)
+                if 'cohort_type' in dirty_df.columns:
+                    dirty_df = dirty_df.drop(['cohort_type'], axis = 1)
+                clean_X = dirty_df                
                 print(clean_X.shape)
-                #clean_X = dirty_df.drop(['cohort_flag'], axis = 1)
                 clean_y = np.array([])
             clean_X = clean_X.to_numpy()
             clean_X = preprocessing.normalize(clean_X, norm='l2')
