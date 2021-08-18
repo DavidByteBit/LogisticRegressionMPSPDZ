@@ -21,15 +21,21 @@ class processData:
 
     def pre_process_data(self,dirty_df):
         try:
-            dirty_df = dirty_df.drop(['patient_id','cohort_type'], axis = 1)
+            
             if self.task == 'train':
+                print('Train Program - Dropping patient id,cohort_type')
+                dirty_df = dirty_df.drop(['patient_id','cohort_type'], axis = 1)
                 target_map = {u'1': 1, u'0': 0}
                 dirty_df['__target__'] = dirty_df['cohort_flag'].map(str).map(target_map)
                 dirty_df = dirty_df.drop(['cohort_flag'], axis = 1)
                 clean_X = dirty_df.drop('__target__', axis=1)
+                print(clean_X.shape)
                 clean_y = np.array(dirty_df['__target__'])
             else:
-                clean_X = dirty_df.drop(['cohort_flag'], axis = 1)
+                print('Test Program - Dropping only patient id')
+                clean_X = dirty_df.drop(['patient_id'], axis = 1)
+                print(clean_X.shape)
+                #clean_X = dirty_df.drop(['cohort_flag'], axis = 1)
                 clean_y = np.array([])
             clean_X = clean_X.to_numpy()
             clean_X = preprocessing.normalize(clean_X, norm='l2')
