@@ -20,10 +20,13 @@ echo "path_to_model=$path_to_model"
 echo "test_data_folder=$test_data_folder" 
 echo "prediction_file_path=$prediction_file_path"
 
-results="logs/results_$timestamp.txt"
-
 python3  Step1_Preprocess.py $data_path $save_folder $process_labels
 
-/opt/app/MP-SPDZ/Scripts/../$protocol $party lr_training-$N1-$N2-$num_features-$num_epochs-$batch_size-$lambda-$epsilon -pn $port -h $ip_source > $results
-
-python3 Step5_classification.py $path_to_model $test_data_folder $prediction_file_path $process_labels 
+if [ $party -eq '0' ]
+then
+    results="$save_folder/weights.txt"
+    /opt/app/MP-SPDZ/Scripts/../$protocol $party lr_training-$N1-$N2-$num_features-$num_epochs-$batch_size-$lambda-$epsilon -pn $port -h $ip_source > $results
+    python3 Step5_classification.py $results $test_data_folder $prediction_file_path $process_labels     
+else
+    /opt/app/MP-SPDZ/Scripts/../$protocol $party lr_training-$N1-$N2-$num_features-$num_epochs-$batch_size-$lambda-$epsilon -pn $port -h $ip_source
+fi

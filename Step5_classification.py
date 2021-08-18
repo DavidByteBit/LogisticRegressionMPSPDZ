@@ -62,7 +62,7 @@ else:
 data, labels = load_test_data(test_data_folder, process_labels)
 
 # Initialize model - Has to train to be initialized properly. Train for one epoch
-clf_dummy = LogisticRegression(max_iter=1)
+clf_dummy = LogisticRegression()
 clf_dummy.fit(data, labels)
 
 b, W = load_model(path_to_model)
