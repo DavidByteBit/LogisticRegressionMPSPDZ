@@ -1,6 +1,6 @@
 from Compiler import ml
 from Compiler import mpc_noise
-  
+
 program.options_from_args()
 
 try:
@@ -137,5 +137,3 @@ print_ln('Weights:')
 @for_range(num_features)
 def _(i):
       print_ln('%s,',noisy_weights[i].reveal())
-
-                                                      
