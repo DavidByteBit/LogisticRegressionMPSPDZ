@@ -18,7 +18,7 @@ def load_model(file_path):
     return bias, weights
 
 
-def load_test_data(directory):
+def load_test_data(directory, has_labels):
     feature_path = directory + "/features.csv"
     label_path = directory + "/labels.csv"
 
@@ -29,9 +29,15 @@ def load_test_data(directory):
         for line in f:
             test_features.append(line.replace("\n", "").split(","))
 
-    with open(label_path, 'r') as f:
-        for line in f:
-            test_labels.append(line.replace("\n", ""))
+    if has_labels:
+        with open(label_path, 'r') as f:
+            for line in f:
+                test_labels.append(line.replace("\n", ""))
+    else:
+        # We have to train for one epoch with two different labels, so we can just populate
+        # test_labels with 0,1,0,1... to get the job done
+        for j in range(len(test_features)):
+            test_labels.append(j % 2)
 
     test_labels = [float(x) for x in test_labels]
     test_features = [[float(y) for y in x] for x in test_features]
@@ -45,10 +51,17 @@ def load_test_data(directory):
 # Currently assumes model is a comma separated string with the bias first, then all of the weights
 path_to_model = sys.argv[1]
 test_data_folder = sys.argv[2]
+prediction_file_path = sys.argv[3]
+process_labels = sys.argv[4]
 
-data, labels = load_test_data(test_data_folder)
+if process_labels.lower() == "true":
+    process_labels = True
+else:
+    process_labels = False
 
-# Initialize model
+data, labels = load_test_data(test_data_folder, process_labels)
+
+# Initialize model - Has to train to be initialized properly. Train for one epoch
 clf_dummy = LogisticRegression(max_iter=1)
 clf_dummy.fit(data, labels)
 
@@ -60,7 +73,12 @@ for i in range(len(clf_dummy.coef_[0])):
 clf_dummy.intercept_[0] = b
 
 # Start classifying
-clf_dummy.predict(data)
-accAVG = accuracy_score(labels, clf_dummy.predict(data))
+pred = clf_dummy.predict(data)
 
-print("Accuracy = {n}%".format(n=accAVG))
+if process_labels:
+    accAVG = accuracy_score(labels, pred)
+    print("Accuracy = {n}%".format(n=accAVG))
+
+with open(prediction_file_path, 'w') as f:
+    pred = [str(i) for i in pred]
+    f.write(",".join(pred))
