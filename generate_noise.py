@@ -54,7 +54,11 @@ def normalize_(vec, d):
     print_ln("1 %s", vec[d - 1].reveal())
 
     L2_norm_vec_intermediate = sfix.Array(d)
-    L2_norm_vec_intermediate.assign_vector(vec * vec)
+    # L2_norm_vec_intermediate.assign_vector(vec * vec)
+
+    @for_range_opt(d)
+    def _(i):
+        L2_norm_vec_intermediate[i] = vec[i] * vec[i]
 
     print_ln("2 %s", L2_norm_vec_intermediate[d - 1].reveal())
 
