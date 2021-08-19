@@ -115,7 +115,11 @@ def gen_noise(d, n, epsilon=1, lamb=1):
     gamma = gen_gamma_dis2_(d, n, epsilon, lamb)
     noise_vector = sfix.Array(d)
 
-    noise_vector.assign_vector(gaussian_vec_normalized.get_vector() * gamma)
+    @for_range_opt(d)
+    def _(i):
+        noise_vector[i] = gaussian_vec_normalized[i] * gamma
+
+    # noise_vector.assign_vector(gaussian_vec_normalized.get_vector() * gamma) <--- zeros out values?
 
     print_ln("noise: %s", noise_vector.reveal())
 
