@@ -85,6 +85,8 @@ print_ln('Noise for Bias %s,', noise[n_features].reveal())
 noisy_weights.assign_vector(weights.get_vector() + noise.get_vector())
 print_ln('Bias before noise %s,', weights[n_features].reveal())
 
+print_ln('noise %s,', noise.reveal_nested())
+
 # if debug:
 #    @for_range(402)
 #    def _(i):
