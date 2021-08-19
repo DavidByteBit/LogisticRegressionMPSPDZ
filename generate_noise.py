@@ -98,6 +98,9 @@ def gen_gamma_dis2_(d, n, epsilon=1, lamb=1):
 def gen_noise(d, n, epsilon=1, lamb=1):
 
     gaussian_vec = gen_samples_(d)
+
+    print_ln("%s", gaussian_vec.length)
+
     gaussian_vec_normalized = normalize_(gaussian_vec, d)
 
     #### added by sikha
