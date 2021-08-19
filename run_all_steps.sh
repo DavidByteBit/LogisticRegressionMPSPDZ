@@ -34,11 +34,11 @@ then
     if [ $party -eq '0' ]
     then
         results="$save_folder/results$timestamp.txt" 
-        /opt/app/MP-SPDZ/Scripts/../$protocol $party lr_training-$N1-$N2-$num_features-$num_epochs-$batch_size-$lambda-$epsilon -pn $port -h $ip_source > $results
+        /opt/app/MP-SPDZ/../$protocol $party lr_training-$N1-$N2-$num_features-$num_epochs-$batch_size-$lambda-$epsilon -pn $port -h $ip_source > $results
         cat $results | grep Bias | sed 's/Bias //g' > $path_to_model
         cat $results | grep Weight | sed 's/Weight //g' | tr -d "\n" >> $path_to_model
     else
-        /opt/app/MP-SPDZ/Scripts/../$protocol $party lr_training-$N1-$N2-$num_features-$num_epochs-$batch_size-$lambda-$epsilon -pn $port -h $ip_source
+        /opt/app/MP-SPDZ/../$protocol $party lr_training-$N1-$N2-$num_features-$num_epochs-$batch_size-$lambda-$epsilon -pn $port -h $ip_source
     fi
 else
     # "testing"
