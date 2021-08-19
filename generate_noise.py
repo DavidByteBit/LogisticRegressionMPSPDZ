@@ -110,7 +110,7 @@ def gen_noise(d, n, epsilon=1, lamb=1):
     noise_vector = sfix.Array(d)
     noise_vector.assign_vector(gaussian_vec_normalized.get_vector() * gamma)
 
-    print_ln("%s", noise_vector[d - 1])
+    print_ln("%s", noise_vector[d - 1].reveal())
 
     print_ln("%s", noise_vector.length)
 
