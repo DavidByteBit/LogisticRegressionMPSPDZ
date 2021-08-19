@@ -49,17 +49,29 @@ def gen_samples_(d):
 
 def normalize_(vec, d):
 
-    # print_ln("normalizing samples")
+    print_ln("normalizing samples")
+
+    print_ln("1 %s", vec[d - 1].reveal())
 
     L2_norm_vec_intermediate = sfix.Array(d)
     L2_norm_vec_intermediate.assign_vector(vec * vec)
+
+    print_ln("2 %s", L2_norm_vec_intermediate[d - 1].reveal())
 
     s = sum(L2_norm_vec_intermediate)
 
     L2_norm = sqrt(s)
 
+    print_ln("vec %s", vec[0:20].reveal())
+
     L2_norm_vec = sfix.Array(d)
     L2_norm_vec.assign_vector(vec / L2_norm)
+
+    print_ln("norm: %s", L2_norm)
+
+    print_ln("norm_vec %s", L2_norm_vec[0:20].reveal())
+
+    print_ln("3 %s", L2_norm_vec[d - 1].reveal())
 
     return L2_norm_vec
 #### end
