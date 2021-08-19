@@ -23,99 +23,74 @@ lambda_ = 1
 batch_size = 128
 # end@args
 
-n_examples = alice_examples + bob_examples
+N = alice_examples + bob_examples
 
-train_size_alice = alice_examples
+train_X = sfix.Matrix(N, n_features)
+train_y = sfix.Matrix(N, 1)
 
-train_size_bob = bob_examples
+alice_X = sfix.Matrix(alice_examples, n_features)
+bob_X = sfix.Matrix(bob_examples, n_features)
+alice_y = sfix.Matrix(alice_examples, 1)
+bob_y = sfix.Matrix(bob_examples, 1)
 
-# print_ln("%s", train_size)
-
-data_train = Matrix(n_examples, n_features, sfix)
-
-alice_data = Matrix(alice_examples, n_features, sfix)
-
-bob_data = Matrix(bob_examples, n_features, sfix)
-
-label_train = Array(n_examples, sfix)
-
-alice_label = Array(alice_examples, sfix)
-
-bob_label = Array(bob_examples, sfix)
-
-alice_data.input_from(ALICE)
-alice_label.input_from(ALICE)
-
-bob_data.input_from(BOB)
-bob_label.input_from(BOB)
+##### features followed by tragetlabels
+alice_X.input_from(0)
+alice_y.input_from(0)
+bob_X.input_from(1)
+bob_y.input_from(1)
 
 
-@for_range(n_examples)
+########### Create training dataset
+@for_range(alice_examples)
 def _(i):
-    @for_range(n_features)
-    def _(j):
-        data_train[i][j] = alice_data[i][j]
-        data_train[i + alice_examples][j] = bob_data[i][j]
-
-    label_train[i] = alice_label[i]
-    label_train[i + alice_examples] = bob_label[i]
+    train_X[i].assign_vector(alice_X[i].get_vector())
+    train_y[i].assign_vector(alice_y[i].get_vector())
 
 
-print_ln("\ttrain size: %s", n_examples)
-print_ln("\ttrain_size_alice: %s ", train_size_alice)
-print_ln("\ttrain_size_bob: %s ", train_size_bob)
+@for_range(bob_examples)
+def _(i):
+    train_X[i + alice_examples].assign_vector(bob_X[i].get_vector())
+    train_y[i + alice_examples].assign_vector(bob_y[i].get_vector())
 
-print_ln("%s", "\n\n Data populated \n\n")
 
-# Define logistic regression model
-sgd = ml.SGD([ml.Dense(n_examples, n_features, 1),
-              ml.Output(n_examples, approx=3)], n_epochs,
-             report_loss=True, debug=False)
+########### Train simple LR
+ml.Layer.back_batch_size = batch_size
+# debug = 'debug'
 
+layers = [ml.Dense(N, n_features, 1),
+          ml.Output(N, approx=3)]
+
+sgd = ml.SGD(layers, n_epochs, report_loss=True, lambda_=lambda_)
+sgd.layers[0].X.assign(train_X)
+sgd.layers[1].Y.assign(train_y)
 sgd.reset()
-
-sgd.layers[0].X.assign(data_train)
-sgd.layers[1].Y.assign(label_train)
-
 sgd.run(batch_size=batch_size)
 
-print_ln("%s", n_epochs)
-print_ln("%s", sgd.layers[0].N)
-print_ln("%s", batch_size)
+weights = sfix.Array(n_features + 1)
 
-dp_noise = generate_noise.gen_noise(n_features + 1, n_examples)
-
-@for_range(n_features + 1)
-def _(i):
-    ra = dp_noise[i].reveal()
-    @if_(ra < 0)
-    def _():
-        print_ln("negative number")
-
-bias = sgd.layers[0].b[0] + dp_noise[0]
-# turns it into a list
-weights_l = sgd.layers[0].W
-weights_A = sfix.Array(n_features)
-
-print_ln("%s", dp_noise.reveal())
 
 @for_range(n_features)
 def _(i):
-    weights_A[i] = weights_l[0][i]
+    weights[i] = layers[0].W[i][0]
+
+
+weights[n_features] = layers[0].b[0]
+
+print_ln('Bias before noise %s,', weights[n_features].reveal())
+
+noise = generate_noise.gen_noise(n_features + 1, N, epsilon=1, lamb=1)
+noisy_weights = sfix.Array(n_features + 1)
+noisy_weights.assign_vector(weights.get_vector() + noise.get_vector())
+
+# if debug:
+#    @for_range(402)
+#    def _(i):
+#        print_ln('%s %s', layers[-1].Y[i].reveal(),
+#                 ml.sigmoid(layers[-1].X[i]).reveal())
+
+print_ln('Bias %s,', noisy_weights[n_features].reveal())
+
 
 @for_range(n_features)
 def _(i):
-    weights_A[i] += dp_noise[i + 1]
-
-# for i in range(n_features):
-#     weights[i] += dp_noise[i + 1]
-
-# For classification
-print_ln("Training finished")
-print_ln("%s", bias.reveal())
-print_ln("%s", weights_A.reveal())
-
-# # without noise
-# print_ln("Training finished")
-# print_ln("%s", sgd.layers[0].b[0].reveal())
-# print_ln("%s", sgd.layers[0].W.reveal_nested())
+    print_ln('Weight %s,', noisy_weights[i].reveal())
