@@ -41,6 +41,7 @@ def gen_samples_(d):
     # if d is odd, our vec is one element short. Obtain one more sample
     if d % 2 == 1:
         gaussian_vec[d - 1] = gen_samples_(2)[0]
+        print_ln("%s", gaussian_vec[d - 1].reveal())
 
     return gaussian_vec
 #### end
