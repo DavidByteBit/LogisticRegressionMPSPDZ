@@ -59,7 +59,12 @@ def normalize_(vec, d):
     L2_norm = sqrt(s)
 
     L2_norm_vec = sfix.Array(d)
-    L2_norm_vec.assign_vector(vec / L2_norm)
+
+    @for_range_opt(d)
+    def _(i):
+        L2_norm_vec[i] = vec[i] / L2_norm
+
+    # L2_norm_vec.assign_vector(vec / L2_norm) <--- zeros out certain values?
 
     return L2_norm_vec
 #### end
