@@ -1,6 +1,6 @@
  
 docker run -p 1730:1730 -e port=1729 -e party=1 -e ip_source="192.168.0.13" \
--e protocol="replicated-ring-party.x"  \
+-e protocol="semi2k-party.x"  \
    -e process_labels="true" \
    -e data_path="/opt/app/MP-SPDZ/data/party_1.csv" \
    -e save_folder="/opt/app/MP-SPDZ/save/" \
