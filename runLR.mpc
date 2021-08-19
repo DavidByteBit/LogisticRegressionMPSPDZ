@@ -94,6 +94,6 @@ print_ln('Bias before noise %s,', weights[n_features].reveal())
 print_ln('Bias %s,', noisy_weights[n_features].reveal())
 
 
-@for_range(n_features)
-def _(i):
-    print_ln('Weight %s,', noisy_weights[i].reveal())
+# @for_range(n_features)
+# def _(i):
+#     print_ln('Weight %s,', noisy_weights[i].reveal())
