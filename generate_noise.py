@@ -103,10 +103,14 @@ def gen_noise(d, n, epsilon=1, lamb=1):
 
     gaussian_vec_normalized = normalize_(gaussian_vec, d)
 
+    print_ln("%s", gaussian_vec_normalized.length)
+
     #### added by sikha
     gamma = gen_gamma_dis2_(d, n, epsilon, lamb)
     noise_vector = sfix.Array(d)
     noise_vector.assign_vector(gaussian_vec_normalized.get_vector() * gamma)
+
+    print_ln("%s", noise_vector.length)
 
     return noise_vector
 #### end
