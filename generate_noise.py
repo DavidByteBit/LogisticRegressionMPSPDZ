@@ -100,7 +100,11 @@ def gen_noise(d, n, epsilon=1, lamb=1):
 
     gaussian_vec = gen_samples_(d)
 
+    print_ln("gaus: %s", gaussian_vec.reveal())
+
     gaussian_vec_normalized = normalize_(gaussian_vec, d)
+
+    print_ln("norm: %s", gaussian_vec_normalized.reveal())
 
     #### added by sikha
     gamma = gen_gamma_dis2_(d, n, epsilon, lamb)
@@ -108,7 +112,7 @@ def gen_noise(d, n, epsilon=1, lamb=1):
 
     noise_vector.assign_vector(gaussian_vec_normalized.get_vector() * gamma)
 
-    print_ln("%s", noise_vector.reveal())
+    print_ln("noise: %s", noise_vector.reveal())
 
     return noise_vector
 #### end
