@@ -29,16 +29,16 @@ then
 
     ./gen_files_mpc.sh # generate Input-P$party-0
 
-    /opt/app/MP-SPDZ/compile.py -R 64 -Y lr_training $N1 $N2 $num_features $num_epochs $batch_size $lambda $epsilon
+    ./compile.py -R 64 -Y lr_training $N1 $N2 $num_features $num_epochs $batch_size $lambda $epsilon
 
     if [ $party -eq '0' ]
     then
         results="$save_folder/results$timestamp.txt" 
-        /opt/app/MP-SPDZ/../$protocol $party lr_training-$N1-$N2-$num_features-$num_epochs-$batch_size-$lambda-$epsilon -pn $port -h $ip_source > $results
+        ./$protocol $party lr_training-$N1-$N2-$num_features-$num_epochs-$batch_size-$lambda-$epsilon -pn $port -h $ip_source > $results
         cat $results | grep Bias | sed 's/Bias //g' > $path_to_model
         cat $results | grep Weight | sed 's/Weight //g' | tr -d "\n" >> $path_to_model
     else
-        /opt/app/MP-SPDZ/../$protocol $party lr_training-$N1-$N2-$num_features-$num_epochs-$batch_size-$lambda-$epsilon -pn $port -h $ip_source
+        ./$protocol $party lr_training-$N1-$N2-$num_features-$num_epochs-$batch_size-$lambda-$epsilon -pn $port -h $ip_source
     fi
 else
     # "testing"
