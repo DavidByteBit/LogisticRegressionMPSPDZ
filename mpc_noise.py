@@ -59,7 +59,12 @@ def normalize_(vec, d):
     L2_norm = sqrt(s)
 
     L2_norm_vec = sfix.Array(d)
-    L2_norm_vec.assign_vector(vec / L2_norm)
+
+    @for_range_opt(d)
+    def _(i):
+        L2_norm_vec[i] = vec[i] / L2_norm
+
+    # L2_norm_vec.assign_vector(vec / L2_norm) <--- zeros out certain values?
 
     return L2_norm_vec
 #### end
@@ -99,12 +104,24 @@ def gen_gamma_dis2_(d, n, epsilon=1, lamb=1):
 def gen_noise(d, n, epsilon=1, lamb=1):
 
     gaussian_vec = gen_samples_(d)
+
+    print_ln("gaus: %s", gaussian_vec.reveal())
+
     gaussian_vec_normalized = normalize_(gaussian_vec, d)
+
+    print_ln("norm: %s", gaussian_vec_normalized.reveal())
 
     #### added by sikha
     gamma = gen_gamma_dis2_(d, n, epsilon, lamb)
     noise_vector = sfix.Array(d)
-    noise_vector.assign_vector(gaussian_vec_normalized.get_vector() * gamma)
+
+    @for_range_opt(d)
+    def _(i):
+        noise_vector[i] = gaussian_vec_normalized[i] * gamma
+
+    # noise_vector.assign_vector(gaussian_vec_normalized.get_vector() * gamma) <--- zeros out values?
+
+    print_ln("noise: %s", noise_vector.reveal())
 
     return noise_vector
 #### end
@@ -118,3 +135,4 @@ def gen_noise(d, n, epsilon=1, lamb=1):
 # noise_vector = gen_noise(d_, n_, epsilon_, lamb_)
 #
 # print_ln("%s", noise_vector.reveal()[:20])
+
