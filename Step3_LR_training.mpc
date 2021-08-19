@@ -123,7 +123,11 @@ weights[num_features] = layers[0].b[0]
 
 noise = mpc_noise.gen_noise(num_features+1, N, epsilon=epsilon, lamb=lambda_)
 noisy_weights = sfix.Array(num_features+1)
-noisy_weights.assign_vector(weights.get_vector() + noise.get_vector())
+#noisy_weights.assign_vector(weights.get_vector() + noise.get_vector())
+
+@for_range(num_features+1)
+def _(i):
+    noisy_weights[i] = weights[i] + noise[i]
 
 
 #if debug:
