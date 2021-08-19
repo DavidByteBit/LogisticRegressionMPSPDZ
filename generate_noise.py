@@ -67,7 +67,7 @@ def normalize_(vec, d):
     L2_norm_vec = sfix.Array(d)
     L2_norm_vec.assign_vector(vec / L2_norm)
 
-    print_ln("norm: %s", L2_norm)
+    print_ln("norm: %s", L2_norm.reveal())
 
     print_ln("norm_vec %s", L2_norm_vec[0:20].reveal())
 
