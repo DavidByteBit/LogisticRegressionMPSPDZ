@@ -80,7 +80,10 @@ print_ln('Bias before noise %s,', weights[n_features].reveal())
 
 noise = generate_noise.gen_noise(n_features + 1, N, epsilon=1, lamb=1)
 noisy_weights = sfix.Array(n_features + 1)
+print_ln('Bias before noise %s,', weights[n_features].reveal())
+print_ln('Noise for Bias %s,', noise[n_features].reveal())
 noisy_weights.assign_vector(weights.get_vector() + noise.get_vector())
+print_ln('Bias before noise %s,', weights[n_features].reveal())
 
 # if debug:
 #    @for_range(402)
