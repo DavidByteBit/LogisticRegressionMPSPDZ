@@ -41,41 +41,25 @@ def gen_samples_(d):
     # if d is odd, our vec is one element short. Obtain one more sample
     if d % 2 == 1:
         gaussian_vec[d - 1] = gen_samples_(2)[0]
-        print_ln("initial %s", gaussian_vec[d - 1].reveal())
 
     return gaussian_vec
 #### end
 
 
 def normalize_(vec, d):
-
-    print_ln("normalizing samples")
-
-    print_ln("1 %s", vec[d - 1].reveal())
-
     L2_norm_vec_intermediate = sfix.Array(d)
-    # L2_norm_vec_intermediate.assign_vector(vec * vec)
+    # L2_norm_vec_intermediate.assign_vector(vec * vec) <--- zeros out certain values?
 
     @for_range_opt(d)
     def _(i):
         L2_norm_vec_intermediate[i] = vec[i] * vec[i]
 
-    print_ln("2 %s", L2_norm_vec_intermediate[d - 1].reveal())
-
     s = sum(L2_norm_vec_intermediate)
 
     L2_norm = sqrt(s)
 
-    print_ln("vec %s", vec[0:20].reveal())
-
     L2_norm_vec = sfix.Array(d)
     L2_norm_vec.assign_vector(vec / L2_norm)
-
-    print_ln("norm: %s", L2_norm.reveal())
-
-    print_ln("norm_vec %s", L2_norm_vec[0:20].reveal())
-
-    print_ln("3 %s", L2_norm_vec[d - 1].reveal())
 
     return L2_norm_vec
 #### end
@@ -116,23 +100,15 @@ def gen_noise(d, n, epsilon=1, lamb=1):
 
     gaussian_vec = gen_samples_(d)
 
-    print_ln("second %s", gaussian_vec[d - 1].reveal())
-
     gaussian_vec_normalized = normalize_(gaussian_vec, d)
-
-    print_ln("third %s", gaussian_vec_normalized[d - 1].reveal())
 
     #### added by sikha
     gamma = gen_gamma_dis2_(d, n, epsilon, lamb)
     noise_vector = sfix.Array(d)
 
-    print_ln("before mult %s", gaussian_vec_normalized[0:20].reveal())
-
     noise_vector.assign_vector(gaussian_vec_normalized.get_vector() * gamma)
 
-    print_ln("after mult %s", noise_vector[0:20].reveal())
-
-    print_ln("%s", noise_vector[d - 1].reveal())
+    print_ln("%s", noise_vector.reveal())
 
     return noise_vector
 #### end
