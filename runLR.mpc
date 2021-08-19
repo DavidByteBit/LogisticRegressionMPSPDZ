@@ -60,7 +60,7 @@ ml.Layer.back_batch_size = batch_size
 layers = [ml.Dense(N, n_features, 1),
           ml.Output(N, approx=3)]
 
-sgd = ml.SGD(layers, n_epochs, report_loss=True, lambda_=lambda_)
+sgd = ml.SGD(layers, n_epochs, report_loss=True)
 sgd.layers[0].X.assign(train_X)
 sgd.layers[1].Y.assign(train_y)
 sgd.reset()
