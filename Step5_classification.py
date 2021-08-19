@@ -14,6 +14,7 @@ def load_model(file_path):
             line = line.replace("\n", "").split(",")
             bias = line[0]
             weights = line[1:]
+
     return bias, weights
 
 
@@ -61,17 +62,14 @@ else:
 data, labels = load_test_data(test_data_folder, process_labels)
 
 # Initialize model - Has to train to be initialized properly. Train for one epoch
-clf_dummy = LogisticRegression()
+clf_dummy = LogisticRegression(max_iter=1)
 clf_dummy.fit(data, labels)
 
 b, W = load_model(path_to_model)
 
 # Overwrite model
 for i in range(len(clf_dummy.coef_[0])):
-    try:
-        clf_dummy.coef_[0][i] = W[i]
-    except:
-        None
+    clf_dummy.coef_[0][i] = W[i]
 clf_dummy.intercept_[0] = b
 
 # Start classifying
