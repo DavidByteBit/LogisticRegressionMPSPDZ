@@ -42,6 +42,7 @@ then
     fi
 else
     # "testing"
+    python3  Step1_Preprocess.py $data_path $test_data_folder $process_labels $party
     python3 Step5_classification.py $path_to_model $test_data_folder $prediction_file_path $process_labels
 fi
 
