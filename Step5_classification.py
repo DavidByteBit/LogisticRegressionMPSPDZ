@@ -8,12 +8,14 @@ from sklearn.metrics import accuracy_score
 def load_model(file_path):
     bias = 0
     weights = []
-
+    str = ""
     with open(file_path, 'r') as f:
         for line in f:
-            line = line.replace("\n", "").split(",")
-            bias = line[0]
-            weights = line[1:]
+            str = str + line
+
+    str = str.split(",")
+    bias = str[0]
+    weights = str[1:]
 
     return bias, weights
 
