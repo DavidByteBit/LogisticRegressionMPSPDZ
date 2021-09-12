@@ -1,3 +1,4 @@
+docker pull ricardojmmaia/idash2021
  
 docker run -p 1730:1730 -e port=1729 -e party=1 -e ip_source="192.168.0.13" \
 -e protocol="semi2k-party.x"  \
