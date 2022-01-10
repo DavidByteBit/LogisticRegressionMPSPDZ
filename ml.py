@@ -2224,7 +2224,7 @@ class SGD(Optimizer):
                 
                 ### added by sikha
                 theta_penalty = theta.get_vector(base, size)
-                theta_penalty = self.lambda_penalty * theta_penalty * theta_penalty
+                theta_penalty = self.lambda_penalty * theta_penalty # * theta_penalty
                 pre_trunc_penalty = theta_penalty.v * rate.v 
                 k2 = max(rate.k,theta_penalty.k) + rate.f
                 m2 = rate.f + int(log_batch_size)
@@ -2232,7 +2232,7 @@ class SGD(Optimizer):
                     v2 = pre_trunc_penalty
                 else:
                     v2 = pre_trunc_penalty.round(k2,m2,signed=True,nearest=sfix.round_nearest)
-                penalty = theta_penalty._new(v2) * 0.5
+                penalty = theta_penalty._new(v2) # * 0.5
 
                 ###end
                 k = nabla_vector.k + rate.k
