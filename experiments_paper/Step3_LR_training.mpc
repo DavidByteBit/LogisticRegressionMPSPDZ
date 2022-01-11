@@ -1,0 +1,54 @@
+from Compiler import ml
+from Compiler import mpc_noise
+
+epsilon=0.1
+lambda_=1
+num_epochs=300
+batch_size=128
+num_features=1874
+N = 664
+
+start_timer(100)
+
+train_X = sfix.Matrix(N,num_features)
+train_y = sfix.Matrix(N,1)
+
+##### features followed by tragetlabels
+train_X.input_from(0)
+train_y.input_from(1)
+
+########### Train simple LR
+import ml
+
+
+ml.Layer.back_batch_size = batch_size
+#debug = 'debug'
+
+layers = [ml.Dense(N, num_features, 1),
+                  ml.Output(N, approx=3)]
+
+sgd = ml.SGD(layers,num_epochs,report_loss=True,lambda_=lambda_)
+sgd.layers[0].X.assign(train_X)
+sgd.layers[1].Y.assign(train_y)
+sgd.reset()
+sgd.run(batch_size=batch_size)
+stop_timer(100)
+
+
+weights = sfix.Array(num_features+1)
+@for_range(num_features)
+def _(i):
+    weights[i] = layers[0].W[i][0]
+weights[num_features] = layers[0].b[0]
+
+noise = mpc_noise.gen_noise(num_features+1, N, epsilon=epsilon, lamb=lambda_)
+noisy_weights = sfix.Array(num_features+1)
+
+@for_range(num_features+1)
+def _(i):
+    noisy_weights[i] = weights[i] + noise[i]
+
+print_ln('Bias %s,',noisy_weights[num_features].reveal())
+@for_range(num_features)
+def _(i):
+      print_ln('Weight %s,',noisy_weights[i].reveal())
